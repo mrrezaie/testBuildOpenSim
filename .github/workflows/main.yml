@@ -16,11 +16,6 @@ jobs:
          repository: opensim-org/opensim-core
          path: 'opensim-core'
 
-    - name: Install SWIG
-      run: |
-        choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
-        swig -swiglib
-
     - name: Install Python packages
       uses: actions/setup-python@v4
       with:
@@ -29,12 +24,11 @@ jobs:
     - name: Install numpy
       run: python3 -m pip install numpy==1.26
 
-    - name: Checkout opensim-core main
-      uses: actions/checkout@v3
-      with:
-         repository: opensim-org/opensim-core
-         path: 'opensim-core'
-    
+    - name: Install SWIG
+      run: |
+        choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
+        swig -swiglib
+
     - name: Cache dependencies
       id: cache-dependencies
       uses: actions/cache@v3
@@ -57,9 +51,10 @@ jobs:
         # /W0 disables warnings.
         # https://msdn.microsoft.com/en-us/library/19z1t1wy.aspx
         # TODO: CMake provides /W3, which overrides our /W0
-        cmake -E env CXXFLAGS="/W0" cmake $env:GITHUB_WORKSPACE/opensim-core/dependencies -LAH -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install -DSUPERBUILD_ezc3d=ON -DOPENSIM_WITH_TROPTER=ON -DOPENSIM_WITH_CASADI=ON
+        cmake -E env CXXFLAGS="/W0" 
+        cmake $env:GITHUB_WORKSPACE/opensim-core/dependencies -LAH -G"Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install -DSUPERBUILD_ezc3d=ON -DOPENSIM_WITH_TROPTER=ON -DOPENSIM_WITH_CASADI=ON
         cmake --build . --config Release -- /maxcpucount:4
-        
+
     - name: Configure opensim-core
       id: configure
       run: |
@@ -68,7 +63,7 @@ jobs:
         # TODO: Can remove /WX when we use that in CMakeLists.txt.
         # Set the CXXFLAGS environment variable to turn warnings into errors.
         # Skip timing test section included by default.
-        cmake -E env CXXFLAGS="/WX -DSKIP_TIMING" cmake $env:GITHUB_WORKSPACE -LAH -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=~/opensim-core-install -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_PYTHON_WRAPPING=on -DBUILD_JAVA_WRAPPING=on -DOPENSIM_WITH_TROPTER=on -DPython3_ROOT_DIR=C:\hostedtoolcache\windows\Python\3.10.11\x64 
+        cmake -E env CXXFLAGS="/WX -DSKIP_TIMING" cmake $env:GITHUB_WORKSPACE -LAH -G"Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX=~/opensim-core-install -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_PYTHON_WRAPPING=on
         $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
         $version = $env:match.split('=')[1]
         echo $version
@@ -76,44 +71,31 @@ jobs:
         echo "version=$version" >> $env:GITHUB_OUTPUT
 
     - name: Build opensim-core
-      # Install now to avoid building bindings twice (issue when using Visual Studio 2019).
+      # Install now to avoid building bindings twice (TODO: issue when using Visual Studio 2019, is this an issue too in Visual Studio 2022?).
       run: |
         chdir $env:GITHUB_WORKSPACE\\build
         cmake --build . --config Release --target install -- /maxcpucount:4
 
-
-    # - name: Update submodules
-    #   run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
-      
-    # - name: Build GUI
-    #   id: build-gui
+    # - name: Test opensim-core
     #   run: |
-    #     mkdir build
-    #     cd build
-    #     cmake ../ -G"Visual Studio 16 2019" -A x64 -DCMAKE_PREFIX_PATH=~/opensim-core-install -DANT_ARGS="-Dnbplatform.default.netbeans.dest.dir=C:/Program Files/NetBeans-12.3/netbeans;-Dnbplatform.default.harness.dir=C:/Program Files/NetBeans-12.3/netbeans/harness"
-    #     cmake --build . --target CopyOpenSimCore --config Release
-    #     cmake --build . --target CopyModels --config Release
-    #     cmake --build . --target PrepareInstaller --config Release
-    #     cmake --build . --target CopyJRE --config Release
-    #     cmake --build . --target CopyVisualizer --config Release
-    #     # Read the value of the cache variable storing the GUI build version.
-    #     $env:match = cmake -L . | Select-String -Pattern OPENSIMGUI_BUILD_VERSION
-    #     $VERSION = $env:match.split('=')[1]
-    #     echo $VERSION
-    #     echo "name=VERSION::$VERSION" >> $GITHUB_ENV
-    #     echo "version=$VERSION" >> $env:GITHUB_OUTPUT
-        
-    # - name: Build GUI installer
-    #   run: |
-    #     cd Gui/opensim/dist/installer
-    #     makensis.exe make_installer.nsi
-    #     mv OpenSim-${{ steps.build-gui.outputs.version }}-win64.exe $env:GITHUB_WORKSPACE
+    #     chdir $env:GITHUB_WORKSPACE\\build
+    #     ctest --parallel 4 --output-on-failure --build-config Release -E Java_*
 
-    # - name: Upload GUI installer
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: OpenSim-${{ steps.build-gui.outputs.version }}-win64
-    #     path: OpenSim-${{ steps.build-gui.outputs.version }}-win64.exe
+    # - name: Install opensim-core
+    #   # TODO: This is where we wish to do the installing, but it's done above for now.
+    #   run: |
+    #     chdir $env:GITHUB_WORKSPACE\\build
+    #     chdir $env:GITHUB_WORKSPACE
+    #     Copy-Item -Path "~/opensim-core-install" -Destination "opensim-core-${{ github.event.pull_request.base.ref }}" -Recurse
+    #     7z a "opensim-core-${{ github.event.pull_request.base.ref }}.zip" "opensim-core-${{ github.event.pull_request.base.ref }}"
+
+    # - name: Test Python bindings
+    #   run: |
+    #     echo "PYTHONPATH= $env:USERPROFILE/opensim-core-install/bin">> $GITHUB_ENV
+    #     # Move to the installed location of the python package.
+    #     cd ~/opensim-core-install/sdk/python
+    #     # Run python tests.
+    #     python -m unittest discover --start-directory opensim/tests --verbose
 
     - name: Upload opensim-core
       uses: actions/upload-artifact@v4
