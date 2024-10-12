@@ -71,7 +71,7 @@ jobs:
         $env:CXXFLAGS = "/W0"
         cmake $env:GITHUB_WORKSPACE/opensim-core/dependencies -G"Visual Studio 17 2022" -A x64 -DSUPERBUILD_ezc3d:BOOL=on -DOPENSIM_WITH_CASADI:BOOL=on -DWIG_DIR=C:/ProgramData/chocolatey/lib/swig -DOPENSIM_WITH_TROPTER:BOOL=on -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install
         cmake . -LAH
-        cmake --build . --config Release -- /maxcpucount:2 
+        cmake --build . --config Release -- /maxcpucount:4
         
     - name: Obtain opensim-core commit
       id: opensim-core-commit
@@ -97,7 +97,7 @@ jobs:
         $env:CXXFLAGS = "/W0"
         cmake $env:GITHUB_WORKSPACE/opensim-core -G"Visual Studio 17 2022" -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install -DBUILD_JAVA_WRAPPING=off -DBUILD_PYTHON_WRAPPING=on -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_TESTING=off -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
         cmake . -LAH
-        cmake --build . --config Release -- /maxcpucount:2
+        cmake --build . --config Release -- /maxcpucount:4
         cmake --install .
 
     # - name: Update submodules
