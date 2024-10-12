@@ -16,6 +16,11 @@ jobs:
          repository: opensim-org/opensim-core
          path: 'opensim-core'
 
+    - name: Install SWIG
+      run: |
+        choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
+        swig -swiglib
+
     - name: Install Python packages
       uses: actions/setup-python@v4
       with:
@@ -24,18 +29,13 @@ jobs:
     - name: Install numpy
       run: python3 -m pip install numpy==1.26
 
-    - name: Install SWIG
-      run: |
-        choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
-        swig -swiglib
-
     - name: Checkout opensim-core main
       uses: actions/checkout@v3
       with:
          repository: opensim-org/opensim-core
          path: 'opensim-core'
     
-    - name: Cache opensim-core-dependencies
+    - name: Cache dependencies
       id: cache-dependencies
       uses: actions/cache@v3
       with:
@@ -48,47 +48,39 @@ jobs:
         # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
         key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
-    - name: Build opensim-core-dependencies
+    - name: Build dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
         echo $env:GITHUB_WORKSPACE\\build_deps
         mkdir $env:GITHUB_WORKSPACE\\build_deps
         chdir $env:GITHUB_WORKSPACE\\build_deps
-        # gci -r $env:GITHUB_WORKSPACE\\opensim-core
-        # /W0 disables warnings. The other flags are copied from CMake's
-        # default CMAKE_CXX_FLAGS.
+        # /W0 disables warnings.
         # https://msdn.microsoft.com/en-us/library/19z1t1wy.aspx
-        $env:CXXFLAGS = "/W0"
-        cmake $env:GITHUB_WORKSPACE/opensim-core/dependencies -G"Visual Studio 16 2019" -A x64 -DSUPERBUILD_ezc3d:BOOL=on -DOPENSIM_WITH_CASADI:BOOL=on -DWIG_DIR=C:/ProgramData/chocolatey/lib/swig -DOPENSIM_WITH_TROPTER:BOOL=on -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install
-        cmake . -LAH
-        cmake --build . --config Release -- /maxcpucount:2 
+        # TODO: CMake provides /W3, which overrides our /W0
+        cmake -E env CXXFLAGS="/W0" cmake $env:GITHUB_WORKSPACE/opensim-core/dependencies -LAH -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install -DSUPERBUILD_ezc3d=ON -DOPENSIM_WITH_TROPTER=ON -DOPENSIM_WITH_CASADI=ON
+        cmake --build . --config Release -- /maxcpucount:4
         
-    - name: Obtain opensim-core commit
-      id: opensim-core-commit
+    - name: Configure opensim-core
+      id: configure
       run: |
-        cd opensim-core
-        $opensim_core_commit=(git rev-parse HEAD)
-        echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+        mkdir $env:GITHUB_WORKSPACE\\build
+        chdir $env:GITHUB_WORKSPACE\\build
+        # TODO: Can remove /WX when we use that in CMakeLists.txt.
+        # Set the CXXFLAGS environment variable to turn warnings into errors.
+        # Skip timing test section included by default.
+        cmake -E env CXXFLAGS="/WX -DSKIP_TIMING" cmake $env:GITHUB_WORKSPACE -LAH -G"Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=~/opensim-core-install -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_PYTHON_WRAPPING=on -DBUILD_JAVA_WRAPPING=on -DOPENSIM_WITH_TROPTER=on -DPython3_ROOT_DIR=C:\hostedtoolcache\windows\Python\3.10.11\x64 
+        $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
+        $version = $env:match.split('=')[1]
+        echo $version
+        echo "VERSION=$version" >> $GITHUB_ENV
+        echo "version=$version" >> $env:GITHUB_OUTPUT
 
-    - name: Cache opensim-core
-      id: cache-core
-      uses: actions/cache@v3
-      with:
-        path: ~/opensim-core-install
-        # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
-        key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
-    
     - name: Build opensim-core
-      # if: steps.cache-core.outputs.cache-hit != 'true'
+      # Install now to avoid building bindings twice (issue when using Visual Studio 2019).
       run: |
-        echo $env:GITHUB_WORKSPACE\\build_core
-        mkdir $env:GITHUB_WORKSPACE\\build_core
-        chdir $env:GITHUB_WORKSPACE\\build_core
-        $env:CXXFLAGS = "/W0"
-        cmake $env:GITHUB_WORKSPACE/opensim-core -G"Visual Studio 16 2019" -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install -DBUILD_JAVA_WRAPPING=off -DBUILD_PYTHON_WRAPPING=on -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_TESTING=off -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
-        cmake . -LAH
-        cmake --build . --config Release -- /maxcpucount:2
-        cmake --install .
+        chdir $env:GITHUB_WORKSPACE\\build
+        cmake --build . --config Release --target install -- /maxcpucount:4
+
 
     # - name: Update submodules
     #   run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
