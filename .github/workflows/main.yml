@@ -1,6 +1,8 @@
 name: Main
 
 on: push
+  schedule:
+    - cron: '0 2 * * *'
 
 jobs:
   windows:
@@ -137,4 +139,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: opensim-core-${{ github.event.pull_request.base.ref }}-win
-        path: opensim-core-${{ github.event.pull_request.base.ref }}.zip
+        path: C:/Users/runneradmin/opensim-core-install
