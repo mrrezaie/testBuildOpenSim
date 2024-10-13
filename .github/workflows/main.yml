@@ -87,15 +87,19 @@ jobs:
     - name: Build opensim-core
       # if: steps.cache-core.outputs.cache-hit != 'true'
       run: |
-        echo $env:GITHUB_WORKSPACE\\build_core
-        mkdir $env:GITHUB_WORKSPACE\\build_core
-        chdir $env:GITHUB_WORKSPACE\\build_core
+        # echo $env:GITHUB_WORKSPACE\\build_core
+        # mkdir $env:GITHUB_WORKSPACE\\build_core
+        # chdir $env:GITHUB_WORKSPACE\\build_core
 
         $env:CXXFLAGS = "/W0"
         cmake $env:GITHUB_WORKSPACE/opensim-core -G"Visual Studio 17 2022" -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install -DBUILD_JAVA_WRAPPING=off -DBUILD_PYTHON_WRAPPING=on -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_TESTING=off -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
         cmake . -LAH
         cmake --build . --config Release -- /maxcpucount:4
         cmake --install .
+
+        chdir ~/opensim-core-install/sdk/Python
+        python setup.py bdist_wheel
+        move ~/opensim-core-install/sdk/Python/dist/*.whl ~/
 
     # - name: Update submodules
     #   run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
@@ -134,4 +138,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: opensim-core-win64-py312
-        path: ~/opensim-core-install
+        # path: ~/opensim-core-install
+        path: ~/*.whl
