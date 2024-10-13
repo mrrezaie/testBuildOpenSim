@@ -50,12 +50,12 @@ jobs:
          repository: opensim-org/opensim-core
          path: 'opensim-core'
     
-    - name: Cache opensim-core dependencies
-      id: cache-dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/opensim_dependencies_install
-        key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
+    # - name: Cache opensim-core dependencies
+    #   id: cache-dependencies
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/opensim_dependencies_install
+    #     key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
     - name: Build opensim-core dependencies
       # if: steps.cache-dependencies.outputs.cache-hit != 'true'
