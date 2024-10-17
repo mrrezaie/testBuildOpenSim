@@ -104,7 +104,8 @@ jobs:
         # a temporary solution to include geometries
         chdir ~/opensim-core-install/sdk/Python/opensim
         move $env:GITHUB_WORKSPACE/opensim-models/Geometry ./
-        echo ModelVisualizer.addDirToGeometrySearchPaths('Geometry') >> __init__.py
+        echo cwd = os.path.dirname(__file__) >> __init__.py
+        echo ModelVisualizer.addDirToGeometrySearchPaths(os.path.join(cwd,'Geometry')) >> __init__.py
 
         # create wheel file
         chdir ~/opensim-core-install/sdk/Python
