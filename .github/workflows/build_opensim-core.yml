@@ -109,7 +109,6 @@ jobs:
         # create wheel file
         chdir ~/opensim-core-install/sdk/Python
         python setup.py bdist_wheel
-        move ~/opensim-core-install/sdk/Python/dist/*.whl ~/
 
     # - name: Update submodules
     #   run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
@@ -149,5 +148,5 @@ jobs:
       with:
         name: opensim-core-win64-py312
         # path: ~/opensim-core-install
-        path: ~/*.whl
+        path: ~/opensim-core-install/sdk/Python/dist/*.whl
         compression-level: 0
