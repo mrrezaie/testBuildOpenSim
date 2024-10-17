@@ -116,6 +116,7 @@ jobs:
 
     - name: check files
       run: |
+        dir $env:GITHUB_WORKSPACE/opensim-models
         dir ~/opensim-core-install
         dir ~/opensim-core-install/sdk/Python
         dir ~/opensim-core-install/sdk/Python/opensim
