@@ -97,9 +97,14 @@ jobs:
         cmake --build . --config Release -- /maxcpucount:4
         cmake --install .
 
+    - name: check files
+      run: |
+        dir ~/opensim-core-install
+        dir ~/opensim-core-install/sdk/Python/opensim
+
     - name: Include opensim Geometry folder
       run: move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install/sdk/Python/opensim
-        
+
     - name: Modify the __init__.py file
       shell: python
       run: |
