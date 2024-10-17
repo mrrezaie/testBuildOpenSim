@@ -97,11 +97,6 @@ jobs:
         cmake --build . --config Release -- /maxcpucount:4
         cmake --install .
 
-    - name: check files
-      run: |
-        dir ~/opensim-core-install
-        dir ~/opensim-core-install/sdk/Python/opensim
-
     - name: Include opensim Geometry folder
       run: move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install/sdk/Python/opensim
 
@@ -118,6 +113,12 @@ jobs:
       run: |
         chdir ~/opensim-core-install/sdk/Python
         python setup.py bdist_wheel
+
+    - name: check files
+      run: |
+        dir ~/opensim-core-install
+        dir ~/opensim-core-install/sdk/Python
+        dir ~/opensim-core-install/sdk/Python/opensim
 
     # - name: Update submodules
     #   run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
