@@ -103,8 +103,10 @@ jobs:
     - name: Adjust folders
       run: |
         dir .
-        move /Y $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
-        move /Y $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
+        del ~/opensim-core-install/sdk/Python/setup.py
+        del ~/opensim-core-install/sdk/Python/opensim/__init__.py
+        move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
+        move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
         move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
 
     # - name: Modify the __init__.py file
