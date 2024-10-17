@@ -109,7 +109,8 @@ jobs:
       shell: python
       run: |
         import os
-        with open('~/opensim-core-install/sdk/Python/opensim/__init__.py', 'a') as f: 
+        os.chdir('C:/Users/runneradmin/opensim-core-install/sdk/Python/opensim')
+        with open('__init__.py', 'a') as f: 
           f.write("\ngeometries = os.path.join(os.path.dirname(__file__),'Geometry')"); 
           f.write('\nModelVisualizer.addDirToGeometrySearchPaths(geometries)\n')
 
