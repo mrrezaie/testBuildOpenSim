@@ -99,14 +99,19 @@ jobs:
         cmake --build . --config Release -- /maxcpucount:4
         cmake --install .
 
-    - name: Finalize the python package
+    - name: Include opensim geometries
+      run: move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install/sdk/Python/opensim
+        
+    - name: Modify the __init__.py file
+      shell: python
       run: |
-        # a temporary solution to include geometries
-        move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install/sdk/Python/opensim
-        chdir ~/opensim-core-install/sdk/Python/opensim
-        python -c "with open('__init__.py', 'a') as f: f.write(\"geometries = os.path.join(os.path.dirname(__file__),'Geometry')\n\"); f.write('ModelVisualizer.addDirToGeometrySearchPaths(geometries)\n')"
+        import os
+        with open('~/opensim-core-install/sdk/Python/__init__.py', 'a') as f: 
+          f.write("\ngeometries = os.path.join(os.path.dirname(__file__),'Geometry')"); 
+          f.write('\nModelVisualizer.addDirToGeometrySearchPaths(geometries)\n')
 
-        # create wheel file
+    - name: Build wheel file
+      run: |
         chdir ~/opensim-core-install/sdk/Python
         python setup.py bdist_wheel
 
