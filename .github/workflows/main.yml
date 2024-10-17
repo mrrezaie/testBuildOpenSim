@@ -101,10 +101,12 @@ jobs:
 
     - name: Finalize the python package
       run: |
+        # a temporary solution to include geometries
         chdir ~/opensim-core-install/sdk/Python/opensim
         move $env:GITHUB_WORKSPACE/opensim-models/Geometry ./
         echo ModelVisualizer.addDirToGeometrySearchPaths('Geometry') >> __init__.py
 
+        # create wheel file
         chdir ~/opensim-core-install/sdk/Python
         python setup.py bdist_wheel
         move ~/opensim-core-install/sdk/Python/dist/*.whl ~/
