@@ -42,15 +42,18 @@ jobs:
     #     if (($hashFromFile.Hash) -ne ($expectedHash)) { Write-Error "Hash doesn't match." }
     #     .\Apache-NetBeans-12.3-bin-windows-x64.exe --silent | Out-Null # This installer is gregarious.
     #     echo "ANT_HOME=C:\\Program Files\\NetBeans-12.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
-      
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Checkout opensim-core main
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
          repository: opensim-org/opensim-core
          path: 'opensim-core'
 
     - name: Checkout opensim-models main
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
          repository: opensim-org/opensim-models
          path: 'opensim-models'
@@ -97,29 +100,32 @@ jobs:
         cmake --build . --config Release -- /maxcpucount:4
         cmake --install .
 
-    - name: Include opensim Geometry folder
-      run: move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install/sdk/Python/opensim
-
-    - name: Modify the __init__.py file
-      shell: python
+    - name: Adjust folders
       run: |
-        import os
-        os.chdir('C:/Users/runneradmin/opensim-core-install/sdk/Python/opensim')
-        with open('__init__.py', 'a') as f: 
-          f.write("\ngeometries = os.path.join(os.path.dirname(__file__),'Geometry')"); 
-          f.write('\nModelVisualizer.addDirToGeometrySearchPaths(geometries)\n')
+        move ./setup.py ~/opensim-core-install ~/opensim-core-install/sdk/Python
+        move ./__init__.py ~/opensim-core-install ~/opensim-core-install/sdk/Python/opensim
+        move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
+
+    # - name: Modify the __init__.py file
+    #   shell: python
+    #   run: |
+    #     import os
+    #     os.chdir('C:/Users/runneradmin/opensim-core-install/sdk/Python/opensim')
+    #     with open('__init__.py', 'a') as f: 
+    #       f.write("\ngeometries = os.path.join(os.path.dirname(__file__),'Geometry')"); 
+    #       f.write('\nModelVisualizer.addDirToGeometrySearchPaths(geometries)\n')
 
     - name: Build wheel file
       run: |
         chdir ~/opensim-core-install/sdk/Python
         python setup.py bdist_wheel
 
-    - name: check files
-      run: |
-        dir $env:GITHUB_WORKSPACE/opensim-models
-        dir ~/opensim-core-install
-        dir ~/opensim-core-install/sdk/Python
-        dir ~/opensim-core-install/sdk/Python/opensim
+    # - name: Check files
+    #   run: |
+    #     dir $env:GITHUB_WORKSPACE/opensim-models
+    #     dir ~/opensim-core-install
+    #     dir ~/opensim-core-install/sdk/Python
+    #     dir ~/opensim-core-install/sdk/Python/opensim
 
     # - name: Update submodules
     #   run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
