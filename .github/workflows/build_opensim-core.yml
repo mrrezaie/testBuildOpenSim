@@ -8,14 +8,14 @@ on:
 jobs:
   windows:
     name: Windows
-    runs-on: windows-latest
+    runs-on: windows2022
 
     steps:
 
-    - name: Install SWIG
-      run: |
-        choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
-        swig -swiglib
+    # - name: Install SWIG
+    #   run: |
+    #     choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
+    #     swig -swiglib
       
 
     - name: Install Python
@@ -89,7 +89,7 @@ jobs:
           -DOPENSIM_WITH_CASADI=on `
           -DOPENSIM_WITH_TROPTER=on `
           -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install
-        cmake --build . --config Release -- -j 4
+        cmake --build . --config Release --parallel 4
         
 
     # - name: Obtain opensim-core commit
@@ -126,7 +126,7 @@ jobs:
           -DOPENSIM_C3D_PARSER=ezc3d `
           -DBUILD_TESTING=off `
           -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
-        cmake --build . --config Release -- -j 4
+        cmake --build . --config Release --parallel 4
         cmake --install .
 
 
