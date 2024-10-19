@@ -92,12 +92,12 @@ jobs:
         cmake --build . --config Release --parallel 4
         
 
-    # - name: Obtain opensim-core commit
-    #   id: opensim-core-commit
-    #   run: |
-    #     cd opensim-core
-    #     $opensim_core_commit=(git rev-parse HEAD)
-    #     echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+    - name: Obtain opensim-core commit
+      id: opensim-core-commit
+      run: |
+        cd opensim-core
+        $opensim_core_commit=(git rev-parse HEAD)
+        echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
 
 
     # - name: Cache opensim-core
