@@ -76,18 +76,16 @@ jobs:
     - name: Build opensim-core dependencies
       # if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
-        echo $env:GITHUB_WORKSPACE\\build_deps
         mkdir $env:GITHUB_WORKSPACE\\build_deps
         chdir $env:GITHUB_WORKSPACE\\build_deps
 
         $env:CXXFLAGS = "/W0"
         cmake $env:GITHUB_WORKSPACE/opensim-core/dependencies `
-          -LAH `
           -G "Visual Studio 17 2022" `
           -A x64 `
-          -DSUPERBUILD_ezc3d=on `
-          -DOPENSIM_WITH_CASADI=on `
-          -DOPENSIM_WITH_TROPTER=on `
+          -DSUPERBUILD_ezc3d=ON `
+          -DOPENSIM_WITH_CASADI=ON `
+          -DOPENSIM_WITH_TROPTER=ON `
           -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install
         cmake --build . --config Release --parallel 4
         
@@ -111,23 +109,21 @@ jobs:
     - name: Build opensim-core
       # if: steps.cache-core.outputs.cache-hit != 'true'
       run: |
-        echo $env:GITHUB_WORKSPACE\\build
         mkdir $env:GITHUB_WORKSPACE\\build
         chdir $env:GITHUB_WORKSPACE\\build
 
         $env:CXXFLAGS = "/W0"
         cmake $env:GITHUB_WORKSPACE/opensim-core \
-          -LAH \
           -G "Visual Studio 17 2022" \
           -A x64 `
           -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install `
-          -DBUILD_JAVA_WRAPPING=off `
-          -DBUILD_PYTHON_WRAPPING=on `
+          -DBUILD_JAVA_WRAPPING=OFF `
+          -DBUILD_PYTHON_WRAPPING=ON `
           -DOPENSIM_C3D_PARSER=ezc3d `
-          -DBUILD_TESTING=off `
+          -DBUILD_TESTING=OFF `
           -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
         cmake --build . --config Release --parallel 4
-        cmake --install .
+        cmake --install . --parallel 4
 
 
     - name: Adjust folders for geometries
