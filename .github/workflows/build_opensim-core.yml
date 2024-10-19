@@ -87,7 +87,8 @@ jobs:
           -DOPENSIM_WITH_CASADI=ON `
           -DOPENSIM_WITH_TROPTER=ON `
           -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install
-        cmake --build . --config Release --parallel 4
+
+        cmake --build . --config Release -j4
         
 
     - name: Obtain opensim-core commit
@@ -113,8 +114,8 @@ jobs:
         chdir $env:GITHUB_WORKSPACE\\build
 
         $env:CXXFLAGS = "/W0"
-        cmake $env:GITHUB_WORKSPACE/opensim-core \
-          -G "Visual Studio 17 2022" \
+        cmake $env:GITHUB_WORKSPACE/opensim-core `
+          -G "Visual Studio 17 2022" `
           -A x64 `
           -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install `
           -DBUILD_JAVA_WRAPPING=OFF `
@@ -122,8 +123,9 @@ jobs:
           -DOPENSIM_C3D_PARSER=ezc3d `
           -DBUILD_TESTING=OFF `
           -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
-        cmake --build . --config Release --parallel 4
-        cmake --install . --parallel 4
+
+        cmake --build . --config Release -j4
+        cmake --install . -j4
 
 
     - name: Adjust folders for geometries
