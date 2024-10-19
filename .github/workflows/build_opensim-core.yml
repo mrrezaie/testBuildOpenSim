@@ -125,7 +125,7 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
 
         cmake --build . --config Release -j4
-        cmake --install . -j4
+        cmake --install .
 
 
     - name: Adjust folders for geometries
