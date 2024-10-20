@@ -101,6 +101,7 @@ jobs:
         cd opensim-core
         $opensim_core_commit=(git rev-parse HEAD)
         echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+        echo $GITHUB_OUTPUT
 
 
     # - name: Cache opensim-core
@@ -113,6 +114,7 @@ jobs:
 
     - name: Build opensim-core
       # if: steps.cache-core.outputs.cache-hit != 'true'
+      id: build
       run: |
         mkdir $env:GITHUB_WORKSPACE\\build
         chdir $env:GITHUB_WORKSPACE\\build
@@ -129,11 +131,14 @@ jobs:
           -DBUILD_TESTING=OFF `
           -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
 
-        cmake --build . --config Release -j4
-        cmake --install .
+        $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
+        $version = $env:match.split('=')[1]
+        echo $version
+
+        cmake --build . --config Release --target install -j4
 
 
-    - name: Adjust folders for geometries
+    - name: Include Geometry folder
       run: |
         dir .
         del ~/opensim-core-install/sdk/Python/setup.py
@@ -141,16 +146,6 @@ jobs:
         move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
         move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
         move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
-
-
-    # - name: Modify the __init__.py file
-    #   shell: python
-    #   run: |
-    #     import os
-    #     os.chdir('C:/Users/runneradmin/opensim-core-install/sdk/Python/opensim')
-    #     with open('__init__.py', 'a') as f: 
-    #       f.write("\ngeometries = os.path.join(os.path.dirname(__file__),'Geometry')"); 
-    #       f.write('\nModelVisualizer.addDirToGeometrySearchPaths(geometries)\n')
 
 
     - name: Build wheel file
@@ -203,7 +198,7 @@ jobs:
     - name: Upload opensim-core
       uses: actions/upload-artifact@v4
       with:
-        name: opensim-core-win64-py312
+        name: opensim-core-${{ steps.build.outputs.version }}-win64-py312
         # path: ~/opensim-core-install
         path: ~/opensim-core-install/sdk/Python/dist/*.whl
         compression-level: 0
