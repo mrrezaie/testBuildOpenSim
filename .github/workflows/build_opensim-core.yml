@@ -70,16 +70,16 @@ jobs:
          path: 'opensim-models'
 
 
-    # - name: Cache opensim-core dependencies
-    #   id: cache-dependencies
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/opensim_dependencies_install
-    #     key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
+    - name: Cache opensim-core dependencies
+      id: cache-dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/opensim_dependencies_install
+        key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
     - name: Build opensim-core dependencies
-      # if: steps.cache-dependencies.outputs.cache-hit != 'true'
+      if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
         mkdir $env:GITHUB_WORKSPACE\\build_deps
         chdir $env:GITHUB_WORKSPACE\\build_deps
@@ -104,16 +104,16 @@ jobs:
         echo $GITHUB_OUTPUT
 
 
-    # - name: Cache opensim-core
-    #   id: cache-core
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/opensim-core-install
-    #     key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
+    - name: Cache opensim-core
+      id: cache-core
+      uses: actions/cache@v3
+      with:
+        path: ~/opensim-core-install
+        key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
     
 
     - name: Build opensim-core
-      # if: steps.cache-core.outputs.cache-hit != 'true'
+      if: steps.cache-core.outputs.cache-hit != 'true'
       id: build
       run: |
         mkdir $env:GITHUB_WORKSPACE\\build
@@ -134,6 +134,7 @@ jobs:
         $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
         $version = $env:match.split('=')[1]
         echo $version
+        echo $version >> $GITHUB_OUTPUT
 
         cmake --build . --config Release --target install -j4
 
