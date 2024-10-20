@@ -20,10 +20,7 @@ if os.path.exists(geometry_path):
         geometry_files.append(os.path.join(geometry_path, file).replace(os.sep,'/'))
 
 # This provides the variable `__version__`.
-if sys.version_info[0] < 3:
-    execfile('opensim/version.py')
-else:
-    exec(compile(open('opensim/version.py').read(), 'opensim/version.py', 'exec'))
+exec(compile(open('opensim/version.py').read(), 'opensim/version.py', 'exec'))
 
 setup(
     name='opensim',
