@@ -137,6 +137,7 @@ jobs:
         cmake --build . --config Release --target install -j4
 
         echo $version
+        echo "version=$version" >> $env:GITHUB_OUTPUT
 
     - name: Include Geometry folder
       run: |
