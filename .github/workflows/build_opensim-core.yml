@@ -142,7 +142,7 @@ jobs:
         echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
-      run: echo $VERSION
+      run: echo $steps.build.outputs.VERSION
 
 
     # - name: Include Geometry folder
