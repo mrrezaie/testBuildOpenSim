@@ -157,9 +157,7 @@ jobs:
 
 
     - name: Version
-      run: |
-        echo $version
-        echo $VERSION
+      run: echo $VERSION
 
 
     # - name: Check files
