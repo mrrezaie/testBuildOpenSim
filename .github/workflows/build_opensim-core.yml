@@ -137,8 +137,8 @@ jobs:
         cmake -L -N .
         # cmake --build . --config Release --target install -j4
 
-        echo $VERSION
-        echo "name=VERSION::$VERSION" >> $GITHUB_ENV
+        # echo $VERSION
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "VERSION=$VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
