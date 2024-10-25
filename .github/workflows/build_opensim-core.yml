@@ -7,7 +7,7 @@ on:
 
 jobs:
   windows:
-    name: Windows
+    name: Windows 2022
     runs-on: windows-2022
     defaults:
       run:
@@ -142,7 +142,7 @@ jobs:
         echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
-      run: echo "The opensim version is $VERSION"
+      run: echo $VERSION
 
 
     # - name: Include Geometry folder
