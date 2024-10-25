@@ -157,7 +157,7 @@ jobs:
 
 
     - name: Version
-      run: echo $VERSION
+      run: echo "The opensim version is $VERSION"
 
 
     # - name: Check files
