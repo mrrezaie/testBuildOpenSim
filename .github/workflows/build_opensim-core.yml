@@ -134,6 +134,7 @@ jobs:
         $version = $env:match.split('=')[1]
         echo "VERSION=$env:match.split('=')[1]" >> $GITHUB_ENV
 
+        cmake -LAH
         # cmake --build . --config Release --target install -j4
 
 
