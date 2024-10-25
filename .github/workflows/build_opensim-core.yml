@@ -132,13 +132,15 @@ jobs:
 
         $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
         $version = $env:match.split('=')[1]
+        echo "VERSION=$env:match.split('=')[1]" >> $GITHUB_ENV
 
         # cmake --build . --config Release --target install -j4
 
-        # echo $version
-        # echo $version >> $GITHUB_OUTPUT
-        # echo "version=$version" >> $env:GITHUB_OUTPUT
-        echo "VERSION=$version" >> $GITHUB_ENV
+
+
+    - name: Version
+      run: echo "The opensim version is $VERSION"
+
 
     # - name: Include Geometry folder
     #   run: |
@@ -156,8 +158,6 @@ jobs:
     #     python setup.py bdist_wheel
 
 
-    - name: Version
-      run: echo "The opensim version is $VERSION"
 
 
     # - name: Check files
