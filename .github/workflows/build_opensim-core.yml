@@ -3,7 +3,7 @@ name: Main
 on: 
   push:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   windows:
@@ -138,11 +138,11 @@ jobs:
         # cmake --build . --config Release --target install -j4
 
         echo $OPENSIM_VERSION
-        # echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_ENV
+        echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_ENV
         # echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
-      run: echo $VERSION
+      run: echo ${{ env.VERSION }}
 
 
     # - name: Include Geometry folder
