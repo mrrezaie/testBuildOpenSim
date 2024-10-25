@@ -138,14 +138,12 @@ jobs:
         # cmake --build . --config Release --target install -j4
 
         # echo $OPENSIM_VERSION
-        echo "name=VERSION::$OPENSIM_VERSION" >> $env:$GITHUB_ENV
-        echo "VERSION=$OPENSIM_VERSION" >> $env:$GITHUB_ENV
-        echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
+        # echo "name=VERSION::$OPENSIM_VERSION" >> $env:$GITHUB_ENV
+        echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_ENV
+        # echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
-      run: |
-        echo $steps.build.outputs.version
-        echo The opensim version is $VERSION
+      run: echo "The opensim version is $VERSION"
 
 
     # - name: Include Geometry folder
