@@ -156,7 +156,8 @@ jobs:
 
 
     - name: Version
-      run: echo $env:GITHUB_OUTPUT
+      run: |
+        echo ${{ steps.build.outputs.version }}
 
 
     # - name: Check files
