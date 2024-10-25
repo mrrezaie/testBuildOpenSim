@@ -139,6 +139,7 @@ jobs:
 
         # echo $OPENSIM_VERSION
         echo "name=VERSION::$OPENSIM_VERSION" >> $env:$GITHUB_ENV
+        echo "VERSION=$OPENSIM_VERSION" >> $env:$GITHUB_ENV
         echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
