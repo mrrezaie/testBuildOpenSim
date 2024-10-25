@@ -70,16 +70,16 @@ jobs:
          path: 'opensim-models'
 
 
-    # - name: Cache opensim-core dependencies
-    #   id: cache-dependencies
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/opensim_dependencies_install
-    #     key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
+    - name: Cache opensim-core dependencies
+      id: cache-dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/opensim_dependencies_install
+        key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
     - name: Build opensim-core dependencies
-      # if: steps.cache-dependencies.outputs.cache-hit != 'true'
+      if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
         mkdir $env:GITHUB_WORKSPACE\\build_deps
         chdir $env:GITHUB_WORKSPACE\\build_deps
@@ -95,24 +95,24 @@ jobs:
         cmake --build . --config Release -j4
         
 
-    # - name: Obtain opensim-core commit
-    #   id: opensim-core-commit
-    #   run: |
-    #     cd opensim-core
-    #     $opensim_core_commit=(git rev-parse HEAD)
-    #     echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+    - name: Obtain opensim-core commit
+      id: opensim-core-commit
+      run: |
+        cd opensim-core
+        $opensim_core_commit=(git rev-parse HEAD)
+        echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
 
 
-    # - name: Cache opensim-core
-    #   id: cache-core
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/opensim-core-install
-    #     key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
+    - name: Cache opensim-core
+      id: cache-core
+      uses: actions/cache@v3
+      with:
+        path: ~/opensim-core-install
+        key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
     
 
     - name: Build opensim-core
-      # if: steps.cache-core.outputs.cache-hit != 'true'
+      if: steps.cache-core.outputs.cache-hit != 'true'
       id: build
       run: |
         mkdir $env:GITHUB_WORKSPACE\\build
@@ -153,6 +153,10 @@ jobs:
       run: |
         chdir ~/opensim-core-install/sdk/Python
         python setup.py bdist_wheel
+
+
+    - name: Version
+      run: echo $env:GITHUB_OUTPUT
 
 
     # - name: Check files
