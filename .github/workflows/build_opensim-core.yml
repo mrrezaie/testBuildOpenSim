@@ -70,16 +70,16 @@ jobs:
          path: 'opensim-models'
 
 
-    - name: Cache opensim-core dependencies
-      id: cache-dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/opensim_dependencies_install
-        key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
+    # - name: Cache opensim-core dependencies
+    #   id: cache-dependencies
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/opensim_dependencies_install
+    #     key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
     - name: Build opensim-core dependencies
-      if: steps.cache-dependencies.outputs.cache-hit != 'true'
+      # if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
         mkdir $env:GITHUB_WORKSPACE\\build_deps
         chdir $env:GITHUB_WORKSPACE\\build_deps
@@ -132,30 +132,30 @@ jobs:
 
         $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
         $OPENSIM_VERSION = $env:match.split('=')[1]
-        echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_ENV
+        echo "OPENSIM_VERSION=$OPENSIM_VERSION" >> $env:GITHUB_ENV
 
         cmake -L -N .
-        # cmake --build . --config Release --target install -j4
+        cmake --build . --config Release --target install -j4
 
 
     - name: Version
-      run: echo $env.VERSION
+      run: echo ${{ env.OPENSIM_VERSION }}
 
 
-    # - name: Include Geometry folder
-    #   run: |
-    #     dir .
-    #     del ~/opensim-core-install/sdk/Python/setup.py
-    #     del ~/opensim-core-install/sdk/Python/opensim/__init__.py
-    #     move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
-    #     move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
-    #     move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
+    - name: Include Geometry folder
+      run: |
+        dir .
+        del ~/opensim-core-install/sdk/Python/setup.py
+        del ~/opensim-core-install/sdk/Python/opensim/__init__.py
+        move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
+        move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
+        move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
 
 
-    # - name: Build wheel file
-    #   run: |
-    #     chdir ~/opensim-core-install/sdk/Python
-    #     python setup.py bdist_wheel
+    - name: Build wheel file
+      run: |
+        chdir ~/opensim-core-install/sdk/Python
+        python setup.py bdist_wheel
 
 
 
