@@ -95,24 +95,24 @@ jobs:
         cmake --build . --config Release -j4
         
 
-    - name: Obtain opensim-core commit
-      id: opensim-core-commit
-      run: |
-        cd opensim-core
-        $opensim_core_commit=(git rev-parse HEAD)
-        echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+    # - name: Obtain opensim-core commit
+    #   id: opensim-core-commit
+    #   run: |
+    #     cd opensim-core
+    #     $opensim_core_commit=(git rev-parse HEAD)
+    #     echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
 
 
-    - name: Cache opensim-core
-      id: cache-core
-      uses: actions/cache@v3
-      with:
-        path: ~/opensim-core-install
-        key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
+    # - name: Cache opensim-core
+    #   id: cache-core
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/opensim-core-install
+    #     key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
     
 
     - name: Build opensim-core
-      if: steps.cache-core.outputs.cache-hit != 'true'
+      # if: steps.cache-core.outputs.cache-hit != 'true'
       id: build
       run: |
         mkdir $env:GITHUB_WORKSPACE\\build
@@ -132,32 +132,34 @@ jobs:
 
         $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
         $version = $env:match.split('=')[1]
-        echo $version >> $GITHUB_OUTPUT
 
-        cmake --build . --config Release --target install -j4
+        # cmake --build . --config Release --target install -j4
 
-        echo $version
-        echo "version=$version" >> $env:GITHUB_OUTPUT
+        # echo $version
+        # echo $version >> $GITHUB_OUTPUT
+        # echo "version=$version" >> $env:GITHUB_OUTPUT
+        echo "VERSION=$version" >> $GITHUB_ENV
 
-    - name: Include Geometry folder
-      run: |
-        dir .
-        del ~/opensim-core-install/sdk/Python/setup.py
-        del ~/opensim-core-install/sdk/Python/opensim/__init__.py
-        move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
-        move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
-        move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
+    # - name: Include Geometry folder
+    #   run: |
+    #     dir .
+    #     del ~/opensim-core-install/sdk/Python/setup.py
+    #     del ~/opensim-core-install/sdk/Python/opensim/__init__.py
+    #     move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
+    #     move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
+    #     move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
 
 
-    - name: Build wheel file
-      run: |
-        chdir ~/opensim-core-install/sdk/Python
-        python setup.py bdist_wheel
+    # - name: Build wheel file
+    #   run: |
+    #     chdir ~/opensim-core-install/sdk/Python
+    #     python setup.py bdist_wheel
 
 
     - name: Version
       run: |
-        echo ${{ steps.build.outputs.version }}
+        echo $version
+        echo $VERSION
 
 
     # - name: Check files
@@ -204,7 +206,6 @@ jobs:
     - name: Upload opensim-core
       uses: actions/upload-artifact@v4
       with:
-        name: opensim-core-${{ steps.build.outputs.version }}-win64-py312
-        # path: ~/opensim-core-install
+        name: opensim-core-win64-py312
         path: ~/opensim-core-install/sdk/Python/dist/*.whl
         compression-level: 0
