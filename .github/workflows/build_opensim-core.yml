@@ -131,13 +131,15 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
 
         $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
-        $version = $env:match.split('=')[1]
-        echo "VERSION=$env:match.split('=')[1]" >> $GITHUB_ENV
+        $VERSION = $env:match.split('=')[1]
 
-        cmake -LAH .
+
+        cmake -L -N .
         # cmake --build . --config Release --target install -j4
 
-
+        echo $VERSION
+        echo "name=VERSION::$VERSION" >> $GITHUB_ENV
+        echo "VERSION=$VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
       run: echo "The opensim version is $VERSION"
