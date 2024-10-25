@@ -137,10 +137,9 @@ jobs:
         cmake -L -N .
         # cmake --build . --config Release --target install -j4
 
-        # echo $OPENSIM_VERSION
-        # echo "name=VERSION::$OPENSIM_VERSION" >> $env:$GITHUB_ENV
+        echo $OPENSIM_VERSION
         echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_ENV
-        # echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
+        echo "VERSION=$OPENSIM_VERSION" >> $env:GITHUB_OUTPUT
 
     - name: Version
       run: echo "The opensim version is $VERSION"
