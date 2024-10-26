@@ -68,11 +68,12 @@ jobs:
       with:
          repository: opensim-org/opensim-models
          path: 'opensim-models'
-         sparse-checkout: 'opensim-models/Geometry'
+         sparse-checkout: 'Geometry'
          sparse-checkout-cone-mode: false
 
     - name: Path
       run: |
+        dir $env:GITHUB_WORKSPACE
         dir $env:GITHUB_WORKSPACE/opensim-models
 
 
