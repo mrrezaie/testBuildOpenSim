@@ -23,16 +23,16 @@ jobs:
     #     swig -swiglib
       
 
-    - name: Install Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
+    # - name: Install Python
+    #   uses: actions/setup-python@v4
+    #   with:
+    #     python-version: '3.12'
         
 
-    - name: Install NumPy 
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install numpy==1.* setuptools wheel
+    # - name: Install NumPy 
+    #   run: |
+    #     python3 -m pip install --upgrade pip
+    #     python3 -m pip install numpy==1.* setuptools wheel
 
 
     # - name: Set up JDK 1.8
@@ -52,15 +52,15 @@ jobs:
     #     echo "ANT_HOME=C:\\Program Files\\NetBeans-12.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
 
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    # - name: Checkout repository
+    #   uses: actions/checkout@v4
 
 
-    - name: Checkout opensim-core main
-      uses: actions/checkout@v4
-      with:
-         repository: opensim-org/opensim-core
-         path: 'opensim-core'
+    # - name: Checkout opensim-core main
+    #   uses: actions/checkout@v4
+    #   with:
+    #      repository: opensim-org/opensim-core
+    #      path: 'opensim-core'
 
 
     - name: Checkout opensim-models Geometry
@@ -69,8 +69,8 @@ jobs:
          repository: opensim-org/opensim-models
          path: 'opensim-models'
          sparse-checkout: 'Geometry'
+         sparse-checkout-cone-mode: false
          fetch-depth: 0
-         # sparse-checkout-cone-mode: false
 
     - name: Path
       run: |
