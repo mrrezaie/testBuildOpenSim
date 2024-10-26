@@ -68,7 +68,7 @@ jobs:
       with:
          repository: opensim-org/opensim-models
          path: 'opensim-models'
-         sparse-checkout: './Geometry'
+         sparse-checkout: 'opensim-models/Geometry'
          sparse-checkout-cone-mode: false
 
     - name: Path
