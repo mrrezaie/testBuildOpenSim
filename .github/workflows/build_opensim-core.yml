@@ -72,11 +72,8 @@ jobs:
          sparse-checkout-cone-mode: false
          # fetch-depth: 0
 
-    # - name: Path
-    #   run: |
-    #     dir $env:GITHUB_WORKSPACE
-    #     dir $env:GITHUB_WORKSPACE/Geometry
-    #     # dir $env:GITHUB_WORKSPACE/opensim-models
+    - name: Paths
+      run: dir $env:GITHUB_WORKSPACE
 
 
     # - name: Cache opensim-core dependencies
