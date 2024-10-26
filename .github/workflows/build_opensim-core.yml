@@ -67,15 +67,16 @@ jobs:
       uses: actions/checkout@v4
       with:
          repository: opensim-org/opensim-models
-         path: 'opensim-models'
+         path: . # 'opensim-models'
          sparse-checkout: 'Geometry'
          sparse-checkout-cone-mode: false
-         fetch-depth: 0
+         # fetch-depth: 0
 
     - name: Path
       run: |
         dir $env:GITHUB_WORKSPACE
-        dir $env:GITHUB_WORKSPACE/opensim-models
+        dir $env:GITHUB_WORKSPACE/Geometry
+        # dir $env:GITHUB_WORKSPACE/opensim-models
 
 
     # - name: Cache opensim-core dependencies
