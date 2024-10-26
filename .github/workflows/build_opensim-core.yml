@@ -67,7 +67,7 @@ jobs:
       uses: actions/checkout@v4
       with:
          repository: opensim-org/opensim-models
-         path: 'opensim-models'
+         path: 'opensim-models/Geometry'
 
 
     # - name: Cache opensim-core dependencies
