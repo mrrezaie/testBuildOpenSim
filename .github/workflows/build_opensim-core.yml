@@ -163,11 +163,11 @@ jobs:
                 chdir ~/opensim-core-install/sdk/Python
                 python setup.py bdist_wheel
         
-          - name: Check files
-            run: |
-                dir ~/opensim-core-install
-                dir ~/opensim-core-install/sdk/Python
-                dir ~/opensim-core-install/sdk/Python/opensim
+          # - name: Check files
+            # run: |
+                # dir ~/opensim-core-install
+                # dir ~/opensim-core-install/sdk/Python
+                # dir ~/opensim-core-install/sdk/Python/opensim
         
           # - name: Update submodules
             # run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
