@@ -177,6 +177,8 @@ jobs:
             run: |
                 chdir ~/opensim-core-install/sdk/Python
                 python setup.py bdist_wheel
+
+
           - name: Check files
             run: |
                 dir ~/opensim-core-install
@@ -186,7 +188,8 @@ jobs:
 
           # - name: Update submodules
             # run: git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
-      
+
+
           # - name: Build GUI
             # id: build-gui
             # run: |
@@ -204,13 +207,15 @@ jobs:
                 # echo $VERSION
                 # echo "name=VERSION::$VERSION" >> $GITHUB_ENV
                 # echo "version=$VERSION" >> $env:GITHUB_OUTPUT
-              
+
+
           # - name: Build GUI installer
             # run: |
                 # cd Gui/opensim/dist/installer
                 # makensis.exe make_installer.nsi
                 # mv OpenSim-${{ steps.build-gui.outputs.version }}-win64.exe $env:GITHUB_WORKSPACE
-        
+
+
           # - name: Upload GUI installer
             # uses: actions/upload-artifact@v3
             # with:
