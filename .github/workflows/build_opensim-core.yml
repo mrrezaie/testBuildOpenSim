@@ -178,7 +178,6 @@ jobs:
                 chdir ~/opensim-core-install/sdk/Python
                 python setup.py bdist_wheel
 
-
           - name: Check files
             run: |
                 dir ~/opensim-core-install
