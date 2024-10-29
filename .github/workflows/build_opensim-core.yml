@@ -162,6 +162,7 @@ jobs:
             run: |
                 chdir ~/opensim-core-install/sdk/Python
                 python setup.py bdist_wheel
+                # print()
                 
           - name: Check files
             run: |
@@ -183,7 +184,7 @@ jobs:
                 # cmake --build . --target PrepareInstaller --config Release
                 # cmake --build . --target CopyJRE --config Release
                 # cmake --build . --target CopyVisualizer --config Release
-                Read the value of the cache variable storing the GUI build version.
+                # # Read the value of the cache variable storing the GUI build version.
                 # $env:match = cmake -L . | Select-String -Pattern OPENSIMGUI_BUILD_VERSION
                 # $VERSION = $env:match.split('=')[1]
                 # echo $VERSION
