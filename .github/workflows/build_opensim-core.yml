@@ -11,19 +11,19 @@ jobs:
         runs-on: windows-2022
         defaults:
             run:
-                shell: powershell
+                shell: cmd
         strategy:
             matrix:
                 # os: [windows-2022]
                 include:
                 
                   - python_version: '3.12'
-                    label: 'py312-np1'
                     numpy_version: '1.*'
+                    label: 'py312-np1'
                     
                   - python_version: '3.13'
-                    label: 'py313-np2'
                     numpy_version: '2.*'
+                    label: 'py313-np2'
 
         steps:
 
