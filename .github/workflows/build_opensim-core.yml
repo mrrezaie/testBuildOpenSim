@@ -146,7 +146,7 @@ jobs:
                 cmake $env:GITHUB_WORKSPACE/opensim-core `
                     -G "Visual Studio 17 2022" -A x64 `
                     -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install `
-                    -DBUILD_JAVA_WRAPPING=OFF `
+                    -DBUILD_JAVA_WRAPPING=ON `
                     -DBUILD_PYTHON_WRAPPING=ON `
                     -DOPENSIM_WITH_CASADI=ON `
                     -DOPENSIM_WITH_TROPTER=ON `
