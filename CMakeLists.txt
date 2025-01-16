@@ -1,6 +1,6 @@
-project(OpenSimJAMPlugin)
+cmake_minimum_required(VERSION 3.15)
 
-cmake_minimum_required(VERSION 3.2)
+project(OpenSimJAMPlugin)
 
 file(GLOB SOURCE_FILES *.cpp)
 file(GLOB INCLUDE_FILES *.h)
@@ -12,7 +12,7 @@ set(PLUGIN_NAME "osimJAMPlugin"
     CACHE STRING "Name of shared library to create")
 
 # OpenSim uses C++11 language features.
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(OpenSim REQUIRED PATHS ~/opensim-core-install/bin)
