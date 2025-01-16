@@ -96,6 +96,7 @@ jobs:
           - name: Paths
             run: |
                 dir $env:GITHUB_WORKSPACE
+                dir $env:GITHUB_WORKSPACE/opensim-jam
                 dir $env:GITHUB_WORKSPACE/opensim-core
                 dir $env:GITHUB_WORKSPACE/opensim-models
 
@@ -169,8 +170,8 @@ jobs:
                 cmake --build . --config Release --target install -j4
 
 
-          - name: Version
-            run: echo ${{ env.OPENSIM_VERSION }}
+          # - name: Version
+          #   run: echo ${{ env.OPENSIM_VERSION }}
 
 
           - name: Include Geometry folder
