@@ -5,7 +5,7 @@ project(OpenSimJAMPlugin)
 file(GLOB SOURCE_FILES *.cpp)
 file(GLOB INCLUDE_FILES *.h)
 
-set(OPENSIM_INSTALL_DIR ~/opensim-core-install/bin
+set(OPENSIM_INSTALL_DIR "${OPENSIM_INSTALL_DIR}"
     CACHE PATH "Top-level directory of OpenSim install")
 
 set(PLUGIN_NAME "osimJAMPlugin"
@@ -15,7 +15,7 @@ set(PLUGIN_NAME "osimJAMPlugin"
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(OpenSim REQUIRED PATHS ~/opensim-core-install/bin)
+find_package(OpenSim REQUIRED PATHS "${OPENSIM_INSTALL_DIR}")
 
 add_library(${PLUGIN_NAME} SHARED ${SOURCE_FILES} ${INCLUDE_FILES})
 
