@@ -187,8 +187,7 @@ jobs:
                 $env:CXXFLAGS = "/W0"
                 cmake $env:GITHUB_WORKSPACE/jam-plugin `
                     -G "Visual Studio 17 2022" -A x64 `
-                    -OpenSim_DIR=$env:GITHUB_WORKSPACE/opensim-core/cmake `
-                    -DOPENSIM_INSTALL_DIR=~/opensim-core-install/bin
+                    -DOPENSIM_INSTALL_DIR=$env:GITHUB_WORKSPACE/opensim-core/cmake
                     
                 cmake --build . --config Release -j4
 
