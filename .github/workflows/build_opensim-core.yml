@@ -196,7 +196,7 @@ jobs:
                 chdir $env:GITHUB_WORKSPACE/jam-plugin
                 
                 $env:CXXFLAGS = "/W0"
-                cmake $env:GITHUB_WORKSPACE/opensim-jam `
+                cmake $env:GITHUB_WORKSPACE/jam-plugin `
                     -G "Visual Studio 17 2022" -A x64 `
                     
                 cmake --build . --config Release -j4
