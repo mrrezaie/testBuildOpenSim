@@ -174,16 +174,6 @@ jobs:
           #   run: echo ${{ env.OPENSIM_VERSION }}
 
 
-          - name: Include Geometry folder
-            run: |
-                dir .
-                del ~/opensim-core-install/sdk/Python/setup.py
-                del ~/opensim-core-install/sdk/Python/opensim/__init__.py
-                move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
-                move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
-                move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
-
-
           - name: Copy new COMAK CMakeList
             run: |
                 del $env:GITHUB_WORKSPACE/jam-plugin/CMakeLists.txt
@@ -198,8 +188,19 @@ jobs:
                 $env:CXXFLAGS = "/W0"
                 cmake $env:GITHUB_WORKSPACE/jam-plugin `
                     -G "Visual Studio 17 2022" -A x64 `
+                    -DOPENSIM_INSTALL_DIR=~/opensim-core-install/bin
                     
                 cmake --build . --config Release -j4
+
+
+          - name: Include Geometry folder
+            run: |
+                dir .
+                del ~/opensim-core-install/sdk/Python/setup.py
+                del ~/opensim-core-install/sdk/Python/opensim/__init__.py
+                move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
+                move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
+                move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
 
 
           - name: Build wheel file
