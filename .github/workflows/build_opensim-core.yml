@@ -5,7 +5,7 @@ on:
     schedule:
         branches:
           - main
-          - opensim-jam
+          - 'opensim-jam'
       - cron: '0 0 * * *'
 
 jobs:
