@@ -237,5 +237,5 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: opensim-core-win64-${{ matrix.label }}
-                path: ~/opensim-core-install/sdk/Python/dist/*.whl
+                path: ~/opensim-core-install
                 compression-level: 0
