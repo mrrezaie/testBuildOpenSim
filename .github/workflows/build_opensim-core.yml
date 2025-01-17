@@ -3,10 +3,10 @@ name: Main
 on: 
     push:
     schedule:
+      - cron: '0 0 * * *'
         branches:
           - main
           - 'opensim-jam'
-      - cron: '0 0 * * *'
 
 jobs:
 
