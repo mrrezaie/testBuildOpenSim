@@ -2,8 +2,14 @@ name: Main
 
 on: 
     push:
+        branches:
+          - main
+          - 'opensim-jam'
     schedule:
       - cron: '0 0 * * *'
+        branches:
+          - main
+          - 'opensim-jam'
 
 jobs:
 
