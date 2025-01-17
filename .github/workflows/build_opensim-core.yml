@@ -72,7 +72,7 @@ jobs:
           - name: Checkout opensim-core repository
             uses: actions/checkout@v4
             with:
-                repository: opensim-org/opensim-core
+                repository: opensim-jam-org/opensim-core
                 path: 'opensim-core'
                 # ref: 'main'
 
