@@ -30,10 +30,10 @@ jobs:
 
         steps:
 
-          - name: Install SWIG
-            run: |
-                choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
-                swig -swiglib
+          # - name: Install SWIG
+          #   run: |
+          #       choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
+          #       swig -swiglib
 
           # - name: List packages
           #   run: choco list
@@ -213,14 +213,16 @@ jobs:
             run: |
                 chdir ~/opensim-core-install/sdk/Python
                 python setup.py bdist_wheel
+                # pip install ~/opensim-core-install/sdk/Python/dist/*.whl
 
 
-          - name: Check files
-            run: |
-                dir ~/opensim_dependencies_install
-                dir ~/opensim-core-install
-                dir ~/opensim-core-install/sdk/Python
-                dir ~/opensim-core-install/sdk/Python/opensim
+          # - name: Check files
+          #   run: |
+          #       dir ~/opensim_dependencies_install
+          #       dir ~/opensim-core-install
+          #       dir ~/opensim-core-install/sdk/Python
+          #       dir ~/opensim-core-install/sdk/Python/opensim
+
 
 
           # - name: Update submodules
