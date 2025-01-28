@@ -118,7 +118,7 @@ jobs:
                     -G "Visual Studio 17 2022" -A x64 `
                     -DSUPERBUILD_ezc3d=ON `
                     -DOPENSIM_WITH_CASADI=ON `
-                    -DOPENSIM_WITH_TROPTER=OFF `
+                    -DOPENSIM_WITH_TROPTER=ON `
                     -DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install
                     
                 cmake --build . --config Release -j4
@@ -176,7 +176,7 @@ jobs:
                     -DBUILD_PYTHON_WRAPPING=ON `
                     -DOPENSIM_WITH_CASADI=ON `
                     -DBUILD_JAVA_WRAPPING=ON `
-                    -DOPENSIM_WITH_TROPTER=OFF `
+                    -DOPENSIM_WITH_TROPTER=ON `
                     -DBUILD_TESTING=OFF `
                     -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
                     
