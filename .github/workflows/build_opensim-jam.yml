@@ -1,4 +1,4 @@
-name: openism-jam-core
+name: openism-core
 
 on: 
     push:
@@ -73,13 +73,17 @@ jobs:
             uses: actions/checkout@v4
 
 
-          - name: Checkout opensim-jam-core repository
+          - name: Checkout opensim-core repository
             uses: actions/checkout@v4
             with:
-                repository: mrrezaie/opensim-jam
-                path: 'opensim-jam'
+                # repository: opensim-org/opensim-core
+                # path: 'opensim-core'
+                repository: mrrezaie/opensim-jam-core
+                path: 'opensim-jam-core'
                 # ref: 'main'
 
+          - name: Paths
+            run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
 
           - name: Checkout opensim-models Geometry
             uses: actions/checkout@v4
@@ -93,28 +97,28 @@ jobs:
           - name: Paths
             run: |
                 dir $env:GITHUB_WORKSPACE
-                dir $env:GITHUB_WORKSPACE/opensim-jam
+                dir $env:GITHUB_WORKSPACE/opensim-core
                 dir $env:GITHUB_WORKSPACE/opensim-models
 
 
 
 
-          # - name: Cache opensim-jam dependencies
+          # - name: Cache opensim-core dependencies
           #   id: cache-dependencies
           #   uses: actions/cache@v3
           #   with:
           #       path: ~/opensim_dependencies_install
-          #       key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-jam/dependencies/*') }}
+          #       key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
-          - name: Build opensim-jam dependencies
+          - name: Build opensim-core dependencies
             # if: steps.cache-dependencies.outputs.cache-hit != 'true'
             run: |
                 mkdir $env:GITHUB_WORKSPACE\\build_deps
                 chdir $env:GITHUB_WORKSPACE\\build_deps
                 
                 $env:CXXFLAGS = "/W0"
-                cmake $env:GITHUB_WORKSPACE/opensim-jam/dependencies `
+                cmake $env:GITHUB_WORKSPACE/opensim-core/dependencies `
                     -G "Visual Studio 17 2022" -A x64 `
                     -DSUPERBUILD_ezc3d=ON `
                     -DOPENSIM_WITH_CASADI=ON `
@@ -136,17 +140,17 @@ jobs:
 
 
 
-          # - name: Obtain opensim-jam commit
-          #   id: opensim-jam-commit
+          # - name: Obtain opensim-core commit
+          #   id: opensim-core-commit
           #   run: |
-          #       cd opensim-jam
+          #       cd opensim-core
           #       $opensim_core_commit=(git rev-parse HEAD)
           #       echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
           #       echo $opensim_core_commit
 
 
-          # - name: Cache opensim-jam
-          #   id: cache-jam
+          # - name: Cache opensim-core
+          #   id: cache-core
           #   uses: actions/cache@v3
           #   with:
           #       path: ~/opensim-core-install
@@ -161,21 +165,21 @@ jobs:
 
 
 
-          - name: Build opensim-jam
-            # if: steps.cache-jam.outputs.cache-hit != 'true'
+          - name: Build opensim-core
+            # if: steps.cache-core.outputs.cache-hit != 'true'
             id: build
             run: |
                 mkdir $env:GITHUB_WORKSPACE\\build
                 chdir $env:GITHUB_WORKSPACE\\build
                 
                 $env:CXXFLAGS = "/W0"
-                cmake $env:GITHUB_WORKSPACE/opensim-jam `
+                cmake $env:GITHUB_WORKSPACE/opensim-core `
                     -G "Visual Studio 17 2022" -A x64 `
                     -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install `
                     -DOPENSIM_C3D_PARSER=ezc3d `
                     -DBUILD_PYTHON_WRAPPING=ON `
                     -DOPENSIM_WITH_CASADI=ON `
-                    -DBUILD_JAVA_WRAPPING=ON `
+                    -DBUILD_JAVA_WRAPPING=OFF `
                     -DOPENSIM_WITH_TROPTER=OFF `
                     -DBUILD_TESTING=OFF `
                     -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
@@ -189,7 +193,6 @@ jobs:
                 # echo "OPENSIM_VERSION=$OPENSIM_VERSION" >> $env:GITHUB_ENV
                 
 
-
           # - name: Version
           #   run: echo ${{ env.OPENSIM_VERSION }}
 
@@ -201,10 +204,6 @@ jobs:
                 dir .
                 move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
 
-                # del ~/opensim-core-install/sdk/Python/setup.py
-                # del ~/opensim-core-install/sdk/Python/opensim/__init__.py
-                # move $env:GITHUB_WORKSPACE/setup.py ~/opensim-core-install/sdk/Python
-                # move $env:GITHUB_WORKSPACE/__init__.py ~/opensim-core-install/sdk/Python/opensim
 
 
 
