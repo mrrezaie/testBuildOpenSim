@@ -87,16 +87,16 @@ jobs:
 
 
 
-          # - name: Cache opensim-core dependencies
-          #   id: cache-dependencies
-          #   uses: actions/cache@v3
-          #   with:
-          #       path: ~/opensim_dependencies_install
-          #       key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
+          - name: Cache opensim-core dependencies
+            id: cache-dependencies
+            uses: actions/cache@v3
+            with:
+                path: ~/opensim_dependencies_install
+                key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
           - name: Build opensim-core dependencies
-            # if: steps.cache-dependencies.outputs.cache-hit != 'true'
+            if: steps.cache-dependencies.outputs.cache-hit != 'true'
             run: |
                 mkdir $env:GITHUB_WORKSPACE\\build_deps
                 chdir $env:GITHUB_WORKSPACE\\build_deps
@@ -133,12 +133,12 @@ jobs:
           #       echo $opensim_core_commit
 
 
-          # - name: Cache opensim-core
-          #   id: cache-core
-          #   uses: actions/cache@v3
-          #   with:
-          #       path: ~/opensim-core-install
-          #       key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
+          - name: Cache opensim-core
+            id: cache-core
+            uses: actions/cache@v3
+            with:
+                path: ~/opensim-core-install
+                key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
 
 
 
@@ -150,7 +150,7 @@ jobs:
 
 
           - name: Build opensim-core
-            # if: steps.cache-core.outputs.cache-hit != 'true'
+            if: steps.cache-core.outputs.cache-hit != 'true'
             id: build
             run: |
                 mkdir $env:GITHUB_WORKSPACE\\build
@@ -264,7 +264,7 @@ jobs:
 
 
           - name: Upload GUI installer
-            uses: actions/upload-artifact@v3
+            uses: actions/upload-artifact@v4
             with:
                 name: OpenSim-${{ steps.build-gui.outputs.version }}-win64
                 path: OpenSim-${{ steps.build-gui.outputs.version }}-win64.exe
