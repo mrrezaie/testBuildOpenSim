@@ -90,7 +90,7 @@ jobs:
 
           - name: Cache opensim-core dependencies
             id: cache-dependencies
-            uses: actions/cache@v3
+            uses: actions/cache@v4
             with:
                 path: ~/opensim_dependencies_install
                 key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
@@ -125,18 +125,18 @@ jobs:
 
 
 
-          # - name: Obtain opensim-core commit
-          #   id: opensim-core-commit
-          #   run: |
-          #       cd opensim-core
-          #       $opensim_core_commit=(git rev-parse HEAD)
-          #       echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
-          #       echo $opensim_core_commit
+          - name: Obtain opensim-core commit
+            id: opensim-core-commit
+            run: |
+                cd opensim-core
+                $opensim_core_commit=(git rev-parse HEAD)
+                echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+                echo $opensim_core_commit
 
 
           - name: Cache opensim-core
             id: cache-core
-            uses: actions/cache@v3
+            uses: actions/cache@v4
             with:
                 path: ~/opensim-core-install
                 key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
@@ -154,8 +154,8 @@ jobs:
             if: steps.cache-core.outputs.cache-hit != 'true'
             id: build
             run: |
-                mkdir $env:GITHUB_WORKSPACE\\build
-                chdir $env:GITHUB_WORKSPACE\\build
+                mkdir $env:GITHUB_WORKSPACE\\build_core
+                chdir $env:GITHUB_WORKSPACE\\build_core
                 
                 $env:CXXFLAGS = "/W0"
                 cmake $env:GITHUB_WORKSPACE/opensim-core `
@@ -164,7 +164,7 @@ jobs:
                     -DOPENSIM_C3D_PARSER=ezc3d `
                     -DBUILD_PYTHON_WRAPPING=ON `
                     -DOPENSIM_WITH_CASADI=ON `
-                    -DBUILD_JAVA_WRAPPING=OFF `
+                    -DBUILD_JAVA_WRAPPING=ON `
                     -DOPENSIM_WITH_TROPTER=OFF `
                     -DBUILD_TESTING=OFF `
                     -DCMAKE_INSTALL_PREFIX=~/opensim-core-install
@@ -184,10 +184,10 @@ jobs:
 
 
 
-          - name: Include Geometry folder
-            run: |
-                dir .
-                move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
+          # - name: Include Geometry folder
+          #   run: |
+          #       dir .
+          #       move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/opensim-core-install
 
 
 
@@ -213,7 +213,7 @@ jobs:
 
 
 
-          - name: Checkout opensim-models Geometry
+          - name: Checkout opensim-gui repository
             uses: actions/checkout@v4
             with:
                 repository: opensim-org/opensim-gui
@@ -250,8 +250,9 @@ jobs:
           - name: Build GUI
             id: build-gui
             run: |
-                mkdir build
-                cd build
+                mkdir $env:GITHUB_WORKSPACE\\build_gui
+                chdir $env:GITHUB_WORKSPACE\\build_gui
+
                 cmake $env:GITHUB_WORKSPACE/opensim-gui/ `
                 -G"Visual Studio 17 2022" -A x64 `
                 -DCMAKE_PREFIX_PATH=~/opensim-core-install `
@@ -261,12 +262,7 @@ jobs:
                 cmake --build . --target PrepareInstaller --config Release
                 cmake --build . --target CopyJRE --config Release
                 cmake --build . --target CopyVisualizer --config Release
-                # Read the value of the cache variable storing the GUI build version.
-                # $env:match = cmake -L . | Select-String -Pattern OPENSIMGUI_BUILD_VERSION
-                # $VERSION = $env:match.split('=')[1]
-                # echo $VERSION
-                # echo "name=VERSION::$VERSION" >> $GITHUB_ENV
-                # echo "version=$VERSION" >> $env:GITHUB_OUTPUT
+
 
 
           - name: Build GUI installer
