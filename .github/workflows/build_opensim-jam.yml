@@ -242,7 +242,9 @@ jobs:
 
 
           - name: Update submodules
-            run: git submodule update --init --recursive -- $env:GITHUB_WORKSPACE/opensim-gui/opensim-models $env:GITHUB_WORKSPACE/opensim-gui/opensim-visualizer $env:GITHUB_WORKSPACE/opensim-gui/Gui/opensim/threejs
+            run: |
+                cd $env:GITHUB_WORKSPACE/opensim-gui
+                git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
 
 
           - name: Build GUI
