@@ -80,7 +80,7 @@ jobs:
 
           - name: Paths
             run: |
-                dir C:/Program Files
+                dir 'C:/Program Files'
                 dir $env:GITHUB_WORKSPACE
                 dir $env:GITHUB_WORKSPACE/opensim-core
                 dir $env:GITHUB_WORKSPACE/opensim-models
