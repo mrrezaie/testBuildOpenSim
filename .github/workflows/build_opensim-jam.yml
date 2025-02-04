@@ -60,14 +60,13 @@ jobs:
           - name: Checkout opensim-core repository
             uses: actions/checkout@v4
             with:
-                # repository: opensim-org/opensim-core
-                # path: 'opensim-core'
-                repository: mrrezaie/opensim-jam-core
-                path: 'opensim-jam-core'
+                repository: opensim-org/opensim-core
+                path: 'opensim-core'
+                # repository: mrrezaie/opensim-jam-core
+                # path: 'opensim-jam-core'
                 # ref: 'main'
-
-          - name: Paths
-            run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
+          # - name: Paths
+          #   run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
 
 
           - name: Checkout opensim-models Geometry
