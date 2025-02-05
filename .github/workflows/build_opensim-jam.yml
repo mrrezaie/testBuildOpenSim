@@ -61,13 +61,13 @@ jobs:
           - name: Checkout opensim-core repository
             uses: actions/checkout@v4
             with:
-                repository: opensim-org/opensim-core
-                path: 'opensim-core'
-                # repository: mrrezaie/opensim-jam-core
-                # path: 'opensim-jam-core'
-                # ref: 'main'
-          # - name: Paths
-          #   run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
+                # repository: opensim-org/opensim-core
+                # path: 'opensim-core'
+                repository: mrrezaie/opensim-jam-core
+                path: 'opensim-jam-core'
+                ref: 'main'
+          - name: Paths
+            run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
 
 
           - name: Checkout opensim-models Geometry
@@ -252,8 +252,8 @@ jobs:
           - name: Build GUI
             id: build-gui
             run: |
-                mkdir build_gui
-                chdir build_gui
+                mkdir $env:GITHUB_WORKSPACE\\build_gui
+                chdir $env:GITHUB_WORKSPACE\\build_gui
 
                 cmake $env:GITHUB_WORKSPACE/opensim-gui/ `
                 -G"Visual Studio 17 2022" -A x64 `
@@ -278,7 +278,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: OpenSim-${{ steps.build-gui.outputs.version }}-win64
-                path: $env:GITHUB_WORKSPACE/opensim-gui/Gui/opensim/dist/installer/*.exe
+                path: ~/opensim-gui/Gui/opensim/dist/installer/*.exe
 
 
           # - name: Upload opensim-core
