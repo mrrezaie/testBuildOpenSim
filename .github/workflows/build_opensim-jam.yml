@@ -225,7 +225,7 @@ jobs:
 
 
           - name: Set up JDK 1.8
-            uses: actions/setup-java@v3
+            uses: actions/setup-java@v4
             with:
                 distribution: 'temurin'
                 java-version: 8
@@ -287,7 +287,8 @@ jobs:
                 dir ~/
                 dir $env:GITHUB_WORKSPACE
                 dir $env:GITHUB_WORKSPACE/opensim-gui
-                dir $env:GITHUB_WORKSPACE/opensim-gui/opensim/dist/installer
+                dir $env:GITHUB_WORKSPACE/build-core
+                dir $env:GITHUB_WORKSPACE/opensim-gui/Gui/opensim/dist/installer
 
 
 
@@ -296,7 +297,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: OpenSim-GUI-win64-${{ matrix.label }}
-                path: D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/opensim/dist
+                path: ${{ env.GITHUB_WORKSPACE }}/opensim-gui/Gui/opensim/dist/installer
 
 
           # - name: Upload opensim-core
