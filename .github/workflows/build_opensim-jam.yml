@@ -284,9 +284,10 @@ jobs:
 
           - name: Paths
             run: |
-                dir D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/opensim/dist/installer
                 dir ~/
                 dir $env:GITHUB_WORKSPACE
+                dir $env:GITHUB_WORKSPACE/opensim-gui
+                dir $env:GITHUB_WORKSPACE/opensim-gui/opensim/dist/installer
 
 
 
