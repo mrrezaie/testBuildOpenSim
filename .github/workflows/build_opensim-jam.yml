@@ -98,7 +98,7 @@ jobs:
 
 
           - name: Build opensim-core dependencies
-            if: steps.cache-dependencies.outputs.cache-hit != 'true'
+            # if: steps.cache-dependencies.outputs.cache-hit != 'true'
             run: |
                 mkdir $env:GITHUB_WORKSPACE\\build_deps
                 chdir $env:GITHUB_WORKSPACE\\build_deps
@@ -152,7 +152,7 @@ jobs:
 
 
           - name: Build opensim-core
-            if: steps.cache-core.outputs.cache-hit != 'true'
+            # if: steps.cache-core.outputs.cache-hit != 'true'
             id: build
             run: |
                 mkdir $env:GITHUB_WORKSPACE\\build_core
