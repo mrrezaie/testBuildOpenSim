@@ -172,6 +172,7 @@ jobs:
                     
                 cmake -L -N .
                 cmake --build . --config Release --target install -j4
+                cmake --install .
 
 
                 # $env:match = cmake -L . | Select-String -Pattern OPENSIM_QUALIFIED_VERSION
