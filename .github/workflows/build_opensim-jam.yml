@@ -277,8 +277,8 @@ jobs:
           - name: Upload GUI installer
             uses: actions/upload-artifact@v4
             with:
-                name: OpenSim-${{ steps.build-gui.outputs.version }}-win64
-                path: ~/opensim-gui/Gui/opensim/dist/installer/*.exe
+                name: OpenSim-GUI-win64-${{ matrix.label }}
+                path: D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/opensim/dist/installer/*.exe
 
 
           # - name: Upload opensim-core
