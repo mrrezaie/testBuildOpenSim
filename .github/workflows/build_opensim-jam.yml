@@ -287,7 +287,6 @@ jobs:
                 dir ~/
                 dir $env:GITHUB_WORKSPACE
                 dir $env:GITHUB_WORKSPACE/opensim-gui
-                dir $env:GITHUB_WORKSPACE/build-core
                 dir $env:GITHUB_WORKSPACE/opensim-gui/Gui/opensim/dist/installer
 
 
@@ -297,7 +296,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: OpenSim-GUI-win64-${{ matrix.label }}
-                path: ${{ env.GITHUB_WORKSPACE }}/opensim-gui/Gui/opensim/dist/installer
+                path: D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/Gui/opensim/dist/installer
 
 
           # - name: Upload opensim-core
