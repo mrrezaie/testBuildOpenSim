@@ -36,23 +36,25 @@ jobs:
 
 
 
-          - name: Clone the workflow
-            uses: actions/checkout@v4
+          # - name: Clone the workflow
+          #   uses: actions/checkout@v4
+
+
+          # - name: Clone opensim-core repository
+          #   uses: actions/checkout@v4
+          #   with:
+          #       # repository: opensim-org/opensim-core
+          #       # path: 'opensim-core'
+          #       repository: mrrezaie/opensim-jam-core
+          #       path: 'opensim-core'
+          #       ref: 'main'
+
+          # - name: Rename the JAM-core
+          #   run: robocopy $env:GITHUB_WORKSPACE/opensim-core ~/opensim-core
 
 
           - name: Clone opensim-core repository
-            uses: actions/checkout@v4
-            with:
-                # repository: opensim-org/opensim-core
-                # path: 'opensim-core'
-                repository: mrrezaie/opensim-jam-core
-                path: 'opensim-core'
-                ref: 'main'
-
-          - name: Rename the JAM-core
-            run: robocopy $env:GITHUB_WORKSPACE/opensim-core ~/opensim-core
-
-
+            run: git clone https://github.com/mrrezaie/opensim-jam-core.git ~/opensim-core
 
 
 
@@ -61,7 +63,6 @@ jobs:
                 dir ~
                 dir ~/opensim-core
                 dir $env:GITHUB_WORKSPACE
-                dir $env:GITHUB_WORKSPACE/opensim-core
 
 
 
