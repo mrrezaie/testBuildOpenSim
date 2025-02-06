@@ -54,29 +54,45 @@ jobs:
 
 
 
-          - name: Checkout the current repository
+
+
+
+
+          - name: Clone the workflow
             uses: actions/checkout@v4
 
 
-          - name: Checkout opensim-core repository
-            uses: actions/checkout@v4
-            with:
-                # repository: opensim-org/opensim-core
-                # path: 'opensim-core'
-                repository: mrrezaie/opensim-jam-core
-                path: 'opensim-jam-core'
-                ref: 'main'
-          - name: Paths
-            run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
-
-
-          # - name: Checkout opensim-models Geometry
+          # - name: Clone opensim-core repository
           #   uses: actions/checkout@v4
           #   with:
-          #       repository: opensim-org/opensim-models
-          #       path: 'opensim-models'
-          #       sparse-checkout: 'Geometry'
-          #       # sparse-checkout-cone-mode: false
+          #       # repository: opensim-org/opensim-core
+          #       # path: 'opensim-core'
+          #       repository: mrrezaie/opensim-jam-core
+          #       path: 'opensim-jam-core'
+          #       ref: 'main'
+
+          # - name: Rename the JAM-core
+          #   run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
+
+
+
+
+          - name: Clone opensim-core repository
+            uses: actions/checkout@v4
+            with:
+                repository: opensim-jam-org/opensim-core
+                path: 'opensim-core'
+
+          - name: Merged the latest commits of the opensim-core
+            run: |
+                cd $env:GITHUB_WORKSPACE/opensim-core
+                git remote add "origin" git@github.com:opensim-org/opensim-core.git
+                git fetch origin
+                git merge origin/main --allow-unrelated-histories
+                git push origin main
+
+
+
 
 
           - name: Paths
@@ -84,6 +100,7 @@ jobs:
                 dir 'C:/Program Files'
                 dir $env:GITHUB_WORKSPACE
                 dir $env:GITHUB_WORKSPACE/opensim-core
+
 
 
 
@@ -178,6 +195,17 @@ jobs:
 
 
 
+
+
+          # - name: Clone opensim-models Geometry
+          #   uses: actions/checkout@v4
+          #   with:
+          #       repository: opensim-org/opensim-models
+          #       path: 'opensim-models'
+          #       sparse-checkout: 'Geometry'
+          #       # sparse-checkout-cone-mode: false
+
+
           # - name: Include Geometry folder
           #   run: |
           #       dir .
@@ -187,11 +215,14 @@ jobs:
 
 
 
-          - name: Build wheel file
-            run: |
-                chdir ~/opensim-core-install/sdk/Python
-                python setup.py bdist_wheel
-                # pip install ~/opensim-core-install/sdk/Python/dist/*.whl
+          # - name: Build wheel file
+          #   run: |
+          #       chdir ~/opensim-core-install/sdk/Python
+          #       python setup.py bdist_wheel
+          #       # pip install ~/opensim-core-install/sdk/Python/dist/*.whl
+
+
+
 
 
           # - name: Check files
@@ -207,7 +238,7 @@ jobs:
 
 
 
-          - name: Checkout opensim-gui repository
+          - name: Clone opensim-gui repository
             uses: actions/checkout@v4
             with:
                 repository: opensim-org/opensim-gui
