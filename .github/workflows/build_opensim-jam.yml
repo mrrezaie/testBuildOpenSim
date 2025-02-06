@@ -34,30 +34,38 @@ jobs:
 
 
 
-          - name: Clone opensim-jam repository
+          # - name: Clone opensim-jam repository
+          #   uses: actions/checkout@v4
+          #   with:
+          #       repository: opensim-jam-org/opensim-core
+          #       path: 'opensim-jam-core'
+          #       token: ${{ secrets.GITHUB_TOKEN }}
+          #       # repository: mrrezaie/opensim-jam-core
+          #       # path: 'opensim-core'
+
+          # - name: Merged the latest commits of the opensim-core
+          #   run: |
+          #       cd $env:GITHUB_WORKSPACE/opensim-jam-core
+          #       git config --global user.email "mrrezaie@outlook.com"
+          #       git config --global user.name "mrrezaie"
+          #       git init
+          #       git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
+          #       git remote -v
+          #       git fetch opensim_core_latest
+          #       git checkout main
+          #       git merge opensim_core_latest/main --allow-unrelated-histories
+          #       # git push opensim_core_latest main
+
+
+
+          - name: Clone opensim-core repository
             uses: actions/checkout@v4
             with:
-                repository: opensim-jam-org/opensim-core
-                path: 'opensim-jam-core'
-                token: ${{ secrets.GITHUB_TOKEN }}
-                # repository: mrrezaie/opensim-jam-core
+                # repository: opensim-org/opensim-core
                 # path: 'opensim-core'
-
-          - name: Merged the latest commits of the opensim-core
-            run: |
-                cd $env:GITHUB_WORKSPACE/opensim-jam-core
-                git config --global user.email "mrrezaie@outlook.com"
-                git config --global user.name "mrrezaie"
-                git init
-                git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
-                git remote -v
-                git fetch opensim_core_latest
-                git checkout main
-                git merge opensim_core_latest/main --allow-unrelated-histories
-                # git push opensim_core_latest main
-
-
-
+                repository: mrrezaie/opensim-jam-core
+                path: '~/opensim-core'
+                ref: 'main'
 
 
 
@@ -93,14 +101,14 @@ jobs:
             uses: actions/checkout@v4
 
 
-          # - name: Clone opensim-core repository
-          #   uses: actions/checkout@v4
-          #   with:
-          #       # repository: opensim-org/opensim-core
-          #       # path: 'opensim-core'
-          #       repository: mrrezaie/opensim-jam-core
-          #       path: 'opensim-jam-core'
-          #       ref: 'main'
+          - name: Clone opensim-core repository
+            uses: actions/checkout@v4
+            with:
+                # repository: opensim-org/opensim-core
+                # path: 'opensim-core'
+                repository: mrrezaie/opensim-jam-core
+                path: '~/opensim-core'
+                ref: 'main'
 
           # - name: Rename the JAM-core
           #   run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
@@ -114,9 +122,9 @@ jobs:
 
           - name: Paths
             run: |
-                dir 'C:/Program Files'
+                dir ~
                 dir $env:GITHUB_WORKSPACE
-                dir $env:GITHUB_WORKSPACE/opensim-core
+                # dir $env:GITHUB_WORKSPACE/opensim-core
 
 
 
