@@ -37,7 +37,9 @@ jobs:
           - name: Clone opensim-jam repository
             uses: actions/checkout@v4
             with:
-                repository: opensim-jam-org/opensim-core
+                # repository: opensim-jam-org/opensim-core
+                # path: 'opensim-core'
+                repository: mrrezaie/opensim-jam-core
                 path: 'opensim-core'
 
           - name: Merged the latest commits of the opensim-core
