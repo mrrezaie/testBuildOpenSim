@@ -57,7 +57,7 @@ jobs:
             run: |
                 git clone https://github.com/mrrezaie/opensim-jam-core.git
                 # mkdir ~/opensim-core
-                robocopy $env:GITHUB_WORKSPACE/opensim-jam-core ~/opensim-core
+                dir ~
 
 
 
