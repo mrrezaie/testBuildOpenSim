@@ -30,6 +30,30 @@ jobs:
 
         steps:
 
+
+
+
+
+          - name: Clone opensim-jam repository
+            uses: actions/checkout@v4
+            with:
+                repository: opensim-jam-org/opensim-core
+                path: 'opensim-core'
+
+          - name: Merged the latest commits of the opensim-core
+            run: |
+                cd $env:GITHUB_WORKSPACE/opensim-core
+                git init
+                git remote add "origin" git@github.com:opensim-org/opensim-core.git
+                git fetch origin
+                git merge origin/main --allow-unrelated-histories
+                git push origin main
+
+
+
+
+
+
           - name: Install SWIG
             run: |
                 choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
@@ -76,20 +100,6 @@ jobs:
 
 
 
-
-          - name: Clone opensim-core repository
-            uses: actions/checkout@v4
-            with:
-                repository: opensim-jam-org/opensim-core
-                path: 'opensim-core'
-
-          - name: Merged the latest commits of the opensim-core
-            run: |
-                cd $env:GITHUB_WORKSPACE/opensim-core
-                git remote add "origin" git@github.com:opensim-org/opensim-core.git
-                git fetch origin
-                git merge origin/main --allow-unrelated-histories
-                git push origin main
 
 
 
