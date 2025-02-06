@@ -43,6 +43,8 @@ jobs:
           - name: Merged the latest commits of the opensim-core
             run: |
                 cd $env:GITHUB_WORKSPACE/opensim-core
+                git config --global user.email "mrrezaie@outlook.com"
+                git config --global user.name "mrrezaie"
                 git init
                 git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
                 git remote -v
