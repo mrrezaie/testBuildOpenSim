@@ -64,7 +64,7 @@ jobs:
                 # repository: opensim-org/opensim-core
                 # path: 'opensim-core'
                 repository: mrrezaie/opensim-jam-core
-                path: '~/opensim-core'
+                path: ~/opensim-core
                 ref: 'main'
 
 
