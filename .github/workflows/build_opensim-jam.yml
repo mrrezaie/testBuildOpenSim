@@ -296,8 +296,8 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: OpenSim-GUI-win64-${{ matrix.label }}
-                # path: D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/Gui/opensim/dist/installer
-                path: D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/Gui/opensim/dist/installer/*.exe
+                path: D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/Gui/opensim/dist/installer/opensim
+                # path: D:/a/testBuildOpenSim/testBuildOpenSim/opensim-gui/Gui/opensim/dist/installer/*.exe
 
 
           # - name: Upload opensim-core
