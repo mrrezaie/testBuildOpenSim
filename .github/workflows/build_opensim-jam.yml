@@ -102,7 +102,7 @@ jobs:
                 ref: 'main'
 
           - name: Rename the JAM-core
-            run: ren $env:GITHUB_WORKSPACE/opensim-jam-core ~/opensim-core
+            run: move $env:GITHUB_WORKSPACE/opensim-jam-core ~/opensim-core
 
 
 
