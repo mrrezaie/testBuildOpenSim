@@ -55,7 +55,8 @@ jobs:
 
           - name: Clone opensim-core repository
             run: |
-                git clone https://github.com/mrrezaie/opensim-jam-core.git
+                cd ~
+                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
                 # mkdir ~/opensim-core
                 dir ~
 
