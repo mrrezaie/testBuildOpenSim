@@ -67,6 +67,16 @@ jobs:
                 path: ~/opensim-core
                 ref: 'main'
 
+          - name: Paths
+            run: |
+                dir ~
+                dir $env:GITHUB_WORKSPACE
+                # dir $env:GITHUB_WORKSPACE/opensim-core
+
+
+
+
+
 
 
           - name: Install SWIG
