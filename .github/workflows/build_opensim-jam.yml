@@ -54,15 +54,17 @@ jobs:
 
 
           - name: Clone opensim-core repository
-            run: git clone https://github.com/mrrezaie/opensim-jam-core.git ~/opensim-core
+            run: |
+                git clone https://github.com/mrrezaie/opensim-jam-core.git 
+                run: robocopy $env:GITHUB_WORKSPACE/opensim-core ~/opensim-core
 
 
 
           - name: Paths
             run: |
                 dir ~
-                dir ~/opensim-core
                 dir $env:GITHUB_WORKSPACE
+                dir ~/opensim-core
 
 
 
