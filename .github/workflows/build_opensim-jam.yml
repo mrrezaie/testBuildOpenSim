@@ -58,25 +58,6 @@ jobs:
 
 
 
-          - name: Clone opensim-core repository
-            uses: actions/checkout@v4
-            with:
-                # repository: opensim-org/opensim-core
-                # path: 'opensim-core'
-                repository: mrrezaie/opensim-jam-core
-                path: ~/opensim-core
-                ref: 'main'
-
-          - name: Paths
-            run: |
-                dir ~
-                dir $env:GITHUB_WORKSPACE
-                # dir $env:GITHUB_WORKSPACE/opensim-core
-
-
-
-
-
 
 
           - name: Install SWIG
@@ -117,14 +98,11 @@ jobs:
                 # repository: opensim-org/opensim-core
                 # path: 'opensim-core'
                 repository: mrrezaie/opensim-jam-core
-                path: '~/opensim-core'
+                path: 'opensim-jam-core'
                 ref: 'main'
 
-          # - name: Rename the JAM-core
-          #   run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
-
-
-
+          - name: Rename the JAM-core
+            run: ren $env:GITHUB_WORKSPACE/opensim-jam-core ~/opensim-core
 
 
 
@@ -134,9 +112,6 @@ jobs:
             run: |
                 dir ~
                 dir $env:GITHUB_WORKSPACE
-                # dir $env:GITHUB_WORKSPACE/opensim-core
-
-
 
 
 
@@ -291,6 +266,9 @@ jobs:
 
 
 
+
+
+
           - name: Cache Netbeans 12.3
             id: cache-netbeans
             uses: actions/cache@v4
@@ -298,9 +276,6 @@ jobs:
                 path: C:\\Program Files\\NetBeans-12.0
                 key: ${{ runner.os }}-dependencies-${{ '0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c' }}
 
-
-          # - name: Build opensim-core dependencies
-          #   
 
           - name: Install Netbeans 12.3
             if: steps.cache-netbeans.outputs.cache-hit != 'true'
@@ -311,6 +286,9 @@ jobs:
                 if (($hashFromFile.Hash) -ne ($expectedHash)) { Write-Error "Hash doesn't match." }
                 .\Apache-NetBeans-12.3-bin-windows-x64.exe --silent | Out-Null # This installer is gregarious.
                 echo "ANT_HOME=C:\\Program Files\\NetBeans-12.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
+
+
+
 
 
 
@@ -336,6 +314,8 @@ jobs:
                 cmake --build . --target PrepareInstaller --config Release
                 cmake --build . --target CopyJRE --config Release
                 cmake --build . --target CopyVisualizer --config Release
+
+
 
 
 
