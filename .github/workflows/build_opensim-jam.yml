@@ -70,13 +70,13 @@ jobs:
             run: ren $env:GITHUB_WORKSPACE/opensim-jam-core $env:GITHUB_WORKSPACE/opensim-core
 
 
-          - name: Checkout opensim-models Geometry
-            uses: actions/checkout@v4
-            with:
-                repository: opensim-org/opensim-models
-                path: 'opensim-models'
-                sparse-checkout: 'Geometry'
-                # sparse-checkout-cone-mode: false
+          # - name: Checkout opensim-models Geometry
+          #   uses: actions/checkout@v4
+          #   with:
+          #       repository: opensim-org/opensim-models
+          #       path: 'opensim-models'
+          #       sparse-checkout: 'Geometry'
+          #       # sparse-checkout-cone-mode: false
 
 
           - name: Paths
@@ -144,15 +144,8 @@ jobs:
 
 
 
-
-
-
-
-
-
-
           - name: Build opensim-core
-            # if: steps.cache-core.outputs.cache-hit != 'true'
+            if: steps.cache-core.outputs.cache-hit != 'true'
             id: build
             run: |
                 mkdir $env:GITHUB_WORKSPACE\\build_core
@@ -264,12 +257,6 @@ jobs:
                 cmake --build . --target PrepareInstaller --config Release
                 cmake --build . --target CopyJRE --config Release
                 cmake --build . --target CopyVisualizer --config Release
-
-
-          - name: Paths
-            run: |
-                dir ~/
-                dir $env:GITHUB_WORKSPACE
 
 
 
