@@ -103,15 +103,14 @@ jobs:
                 cd ~
                 git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
                 # git clone https://github.com/opensim-org/opensim-core.git opensim-core
-                dir ~
 
 
 
-          - name: Paths
-            run: |
-                dir ~
-                dir $env:GITHUB_WORKSPACE
-                dir ~/opensim-core
+          # - name: Paths
+          #   run: |
+          #       dir ~
+          #       dir $env:GITHUB_WORKSPACE
+          #       dir ~/opensim-core
 
 
 
@@ -326,11 +325,11 @@ jobs:
           #       makensis.exe make_installer.nsi
 
 
-          - name: Paths
-            run: |
-                dir ~/
-                dir $env:GITHUB_WORKSPACE
-                dir ~/opensim-gui/Gui/opensim/dist/installer
+          # - name: Paths
+          #   run: |
+          #       dir ~/
+          #       dir $env:GITHUB_WORKSPACE
+          #       dir ~/opensim-gui/Gui/opensim/dist/installer
 
 
 
