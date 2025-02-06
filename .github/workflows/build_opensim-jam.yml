@@ -50,7 +50,7 @@ jobs:
                 ref: 'main'
 
           - name: Rename the JAM-core
-            run: robocopy -source $env:GITHUB_WORKSPACE/opensim-core -destination  ~/opensim-core
+            run: robocopy $env:GITHUB_WORKSPACE/opensim-core ~/opensim-core
 
 
 
