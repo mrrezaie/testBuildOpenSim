@@ -50,7 +50,7 @@ jobs:
                 ref: 'main'
 
           - name: Rename the JAM-core
-            run: Copy-Item -Path $env:GITHUB_WORKSPACE/opensim-jam-core -Destination  ~/opensim-core
+            run: Copy-Item -Path $env:GITHUB_WORKSPACE/opensim-core -Destination  ~/opensim-core
 
 
 
