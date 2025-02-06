@@ -34,6 +34,42 @@ jobs:
 
 
 
+
+
+          - name: Clone the workflow
+            uses: actions/checkout@v4
+
+
+          - name: Clone opensim-core repository
+            uses: actions/checkout@v4
+            with:
+                # repository: opensim-org/opensim-core
+                # path: 'opensim-core'
+                repository: mrrezaie/opensim-jam-core
+                path: 'opensim-core'
+                ref: 'main'
+
+          - name: Rename the JAM-core
+            run: Copy-Item -Path $env:GITHUB_WORKSPACE/opensim-jam-core -Destination  ~/opensim-core
+
+
+
+
+
+          - name: Paths
+            run: |
+                dir ~
+                dir ~/opensim-core
+                dir $env:GITHUB_WORKSPACE
+                dir $env:GITHUB_WORKSPACE/opensim-core
+
+
+
+
+
+
+
+
           # - name: Clone opensim-jam repository
           #   uses: actions/checkout@v4
           #   with:
@@ -87,31 +123,6 @@ jobs:
 
 
 
-
-          - name: Clone the workflow
-            uses: actions/checkout@v4
-
-
-          - name: Clone opensim-core repository
-            uses: actions/checkout@v4
-            with:
-                # repository: opensim-org/opensim-core
-                # path: 'opensim-core'
-                repository: mrrezaie/opensim-jam-core
-                path: 'opensim-jam-core'
-                ref: 'main'
-
-          - name: Rename the JAM-core
-            run: move $env:GITHUB_WORKSPACE/opensim-jam-core ~/opensim-core
-
-
-
-
-
-          - name: Paths
-            run: |
-                dir ~
-                dir $env:GITHUB_WORKSPACE
 
 
 
