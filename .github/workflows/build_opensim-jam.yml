@@ -119,12 +119,12 @@ jobs:
 
 
 
-          - name: Cache opensim-core dependencies
-            id: cache-dependencies
-            uses: actions/cache@v4
-            with:
-                path: ~/opensim_dependencies_install
-                key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
+          # - name: Cache opensim-core dependencies
+          #   id: cache-dependencies
+          #   uses: actions/cache@v4
+          #   with:
+          #       path: ~/opensim_dependencies_install
+          #       key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
           - name: Build opensim-core dependencies
@@ -156,21 +156,21 @@ jobs:
 
 
 
-          - name: Obtain opensim-core commit
-            id: opensim-core-commit
-            run: |
-                cd opensim-core
-                $opensim_core_commit=(git rev-parse HEAD)
-                echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
-                echo $opensim_core_commit
+          # - name: Obtain opensim-core commit
+          #   id: opensim-core-commit
+          #   run: |
+          #       cd opensim-core
+          #       $opensim_core_commit=(git rev-parse HEAD)
+          #       echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+          #       echo $opensim_core_commit
 
 
-          - name: Cache opensim-core
-            id: cache-core
-            uses: actions/cache@v4
-            with:
-                path: ~/opensim-core-install
-                key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
+          # - name: Cache opensim-core
+          #   id: cache-core
+          #   uses: actions/cache@v4
+          #   with:
+          #       path: ~/opensim-core-install
+          #       key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
 
 
 
@@ -240,20 +240,6 @@ jobs:
 
 
 
-          # - name: Clone opensim-gui repository
-          #   uses: actions/checkout@v4
-          #   with:
-          #       repository: opensim-org/opensim-gui
-          #       path: 'opensim-gui'
-
-
-          - name: Clone opensim-core repository
-            run: |
-                cd ~
-                git clone https://github.com/opensim-org/opensim-gui.git opensim-gui
-
-
-
 
 
 
@@ -268,17 +254,17 @@ jobs:
 
 
 
-          - name: Cache Netbeans 12.3
-            id: cache-netbeans
-            uses: actions/cache@v4
-            with:
-                path: C:\\Program Files\\NetBeans-12.0
-                key: ${{ runner.os }}-dependencies-${{ '0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c' }}
+          # - name: Cache Netbeans 12.3
+          #   id: cache-netbeans
+          #   uses: actions/cache@v4
+          #   with:
+          #       path: C:\\Program Files\\NetBeans-12.0
+          #       key: ${{ runner.os }}-dependencies-${{ '0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c' }}
 
 
 
           - name: Install Netbeans 12.3
-            if: steps.cache-netbeans.outputs.cache-hit != 'true'
+            # if: steps.cache-netbeans.outputs.cache-hit != 'true'
             run: |
                 (New-Object System.Net.WebClient).DownloadFile("https://archive.apache.org/dist/netbeans/netbeans/12.3/Apache-NetBeans-12.3-bin-windows-x64.exe", "Apache-NetBeans-12.3-bin-windows-x64.exe")
                 $expectedHash = "0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c"
@@ -293,11 +279,27 @@ jobs:
 
 
 
+          # - name: Clone opensim-gui repository
+          #   uses: actions/checkout@v4
+          #   with:
+          #       repository: opensim-org/opensim-gui
+          #       path: 'opensim-gui'
+
+
+          - name: Clone opensim-gui repository
+            run: |
+                cd ~
+                git clone https://github.com/opensim-org/opensim-gui.git opensim-gui
+
 
           - name: Update submodules
             run: |
                 cd ~/opensim-gui
                 git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
+
+
+
+
 
 
           - name: Build GUI
@@ -318,22 +320,16 @@ jobs:
 
 
 
-
-
-
-
-
-          - name: Build GUI installer
-            run: |
-                cd ~/opensim-gui/Gui/opensim/dist/installer
-                makensis.exe make_installer.nsi
+          # - name: Build GUI installer
+          #   run: |
+          #       cd ~/opensim-gui/Gui/opensim/dist/installer
+          #       makensis.exe make_installer.nsi
 
 
           - name: Paths
             run: |
                 dir ~/
                 dir $env:GITHUB_WORKSPACE
-
                 dir ~/opensim-gui/Gui/opensim/dist/installer
 
 
