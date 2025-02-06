@@ -44,10 +44,10 @@ jobs:
             run: |
                 cd $env:GITHUB_WORKSPACE/opensim-core
                 git init
-                git remote add "origin" git@github.com:opensim-org/opensim-core.git
-                git fetch origin
-                git merge origin/main --allow-unrelated-histories
-                git push origin main
+                git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
+                git fetch opensim_core_latest
+                git merge opensim_core_latest/main --allow-unrelated-histories
+                git push opensim_core_latest main
 
 
 
