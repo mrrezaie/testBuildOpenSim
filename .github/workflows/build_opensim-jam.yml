@@ -46,12 +46,13 @@ jobs:
           - name: Merged the latest commits of the opensim-core
             run: |
                 cd $env:GITHUB_WORKSPACE/opensim-jam-core
-                # git config --global user.email "mrrezaie@outlook.com"
-                # git config --global user.name "mrrezaie"
+                git config --global user.email "mrrezaie@outlook.com"
+                git config --global user.name "mrrezaie"
                 git init
                 git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
                 git remote -v
                 git fetch opensim_core_latest
+                git checkout main
                 git merge opensim_core_latest/main --allow-unrelated-histories
                 # git push opensim_core_latest main
 
