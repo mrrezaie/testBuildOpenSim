@@ -55,6 +55,7 @@ jobs:
                 git init
                 git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
                 git fetch opensim_core_latest main
+                git rev-parse opensim_core_latest/main
                 git merge opensim_core_latest/main --allow-unrelated-histories
                 # git pull opensim_core_latest main
                 # git push origin main
