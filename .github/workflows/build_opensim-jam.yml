@@ -156,21 +156,21 @@ jobs:
 
 
 
-          - name: Obtain opensim-core commit
-            id: opensim-core-commit
-            run: |
-                cd opensim-core
-                $opensim_core_commit=(git rev-parse HEAD)
-                echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
-                echo $opensim_core_commit
+          # - name: Obtain opensim-core commit
+          #   id: opensim-core-commit
+          #   run: |
+          #       cd opensim-core
+          #       $opensim_core_commit=(git rev-parse HEAD)
+          #       echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
+          #       echo $opensim_core_commit
 
 
-          - name: Cache opensim-core
-            id: cache-core
-            uses: actions/cache@v4
-            with:
-                path: ~/opensim-core-install
-                key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
+          # - name: Cache opensim-core
+          #   id: cache-core
+          #   uses: actions/cache@v4
+          #   with:
+          #       path: ~/opensim-core-install
+          #       key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
 
 
 
@@ -247,7 +247,7 @@ jobs:
             uses: actions/setup-java@v4
             with:
                 distribution: 'temurin'
-                java-version: 8
+                java-version: 11
 
 
 
