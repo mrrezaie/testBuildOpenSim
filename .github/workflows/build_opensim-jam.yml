@@ -43,7 +43,7 @@ jobs:
 
 
 
-          - name: Clone opensim-core repository
+          - name: Clone and update opensim-core repository
             run: |
                 cd ~
                 # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
@@ -57,7 +57,7 @@ jobs:
                 git fetch opensim_core_latest main
                 git merge opensim_core_latest/main --allow-unrelated-histories
                 # git pull opensim_core_latest main
-                git push origin main
+                # git push origin main
 
 
 
