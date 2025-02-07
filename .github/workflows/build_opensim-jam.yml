@@ -59,7 +59,7 @@ jobs:
                 git log -1 --pretty=format:"%s" opensim_core_latest/main
 
                 git merge opensim_core_latest/main --allow-unrelated-histories
-                git log -1 --pretty=format:"%s" origin/main
+                git log -1 --pretty=format:"%s" origin
 
                 # git pull opensim_core_latest main
                 # git push origin main
