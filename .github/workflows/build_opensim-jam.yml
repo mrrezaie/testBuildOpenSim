@@ -43,29 +43,29 @@ jobs:
 
 
 
-          - name: Clone and update opensim-core repository
-            run: |
-                cd ~
-                # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
-                # git clone https://github.com/opensim-org/opensim-core.git opensim-core
-                git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
+          # - name: Clone and update opensim-core repository
+          #   run: |
+          #       cd ~
+          #       # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+          #       # git clone https://github.com/opensim-org/opensim-core.git opensim-core
+          #       git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
 
-                cd ~/opensim-core
+          #       cd ~/opensim-core
 
-                git config --global user.email "mrrezaie@outlook.com"
-                git config --global user.name "mrrezaie"
-                # git init
+          #       git config --global user.email "mrrezaie@outlook.com"
+          #       git config --global user.name "mrrezaie"
+          #       # git init
 
-                git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
-                git fetch opensim_core_latest main
+          #       git remote add opensim_core_latest https://github.com/opensim-org/opensim-core.git
+          #       git fetch opensim_core_latest main
 
-                # git rev-parse opensim_core_latest/main
-                git log -1 --pretty=format:"%s" opensim_core_latest/main
+          #       # git rev-parse opensim_core_latest/main
+          #       git log -1 --pretty=format:"%s" opensim_core_latest/main
 
-                git merge opensim_core_latest/main --allow-unrelated-histories
+          #       git merge opensim_core_latest/main --allow-unrelated-histories
 
-                # git pull opensim_core_latest main
-                git push origin main
+          #       # git pull opensim_core_latest main
+          #       git push origin main
 
 
 
@@ -99,11 +99,11 @@ jobs:
 
 
 
-          # - name: Clone opensim-core repository
-          #   run: |
-          #       cd ~
-          #       git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
-          #       # git clone https://github.com/opensim-org/opensim-core.git opensim-core
+          - name: Clone opensim-core repository
+            run: |
+                cd ~
+                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                # git clone https://github.com/opensim-org/opensim-core.git opensim-core
 
 
 
@@ -255,20 +255,20 @@ jobs:
 
 
 
-          - name: Install Netbeans 12.3
-            run: |
-                (New-Object System.Net.WebClient).DownloadFile("https://archive.apache.org/dist/netbeans/netbeans/12.3/Apache-NetBeans-12.3-bin-windows-x64.exe", "Apache-NetBeans-12.3-bin-windows-x64.exe")
-                $expectedHash = "0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c"
-                $hashFromFile = Get-FileHash -Algorithm SHA512 -Path .\Apache-NetBeans-12.3-bin-windows-x64.exe
-                if (($hashFromFile.Hash) -ne ($expectedHash)) { Write-Error "Hash doesn't match." }
-                .\Apache-NetBeans-12.3-bin-windows-x64.exe --silent | Out-Null # This installer is gregarious.
-                echo "ANT_HOME=C:\\Program Files\\NetBeans-12.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
+          # - name: Install Netbeans 12.3
+          #   run: |
+          #       (New-Object System.Net.WebClient).DownloadFile("https://archive.apache.org/dist/netbeans/netbeans/12.3/Apache-NetBeans-12.3-bin-windows-x64.exe", "Apache-NetBeans-12.3-bin-windows-x64.exe")
+          #       $expectedHash = "0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c"
+          #       $hashFromFile = Get-FileHash -Algorithm SHA512 -Path .\Apache-NetBeans-12.3-bin-windows-x64.exe
+          #       if (($hashFromFile.Hash) -ne ($expectedHash)) { Write-Error "Hash doesn't match." }
+          #       .\Apache-NetBeans-12.3-bin-windows-x64.exe --silent | Out-Null # This installer is gregarious.
+          #       echo "ANT_HOME=C:\\Program Files\\NetBeans-12.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
 
 
-          # - name: Setup NetBeans distribution
-          #   uses: cjmach/setup-netbeans-action@v2.1
-          #   with:
-          #     version: '18'
+          - name: Setup NetBeans distribution
+            uses: cjmach/setup-netbeans-action@v2.1
+            with:
+              version: '18'
 
 
 
