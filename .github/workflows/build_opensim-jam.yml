@@ -268,7 +268,7 @@ jobs:
           - name: Setup NetBeans distribution
             uses: cjmach/setup-netbeans-action@v2.1
             with:
-              version: '12.3'
+              version: '18'
 
 
 
