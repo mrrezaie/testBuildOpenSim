@@ -154,7 +154,6 @@ jobs:
 
 
 
-
           # - name: Obtain opensim-core commit
           #   id: opensim-core-commit
           #   run: |
