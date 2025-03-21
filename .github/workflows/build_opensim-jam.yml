@@ -285,7 +285,7 @@ jobs:
           - name: Update submodules
             run: |
                 cd ~/opensim-gui
-                git submodule update --init --recursive --remote -- opensim-models opensim-visualizer Gui/opensim/threejs
+                git submodule update --init --recursive -- opensim-models opensim-visualizer Gui/opensim/threejs
 
 
 
