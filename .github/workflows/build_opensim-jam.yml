@@ -290,7 +290,7 @@ jobs:
                 # git clone https://github.com/opensim-org/three.js.git Gui/opensim/threejs
 
                 cd ~/opensim-gui
-                git submodule update --init foreach "git checkout main && git pull" -- opensim-models opensim-visualizer Gui/opensim/threejs
+                git submodule foreach "git checkout main && git pull" -- opensim-models opensim-visualizer Gui/opensim/threejs
                 dir ~/opensim-gui
 
 
