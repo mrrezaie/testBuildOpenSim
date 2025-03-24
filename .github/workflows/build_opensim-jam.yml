@@ -292,6 +292,7 @@ jobs:
                 cd ~/opensim-gui
                 git submodule foreach "git checkout main && git pull" -- opensim-models opensim-visualizer Gui/opensim/threejs
                 dir ~/opensim-gui
+                dir ~/opensim-gui/opensim-models
 
 
 
