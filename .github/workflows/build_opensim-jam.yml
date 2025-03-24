@@ -330,11 +330,12 @@ jobs:
 
 
 
-          # - name: Upload GUI installer
-          #   uses: actions/upload-artifact@v4
-          #   with:
-          #       name: OpenSim-GUI-win64-${{ matrix.label }}
-          #       path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
+          - name: Upload GUI installer
+            uses: actions/upload-artifact@v4
+            with:
+                name: OpenSim-GUI-win64-${{ matrix.label }}
+                # path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
+                path: ~/opensim-gui/opensim-models
 
 
           # # - name: Upload opensim-core
