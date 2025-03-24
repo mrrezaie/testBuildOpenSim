@@ -284,13 +284,14 @@ jobs:
 
           - name: Update submodules
             run: |
-                cd ~/opensim-gui
-                git clone https://github.com/opensim-org/opensim-models.git opensim-models
-                git clone https://github.com/opensim-org/opensim-visualizer.git opensim-visualizer
-                git clone https://github.com/opensim-org/three.js.git Gui/opensim/threejs
-
                 # cd ~/opensim-gui
+                # git clone https://github.com/opensim-org/opensim-models.git opensim-models
+                # git clone https://github.com/opensim-org/opensim-visualizer.git opensim-visualizer
+                # git clone https://github.com/opensim-org/three.js.git Gui/opensim/threejs
+
+                cd ~/opensim-gui
                 # git submodule foreach "git checkout main && git pull" -- opensim-models opensim-visualizer Gui/opensim/threejs
+                git submodule update --init --recursive
                 dir ~/opensim-gui/opensim-models
 
 
