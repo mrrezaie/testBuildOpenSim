@@ -291,7 +291,7 @@ jobs:
 
                 cd ~/opensim-gui
                 # git submodule foreach "git checkout main && git pull" -- opensim-models opensim-visualizer Gui/opensim/threejs
-                git submodule update --init --recursive
+                git submodule update --init --recursive --remote --merge
                 dir ~/opensim-gui/opensim-models
 
 
