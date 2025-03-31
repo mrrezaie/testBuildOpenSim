@@ -317,10 +317,10 @@ jobs:
 
 
 
-          # - name: Build GUI installer
-          #   run: |
-          #       cd ~/opensim-gui/Gui/opensim/dist/installer
-          #       makensis.exe make_installer.nsi
+          - name: Build GUI installer
+            run: |
+                cd ~/opensim-gui/Gui/opensim/dist/installer
+                makensis.exe make_installer.nsi
 
 
           # - name: Paths
@@ -336,7 +336,8 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: OpenSim-GUI-win64-${{ matrix.label }}
-                path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
+                # path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
+                path: ~/opensim-gui/Gui/opensim/dist/installer
 
 
           # - name: Upload opensim-core
