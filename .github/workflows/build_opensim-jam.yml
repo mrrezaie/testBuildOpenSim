@@ -127,7 +127,7 @@ jobs:
 
 
           - name: Build opensim-core dependencies
-            # if: steps.cache-dependencies.outputs.cache-hit != 'true'
+            if: steps.cache-dependencies.outputs.cache-hit != 'true'
             run: |
                 mkdir ~/build_deps
                 chdir ~/build_deps
