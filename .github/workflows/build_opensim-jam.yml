@@ -118,16 +118,16 @@ jobs:
 
 
 
-          - name: Cache opensim-core dependencies
-            id: cache-dependencies
-            uses: actions/cache@v4
-            with:
-                path: ~/opensim_dependencies_install
-                key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
+          # - name: Cache opensim-core dependencies
+          #   id: cache-dependencies
+          #   uses: actions/cache@v4
+          #   with:
+          #       path: ~/opensim_dependencies_install
+          #       key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
           - name: Build opensim-core dependencies
-            if: steps.cache-dependencies.outputs.cache-hit != 'true'
+            # if: steps.cache-dependencies.outputs.cache-hit != 'true'
             run: |
                 mkdir ~/build_deps
                 chdir ~/build_deps
