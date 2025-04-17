@@ -102,8 +102,8 @@ jobs:
           - name: Clone opensim-core repository
             run: |
                 cd ~
-                # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
-                git clone https://github.com/opensim-org/opensim-core.git opensim-core
+                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                # git clone https://github.com/opensim-org/opensim-core.git opensim-core
 
 
 
@@ -132,7 +132,7 @@ jobs:
                 mkdir ~/build_deps
                 chdir ~/build_deps
                 
-                $env:CXXFLAGS = "/W0"
+                $env:CXXFLAGS = "/W0 /MD"
                 cmake ~/opensim-core/dependencies `
                     -G "Visual Studio 17 2022" -A x64 `
                     -DSUPERBUILD_ezc3d=ON `
@@ -178,7 +178,7 @@ jobs:
                 mkdir ~/build_core
                 chdir ~/build_core
                 
-                $env:CXXFLAGS = "/W0"
+                $env:CXXFLAGS = "/W0 /MD"
                 cmake ~/opensim-core `
                     -G "Visual Studio 17 2022" -A x64 `
                     -DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install `
