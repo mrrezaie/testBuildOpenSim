@@ -97,7 +97,8 @@ jobs:
           - name: Clone opensim-core repository
             run: |
                 cd ~
-                git clone https://github.com/mrrezaie/opensim-core.git opensim-core
+                git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
+                # git clone https://github.com/mrrezaie/opensim-core.git opensim-core
                 # git clone https://github.com/opensim-org/opensim-core.git opensim-core
 
 
@@ -171,7 +172,8 @@ jobs:
                 mkdir ~/build_core
                 chdir ~/build_core
                 
-                cmake -E env CXXFLAGS="/WX /MD -DSKIP_TIMING" cmake ~/opensim-core `
+                cmake -E env CXXFLAGS="/WX /MD -DSKIP_TIMING"
+                cmake ~/opensim-core `
                     -G "Visual Studio 17 2022" -A x64 `
                     -DOPENSIM_DEPENDENCIES_DIR=~/install_deps `
                     -DOPENSIM_C3D_PARSER=ezc3d `
