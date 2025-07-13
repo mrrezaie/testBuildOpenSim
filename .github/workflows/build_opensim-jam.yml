@@ -132,7 +132,7 @@ jobs:
                     -DOPENSIM_WITH_CASADI=ON `
                     -DCMAKE_INSTALL_PREFIX=~/install_deps
                     
-                cmake --build . --config Release -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+                cmake --build . --config Release
 
 
 
@@ -182,7 +182,7 @@ jobs:
                     -DBUILD_TESTING=OFF `
                     -DCMAKE_INSTALL_PREFIX=~/install_core
                 
-                cmake --build . --config Release -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+                cmake --build . --config Release
                 cmake --install .
 
 
