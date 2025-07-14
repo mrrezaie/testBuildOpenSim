@@ -100,7 +100,7 @@ jobs:
                 # git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
                 # git clone https://github.com/opensim-org/opensim-core.git opensim-core
 
-                git clone https://github.com/mrrezaie/opensim-core/tree/c3d_255_markers.git opensim-core
+                git clone --single-branch --branch c3d_255_markers https://github.com/mrrezaie/opensim-core.git opensim-core
 
 
 
