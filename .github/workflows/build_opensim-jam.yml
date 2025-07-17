@@ -127,7 +127,8 @@ jobs:
                 mkdir ~/build_deps
                 chdir ~/build_deps
                 
-                cmake -E env CXXFLAGS="/WX /MD" ~/opensim-core/dependencies `
+                cmake ~/opensim-core/dependencies `
+                    -E env CXXFLAGS="/WX /MD" `
                     -G "Visual Studio 17 2022" -A x64 `
                     -DSUPERBUILD_ezc3d=ON `
                     -DOPENSIM_WITH_CASADI=ON `
@@ -171,7 +172,8 @@ jobs:
                 mkdir ~/build_core
                 chdir ~/build_core
                 
-                cmake -E env CXXFLAGS="/WX /MD -DSKIP_TIMING" ~/opensim-core `
+                cmake ~/opensim-core `
+                    -E env CXXFLAGS="/WX /MD -DSKIP_TIMING" `
                     -G "Visual Studio 17 2022" `
                     -A x64 `
                     -DOPENSIM_DEPENDENCIES_DIR=~/install_deps `
