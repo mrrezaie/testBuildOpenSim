@@ -321,7 +321,7 @@ jobs:
 
           - name: Set current date
             id: date
-            run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+            run: echo "date=$(date +'%Y-%m-%d')" >> $env:GITHUB_ENV
 
 
 
