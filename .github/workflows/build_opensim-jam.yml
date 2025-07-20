@@ -321,14 +321,14 @@ jobs:
 
           - name: Set current date
             id: date
-            run: echo "date=$(date +'%d-%m-%Y')" >> $env:GITHUB_ENV
+            run: echo "date=$(date +'%Y%m%d')" >> $env:GITHUB_ENV
 
 
 
           - name: Upload GUI installer
             uses: actions/upload-artifact@v4
             with:
-                name: OpenSim-GUI-win64-${{ matrix.label }}-${{ env.date }}
+                name: openism-gui-win64-${{ matrix.label }}-${{ env.date }}
                 path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
                 # path: ~/opensim-gui/Gui/opensim/dist/installer
                 # path: ~/install_core/sdk/Python/dist/*.whl
