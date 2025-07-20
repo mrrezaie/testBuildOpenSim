@@ -24,7 +24,7 @@ jobs:
                   #   python_version: '3.12'
                   #   numpy_version: '1.*'
 
-                  - label: 'py313-np2'
+                  - label: 'py313'
                     python_version: '3.13'
                     numpy_version: '2.*'
 
@@ -321,15 +321,14 @@ jobs:
 
           - name: Set current date
             id: date
-            run: echo "date=$(date +'%Y-%m-%d')" >> $env:GITHUB_ENV
+            run: echo "date=$(date +'%d-%m-%Y')" >> $env:GITHUB_ENV
 
 
 
           - name: Upload GUI installer
             uses: actions/upload-artifact@v4
             with:
-                # name: OpenSim-GUI-win64-${{ matrix.label }}-${{ env.date }}
-                name: OpenSim-GUI-win64-${{ env.date }}
+                name: OpenSim-GUI-win64-${{ matrix.label }}-${{ env.date }}
                 path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
                 # path: ~/opensim-gui/Gui/opensim/dist/installer
                 # path: ~/install_core/sdk/Python/dist/*.whl
