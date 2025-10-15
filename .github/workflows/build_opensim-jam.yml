@@ -20,12 +20,12 @@ jobs:
                 # os: [windows-2022]
                 include:
 
-                  # - label: 'py312-np1'
-                  #   python_version: '3.12'
-                  #   numpy_version: '1.*'
-
                   - label: 'py313'
-                    python_version: '3.13'
+                    python_version: '3.13.*'
+                    numpy_version: '2.*'
+
+                  - label: 'py314'
+                    python_version: '3.14.*'
                     numpy_version: '2.*'
 
         steps:
