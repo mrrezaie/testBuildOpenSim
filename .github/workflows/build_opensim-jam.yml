@@ -7,10 +7,138 @@ on:
 
 jobs:
 
-    build:
+    ubuntu:
+        name: Ubuntu 24.04
+        runs-on: ubuntu-24.04
 
+        steps:
+          - uses: actions/checkout@v4
+
+          - name: Install Python packages
+            uses: actions/setup-python@v4
+            with:
+                python-version: '3.12.*'
+
+          - name: Install Numpy
+            run: |
+                pip install pip --upgrade
+                pip install numpy==2.*
+
+          - name: Install packages
+            run: sudo apt-get update && sudo apt-get install --yes build-essential libtool autoconf pkg-config gfortran libopenblas-dev liblapack-dev freeglut3-dev libxi-dev libxmu-dev doxygen patchelf
+
+          - name: Cache SWIG
+            id: cache-swig
+            uses: actions/cache@v3
+            with:
+                path: ~/swig
+                key: ${{ runner.os }}-swig
+
+          - name: Install SWIG
+            # if: steps.cache-swig.outputs.cache-hit != 'true'
+            run: |
+                mkdir ~/swig-source && cd ~/swig-source
+                wget https://github.com/swig/swig/archive/refs/tags/v4.1.1.tar.gz
+                tar xzf v4.1.1.tar.gz && cd swig-4.1.1
+                sh autogen.sh && ./configure --prefix=$HOME/swig --disable-ccache
+                make && make -j4 install
+
+          - name: Clone opensim-core repository
+            run: |
+                cd ~
+                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+            
+          - name: Cache dependencies
+            id: cache-dependencies
+            uses: actions/cache@v3
+            with:
+                path: ~/opensim_dependencies_install
+                key: ${{ runner.os }}-dependencies-${{ hashFiles('dependencies/*') }}
+
+          - name: Build dependencies
+            # if: steps.cache-dependencies.outputs.cache-hit != 'true'
+            run: |
+                mkdir ~/build_deps
+                cd ~/build_deps
+                DEP_CMAKE_ARGS=(~/opensim-core/dependencies -LAH)
+                DEP_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install)
+                DEP_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
+                DEP_CMAKE_ARGS+=(-DSUPERBUILD_ezc3d=ON)
+                DEP_CMAKE_ARGS+=(-DOPENSIM_WITH_CASADI=ON)
+                DEP_CMAKE_ARGS+=(-DOPENSIM_DISABLE_LOG_FILE=ON)
+                printf '%s\n' "${DEP_CMAKE_ARGS[@]}"
+                cmake "${DEP_CMAKE_ARGS[@]}"
+                make --jobs 4
+
+          - name: Configure opensim-core
+            id: configure
+            run: |
+                mkdir ~/build
+                cd ~/build
+                OSIM_CMAKE_ARGS=(~/opensim-core -LAH)
+                OSIM_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim-core-install)
+                OSIM_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_C3D_PARSER=ezc3d)
+                OSIM_CMAKE_ARGS+=(-DBUILD_PYTHON_WRAPPING=on -DBUILD_JAVA_WRAPPING=on)
+                OSIM_CMAKE_ARGS+=(-DSWIG_DIR=~/swig/share/swig)
+                OSIM_CMAKE_ARGS+=(-DSWIG_EXECUTABLE=~/swig/bin/swig)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_INSTALL_UNIX_FHS=OFF)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_DOXYGEN_USE_MATHJAX=off)
+                # TODO: Update to simbody.github.io/latest
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_SIMBODY_DOXYGEN_LOCATION="https://simbody.github.io/simtk.org/api_docs/simbody/latest/")
+                OSIM_CMAKE_ARGS+=(-DCMAKE_CXX_FLAGS="-Werror")
+                printf '%s\n' "${OSIM_CMAKE_ARGS[@]}"
+                cmake "${OSIM_CMAKE_ARGS[@]}"
+                VERSION=`cmake -L . | grep OPENSIM_QUALIFIED_VERSION | cut -d "=" -f2`
+                echo $VERSION
+                echo "VERSION=$VERSION" >> $GITHUB_ENV
+                echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          - name: Build opensim-core
+            run: |
+              cd ~/build
+              make --jobs 4
+
+          # - name: Test opensim-core
+          #   run: |
+          #     cd ~/build
+          #     # TODO: Temporary for python to find Simbody libraries.
+          #     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/opensim_dependencies_install/simbody/lib
+          #     ctest --parallel 4 --output-on-failure
+
+          - name: Install opensim-core
+            run: |
+              cd ~/build
+              make doxygen
+              make --jobs 4 install
+              cd ~/opensim-core
+              mv ~/opensim-core-install opensim-core-${{ steps.configure.outputs.version }}
+              zip --symlinks --recurse-paths --quiet opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip opensim-core-${{ steps.configure.outputs.version }}
+              mv opensim-core-${{ steps.configure.outputs.version }} ~/opensim-core-install
+
+          - name: Test Python bindings
+            run: |
+              export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/opensim_dependencies_install/simbody/lib
+              cd ~/opensim-core-install/sdk/Python
+              # Run the python tests, verbosely.
+              python3 -m unittest discover --start-directory opensim/tests --verbose
+
+          - name: Upload opensim-core
+            uses: actions/upload-artifact@v4
+            with:
+              # The upload-artifact zipping does not preserve symlinks or executable
+              # bits. So we zip ourselves, even though this causes a double-zip.
+              name: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24-linux
+              path: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip
+
+
+
+
+
+    windows:
         name: Windows
-        runs-on: windows-2022
+        runs-on: windows-latest # 2025
         defaults:
             run:
                 shell: powershell
@@ -32,14 +160,8 @@ jobs:
 
 
 
-
-
-
           # - name: Clone the workflow
           #   uses: actions/checkout@v4
-
-
-
 
 
           # - name: Clone and update opensim-core repository
@@ -97,7 +219,8 @@ jobs:
           - name: Clone opensim-core repository
             run: |
                 cd ~
-                git clone https://github.com/opensim-org/opensim-core.git opensim-core
+                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                # git clone https://github.com/opensim-org/opensim-core.git opensim-core
                 # git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
                 # git clone --single-branch --branch opensim-jam https://github.com/mrrezaie/opensim-core.git opensim-core
 
