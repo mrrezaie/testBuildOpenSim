@@ -65,7 +65,7 @@ jobs:
                 DEP_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
                 DEP_CMAKE_ARGS+=(-DSUPERBUILD_ezc3d=ON)
                 DEP_CMAKE_ARGS+=(-DOPENSIM_WITH_CASADI=ON)
-                DEP_CMAKE_ARGS+=(-DOPENSIM_DISABLE_LOG_FILE=ON)
+                # DEP_CMAKE_ARGS+=(-DOPENSIM_DISABLE_LOG_FILE=ON)
                 printf '%s\n' "${DEP_CMAKE_ARGS[@]}"
                 cmake "${DEP_CMAKE_ARGS[@]}"
                 make --jobs 4
@@ -80,7 +80,7 @@ jobs:
                 OSIM_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_C3D_PARSER=ezc3d)
-                OSIM_CMAKE_ARGS+=(-DBUILD_PYTHON_WRAPPING=on -DBUILD_JAVA_WRAPPING=on)
+                OSIM_CMAKE_ARGS+=(-DBUILD_PYTHON_WRAPPING=on -DBUILD_JAVA_WRAPPING=off)
                 OSIM_CMAKE_ARGS+=(-DSWIG_DIR=~/swig/share/swig)
                 OSIM_CMAKE_ARGS+=(-DSWIG_EXECUTABLE=~/swig/bin/swig)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_INSTALL_UNIX_FHS=OFF)
@@ -99,6 +99,7 @@ jobs:
             run: |
               cd ~/build
               make --jobs 4
+              make --jobs 4 install
 
           # - name: Test opensim-core
           #   run: |
