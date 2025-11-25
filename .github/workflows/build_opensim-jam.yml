@@ -143,7 +143,7 @@ jobs:
               # name: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24-linux
               # path: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip
               name: opensim-ubuntu24
-              path: opensim_core_install
+              path: ~/opensim_core_install
 
 
 
