@@ -132,7 +132,7 @@ jobs:
               # name: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24-linux
               # path: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip
               name: opensim-ubuntu24
-              path: ~/opensim-core-install.zip
+              path: ~/opensim-core-install
 
 
 
@@ -437,7 +437,7 @@ jobs:
           - name: Upload GUI installer
             uses: actions/upload-artifact@v4
             with:
-                name: openism-gui-win64-${{ matrix.label }}-${{ env.date }}
+                name: opensim-gui-win64-${{ matrix.label }}-${{ env.date }}
                 path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
                 # path: ~/opensim-gui/Gui/opensim/dist/installer
                 # path: ~/install_core/sdk/Python/dist/*.whl
