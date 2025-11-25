@@ -76,7 +76,7 @@ jobs:
                 mkdir ~/build
                 cd ~/build
                 OSIM_CMAKE_ARGS=(~/opensim-core -LAH)
-                OSIM_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim-core-install)
+                OSIM_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim_core_install)
                 OSIM_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_C3D_PARSER=ezc3d)
@@ -113,14 +113,14 @@ jobs:
           #     make doxygen
           #     make --jobs 4 install
           #     cd ~/opensim-core
-          #     mv ~/opensim-core-install opensim-core-${{ steps.configure.outputs.version }}
+          #     mv ~/opensim_core_install opensim-core-${{ steps.configure.outputs.version }}
           #     zip --symlinks --recurse-paths --quiet opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip opensim-core-${{ steps.configure.outputs.version }}
-          #     mv opensim-core-${{ steps.configure.outputs.version }} ~/opensim-core-install
+          #     mv opensim-core-${{ steps.configure.outputs.version }} ~/opensim_core_install
 
           # - name: Test Python bindings
           #   run: |
           #     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/opensim_dependencies_install/simbody/lib
-          #     cd ~/opensim-core-install/sdk/Python
+          #     cd ~/opensim_core_install/sdk/Python
           #     # Run the python tests, verbosely.
           #     python3 -m unittest discover --start-directory opensim/tests --verbose
 
@@ -132,7 +132,7 @@ jobs:
               # name: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24-linux
               # path: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip
               name: opensim-ubuntu24
-              path: ~/opensim-core-install
+              path: ~/opensim_core_install
 
 
 
@@ -150,9 +150,9 @@ jobs:
                 # os: [windows-2022]
                 include:
 
-                  - label: 'py313'
-                    python_version: '3.13.*'
-                    numpy_version: '2.*'
+                  # - label: 'py313'
+                  #   python_version: '3.13.*'
+                  #   numpy_version: '2.*'
 
                   - label: 'py314'
                     python_version: '3.14.*'
