@@ -131,7 +131,7 @@ jobs:
                 dir ~/
                 dir ~/opensim_core_install
                 dir ~/opensim_core_install/sdk/Python
-                zip --symlinks --recurse-paths --quiet opensim-core-ubuntu24.zip opensim_core_install
+                # zip --symlinks --recurse-paths --quiet opensim-core-ubuntu24.zip opensim_core_install
 
 
 
@@ -143,7 +143,7 @@ jobs:
               # name: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24-linux
               # path: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip
               name: opensim-ubuntu24
-              path: opensim-core-ubuntu24.zip
+              path: opensim_core_install
 
 
 
