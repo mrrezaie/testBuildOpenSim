@@ -1,4 +1,4 @@
-name: openism_core
+name: openism-core
 
 on: 
     push:
@@ -8,7 +8,7 @@ on:
 jobs:
 
     ubuntu:
-        name: Ubuntu 22.04
+        name: Ubuntu 24.04
         runs-on: ubuntu-22.04
 
         steps:
@@ -43,11 +43,10 @@ jobs:
                 sh autogen.sh && ./configure --prefix=$HOME/swig --disable-ccache
                 make && make -j4 install
 
-          - name: Clone opensim_core repository
+          - name: Clone opensim-core repository
             run: |
                 cd ~
-                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim_core
-                # git clone https://github.com/opensim-org/opensim-core.git opensim_core
+                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
             
           - name: Cache dependencies
             id: cache-dependencies
@@ -61,7 +60,7 @@ jobs:
             run: |
                 mkdir ~/build_deps
                 cd ~/build_deps
-                DEP_CMAKE_ARGS=(~/opensim_core/dependencies -LAH)
+                DEP_CMAKE_ARGS=(~/opensim-core/dependencies -LAH)
                 DEP_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install)
                 DEP_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
                 DEP_CMAKE_ARGS+=(-DSUPERBUILD_ezc3d=ON)
@@ -71,12 +70,12 @@ jobs:
                 cmake "${DEP_CMAKE_ARGS[@]}"
                 make --jobs 4
 
-          - name: Configure opensim_core
+          - name: Configure opensim-core
             id: configure
             run: |
                 mkdir ~/build
                 cd ~/build
-                OSIM_CMAKE_ARGS=(~/opensim_core -LAH)
+                OSIM_CMAKE_ARGS=(~/opensim-core -LAH)
                 OSIM_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim_core_install)
                 OSIM_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install)
@@ -96,27 +95,27 @@ jobs:
                 echo "VERSION=$VERSION" >> $GITHUB_ENV
                 echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-          - name: Build opensim_core
+          - name: Build opensim-core
             run: |
               cd ~/build
               make --jobs 4
 
-          # - name: Test opensim_core
+          # - name: Test opensim-core
           #   run: |
           #     cd ~/build
           #     # TODO: Temporary for python to find Simbody libraries.
           #     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/opensim_dependencies_install/simbody/lib
           #     ctest --parallel 4 --output-on-failure
 
-          # - name: Install opensim_core
+          # - name: Install opensim-core
           #   run: |
           #     cd ~/build
           #     make doxygen
           #     make --jobs 4 install
-          #     cd ~/opensim_core
-          #     mv ~/opensim_core_install opensim_core_${{ steps.configure.outputs.version }}
-          #     zip --symlinks --recurse-paths --quiet opensim_core_${{ steps.configure.outputs.version }}-ubuntu24.zip opensim_core_${{ steps.configure.outputs.version }}
-          #     mv opensim_core_${{ steps.configure.outputs.version }} ~/opensim_core_install
+          #     cd ~/opensim-core
+          #     mv ~/opensim_core_install opensim-core-${{ steps.configure.outputs.version }}
+          #     zip --symlinks --recurse-paths --quiet opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip opensim-core-${{ steps.configure.outputs.version }}
+          #     mv opensim-core-${{ steps.configure.outputs.version }} ~/opensim_core_install
 
           # - name: Test Python bindings
           #   run: |
@@ -131,19 +130,19 @@ jobs:
                 dir ~/
                 dir ~/opensim_core_install
                 dir ~/opensim_core_install/sdk/Python
-                zip --symlinks --recurse-paths --quiet opensim_core_ubuntu.zip opensim_core_install
+                zip --symlinks --recurse-paths --quiet opensim-core-ubuntu24.zip opensim_core_install
 
 
 
-          - name: Upload opensim_core
+          - name: Upload opensim-core
             uses: actions/upload-artifact@v4
             with:
               # The upload-artifact zipping does not preserve symlinks or executable
               # bits. So we zip ourselves, even though this causes a double-zip.
-              # name: opensim_core_${{ steps.configure.outputs.version }}-ubuntu24-linux
-              # path: opensim_core_${{ steps.configure.outputs.version }}-ubuntu24.zip
-              name: opensim-ubuntu
-              path: opensim_core_ubuntu.zip
+              # name: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24-linux
+              # path: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip
+              name: opensim-ubuntu24
+              path: opensim-core-ubuntu24.zip
 
 
 
@@ -177,14 +176,14 @@ jobs:
           #   uses: actions/checkout@v4
 
 
-          # - name: Clone and update opensim_core repository
+          # - name: Clone and update opensim-core repository
           #   run: |
           #       cd ~
-          #       # git clone https://github.com/mrrezaie/opensim-jam_core.git opensim_core
-          #       # git clone https://github.com/opensim-org/opensim-core.git opensim_core
-          #       git clone https://github.com/opensim-jam-org/opensim-core.git opensim_core
+          #       # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+          #       # git clone https://github.com/opensim-org/opensim-core.git opensim-core
+          #       git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
 
-          #       cd ~/opensim_core
+          #       cd ~/opensim-core
 
           #       git config --global user.email "mrrezaie@outlook.com"
           #       git config --global user.name "mrrezaie"
@@ -229,13 +228,13 @@ jobs:
 
 
 
-          - name: Clone opensim_core repository
+          - name: Clone opensim-core repository
             run: |
                 cd ~
-                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim_core
-                # git clone https://github.com/opensim-org/opensim-core.git opensim_core
-                # git clone https://github.com/opensim-jam-org/opensim-core.git opensim_core
-                # git clone --single-branch --branch opensim-jam https://github.com/mrrezaie/opensim-core.git opensim_core
+                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                # git clone https://github.com/opensim-org/opensim-core.git opensim-core
+                # git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
+                # git clone --single-branch --branch opensim-jam https://github.com/mrrezaie/opensim-core.git opensim-core
 
 
 
@@ -243,26 +242,26 @@ jobs:
           #   run: |
           #       dir ~
           #       dir $env:GITHUB_WORKSPACE
-          #       dir ~/opensim_core
+          #       dir ~/opensim-core
 
 
 
 
-          - name: Cache opensim_core dependencies
+          - name: Cache opensim-core dependencies
             id: cache-dependencies
             uses: actions/cache@v4
             with:
                 path: ~/install_deps
-                key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim_core/dependencies/*') }}
+                key: ${{ runner.os }}-dependencies-${{ hashFiles('opensim-core/dependencies/*') }}
 
 
-          - name: Build opensim_core dependencies
+          - name: Build opensim-core dependencies
             # if: steps.cache-dependencies.outputs.cache-hit != 'true'
             run: |
                 mkdir ~/build_deps
                 chdir ~/build_deps
                 
-                cmake -E env CXXFLAGS="/W3 /MD" cmake ~/opensim_core/dependencies -G "Visual Studio 17 2022" -A x64 -DSUPERBUILD_ezc3d=ON -DOPENSIM_WITH_CASADI=ON -DCMAKE_INSTALL_PREFIX=~/install_deps
+                cmake -E env CXXFLAGS="/W3 /MD" cmake ~/opensim-core/dependencies -G "Visual Studio 17 2022" -A x64 -DSUPERBUILD_ezc3d=ON -DOPENSIM_WITH_CASADI=ON -DCMAKE_INSTALL_PREFIX=~/install_deps
                 cmake --build . --config Release --parallel 4
 
 
@@ -275,33 +274,33 @@ jobs:
 
 
 
-          # - name: Obtain opensim_core commit
-          #   id: opensim_core_commit
+          # - name: Obtain opensim-core commit
+          #   id: opensim-core-commit
           #   run: |
-          #       cd opensim_core
+          #       cd opensim-core
           #       $opensim_core_commit=(git rev-parse HEAD)
           #       echo "hash=$opensim_core_commit" >> $GITHUB_OUTPUT
           #       echo $opensim_core_commit
 
 
-          # - name: Cache opensim_core
-          #   id: cache_core
+          # - name: Cache opensim-core
+          #   id: cache-core
           #   uses: actions/cache@v4
           #   with:
           #       path: ~/install_core
-          #       key: ${{ runner.os }}-${{ steps.opensim_core_commit.outputs.hash }}
+          #       key: ${{ runner.os }}-${{ steps.opensim-core-commit.outputs.hash }}
 
 
 
 
-          - name: Build opensim_core
-            # if: steps.cache_core.outputs.cache-hit != 'true'
+          - name: Build opensim-core
+            # if: steps.cache-core.outputs.cache-hit != 'true'
             id: build
             run: |
                 mkdir ~/build_core
                 chdir ~/build_core
                 
-                cmake -E env CXXFLAGS="/W3 /MD -DSKIP_TIMING" cmake ~/opensim_core -G "Visual Studio 17 2022" -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_PYTHON_WRAPPING=ON -DOPENSIM_WITH_CASADI=ON -DBUILD_JAVA_WRAPPING=ON -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=~/install_core
+                cmake -E env CXXFLAGS="/W3 /MD -DSKIP_TIMING" cmake ~/opensim-core -G "Visual Studio 17 2022" -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps -DOPENSIM_C3D_PARSER=ezc3d -DBUILD_PYTHON_WRAPPING=ON -DOPENSIM_WITH_CASADI=ON -DBUILD_JAVA_WRAPPING=ON -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=~/install_core
                 cmake --build . --config Release --parallel 4
                 cmake --install .
 
