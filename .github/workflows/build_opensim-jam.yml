@@ -46,7 +46,8 @@ jobs:
           - name: Clone opensim-core repository
             run: |
                 cd ~
-                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                git clone https://github.com/opensim-org/opensim-core.git opensim-core
             
           - name: Cache dependencies
             id: cache-dependencies
@@ -129,6 +130,7 @@ jobs:
             run: |
                 dir ~/
                 dir ~/opensim_core_install
+                dir ~/opensim_core_install/sdk/Python
                 zip --symlinks --recurse-paths --quiet opensim-core-ubuntu24.zip opensim_core_install
 
 
