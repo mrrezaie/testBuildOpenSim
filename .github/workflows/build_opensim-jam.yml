@@ -129,12 +129,12 @@ jobs:
 
           - name: Set current date
             id: date
-            run: echo "date=$(date +'%Y%m%d')" >> $env:GITHUB_ENV
+            run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_ENV
 
           - name: Upload opensim-core
             uses: actions/upload-artifact@v4
             with:
-              name: opensim-api-ubuntu24-${{ matrix.label }}-${{ env.date }}
+              name: opensim-api-ubuntu24-${{ matrix.label }}-${{ date }}
               path: ~/opensim_core_install
 
 
