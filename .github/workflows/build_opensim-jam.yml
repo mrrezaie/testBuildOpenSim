@@ -178,7 +178,7 @@ jobs:
 
                   - label: 'py314'
                     python_version: '3.14.*'
-                    numpy_version: '2.*'
+                    # numpy_version: '2.*'
 
         steps:
 
@@ -236,7 +236,8 @@ jobs:
           - name: Install NumPy 
             run: |
                 python -m pip install --upgrade pip
-                python -m pip install numpy==${{ matrix.numpy_version }} setuptools wheel
+                # python -m pip install numpy==${{ matrix.numpy_version }} setuptools wheel
+                python -m pip install numpy==2.* setuptools wheel
 
 
 
