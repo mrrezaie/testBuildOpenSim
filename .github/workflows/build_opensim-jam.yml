@@ -15,8 +15,16 @@ jobs:
             matrix:
                 include:
 
+                  - label: 'py311'
+                    python_version: '3.11.*'
+                    numpy_version: '2.*'
+
                   - label: 'py312'
                     python_version: '3.12.*'
+                    numpy_version: '2.*'
+
+                  - label: 'py313'
+                    python_version: '3.13.*'
                     numpy_version: '2.*'
 
                   - label: 'py314'
