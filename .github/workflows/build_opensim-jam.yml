@@ -85,6 +85,7 @@ jobs:
                 OSIM_CMAKE_ARGS+=(-DBUILD_PYTHON_WRAPPING=on)
                 OSIM_CMAKE_ARGS+=(-DBUILD_JAVA_WRAPPING=off)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_PYTHON_STANDALONE=on)
+                OSIM_CMAKE_ARGS+=(-OPENSIM_COPY_DEPENDENCIES=on)
                 OSIM_CMAKE_ARGS+=(-DSWIG_DIR=~/swig/share/swig)
                 OSIM_CMAKE_ARGS+=(-DSWIG_EXECUTABLE=~/swig/bin/swig)
                 OSIM_CMAKE_ARGS+=(-DOPENSIM_INSTALL_UNIX_FHS=OFF)
