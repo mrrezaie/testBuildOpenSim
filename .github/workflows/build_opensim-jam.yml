@@ -11,28 +11,40 @@ jobs:
         name: Ubuntu 24.04
         runs-on: ubuntu-24.04
 
+        strategy:
+            matrix:
+                include:
+
+                  - label: 'py312'
+                    python_version: '3.12.*'
+                    numpy_version: '2.*'
+
+                  - label: 'py314'
+                    python_version: '3.14.*'
+                    numpy_version: '2.*'
+
         steps:
           - uses: actions/checkout@v4
 
-          - name: Install Python packages
+          - name: Install Python
             uses: actions/setup-python@v4
             with:
-                python-version: '3.12.*'
+                python-version: ${{ matrix.python_version }}
 
           - name: Install Numpy
             run: |
                 pip install pip --upgrade
-                pip install numpy==2.*
+                pip install numpy==${{ matrix.numpy_version }}
 
           - name: Install packages
             run: sudo apt-get update && sudo apt-get install --yes build-essential libtool autoconf pkg-config gfortran libopenblas-dev liblapack-dev freeglut3-dev libxi-dev libxmu-dev doxygen patchelf
 
-          - name: Cache SWIG
-            id: cache-swig
-            uses: actions/cache@v3
-            with:
-                path: ~/swig
-                key: ${{ runner.os }}-swig
+          # - name: Cache SWIG
+          #   id: cache-swig
+          #   uses: actions/cache@v3
+          #   with:
+          #       path: ~/swig
+          #       key: ${{ runner.os }}-swig
 
           - name: Install SWIG
             # if: steps.cache-swig.outputs.cache-hit != 'true'
@@ -138,18 +150,15 @@ jobs:
                 dir ~/
                 dir ~/opensim_core_install
                 dir ~/opensim_core_install/sdk/Python
-                # zip --symlinks --recurse-paths --quiet opensim-core-ubuntu24.zip opensim_core_install
 
-
+          - name: Set current date
+            id: date
+            run: echo "date=$(date +'%Y%m%d')" >> $env:GITHUB_ENV
 
           - name: Upload opensim-core
             uses: actions/upload-artifact@v4
             with:
-              # The upload-artifact zipping does not preserve symlinks or executable
-              # bits. So we zip ourselves, even though this causes a double-zip.
-              # name: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24-linux
-              # path: opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip
-              name: opensim-ubuntu24
+              name: opensim-api-ubuntu24-${{ matrix.label }}-${{ env.date }}
               path: ~/opensim_core_install
 
 
