@@ -120,30 +120,6 @@ jobs:
               cmake --build . --config Release -j4
               cmake --install .
 
-          # - name: Test opensim-core
-          #   run: |
-          #     cd ~/build
-          #     # TODO: Temporary for python to find Simbody libraries.
-          #     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/opensim_dependencies_install/simbody/lib
-          #     ctest --parallel 4 --output-on-failure
-
-          # - name: Install opensim-core
-          #   run: |
-          #     cd ~/build
-          #     make doxygen
-          #     make --jobs 4 install
-          #     cd ~/opensim-core
-          #     mv ~/opensim_core_install opensim-core-${{ steps.configure.outputs.version }}
-          #     zip --symlinks --recurse-paths --quiet opensim-core-${{ steps.configure.outputs.version }}-ubuntu24.zip opensim-core-${{ steps.configure.outputs.version }}
-          #     mv opensim-core-${{ steps.configure.outputs.version }} ~/opensim_core_install
-
-          # - name: Test Python bindings
-          #   run: |
-          #     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/opensim_dependencies_install/simbody/lib
-          #     cd ~/opensim_core_install/sdk/Python
-          #     # Run the python tests, verbosely.
-          #     python3 -m unittest discover --start-directory opensim/tests --verbose
-
 
           - name: Paths
             run: |
