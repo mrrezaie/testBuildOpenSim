@@ -17,19 +17,19 @@ jobs:
 
                   - label: 'py311'
                     python_version: '3.11.*'
-                    numpy_version: '2.*'
+                    # numpy_version: '2.*'
 
                   - label: 'py312'
                     python_version: '3.12.*'
-                    numpy_version: '2.*'
+                    # numpy_version: '2.*'
 
                   - label: 'py313'
                     python_version: '3.13.*'
-                    numpy_version: '2.*'
+                    # numpy_version: '2.*'
 
                   - label: 'py314'
                     python_version: '3.14.*'
-                    numpy_version: '2.*'
+                    # numpy_version: '2.*'
 
         steps:
           - uses: actions/checkout@v4
@@ -42,7 +42,8 @@ jobs:
           - name: Install Numpy
             run: |
                 pip install pip --upgrade
-                pip install numpy==${{ matrix.numpy_version }}
+                # pip install numpy==${{ matrix.numpy_version }}
+                pip install numpy==2.*
 
           - name: Install packages
             run: sudo apt-get update && sudo apt-get install --yes build-essential libtool autoconf pkg-config gfortran libopenblas-dev liblapack-dev freeglut3-dev libxi-dev libxmu-dev doxygen patchelf
