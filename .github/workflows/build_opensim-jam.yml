@@ -17,7 +17,7 @@ jobs:
           - name: Install Python packages
             uses: actions/setup-python@v4
             with:
-                python-version: '3.11.*'
+                python-version: '3.12.*'
 
           - name: Install Numpy
             run: |
@@ -161,6 +161,16 @@ jobs:
                 shell: powershell
 
         strategy:
+
+            # matrix:
+            #     url: 
+            #       - "https://example.com/first"
+            #       - "https://example.com/second"
+            #     python_version: 
+            #       - "3.13.*"
+            #       - "3.14.*"
+            #     numpy_version: ["2.*"]
+
             matrix:
                 # os: [windows-2022]
                 include:
