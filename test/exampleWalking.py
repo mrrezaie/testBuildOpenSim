@@ -84,7 +84,7 @@ geometries = os.path.join(cwd, './Geometry')
 # Perform Inverse Kinematics
 if runCOMAKIK:
 
-    copytree(geometries, os.path.join(ik_result_dir,'Geometry'), dirs_exist_ok=True )
+    # copytree(geometries, os.path.join(ik_result_dir,'Geometry'), dirs_exist_ok=True )
 
     comak_ik = osim.COMAKInverseKinematicsTool()
     comak_ik.set_model_file(model_file)
