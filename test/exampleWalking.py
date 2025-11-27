@@ -424,10 +424,101 @@ if runCOMAK:
 
     comak.set_COMAKSecondaryCoordinateSet(secondary_coord_set)
 
+
+
+
+
+
+
+    cost_fun_param_set = osim.COMAKCostFunctionParameterSet()
+    cost_fun_param = osim.COMAKCostFunctionParameter()
+
+    # 'set_activation_lower_bound'
+    # 'set_activation_upper_bound'
+    # 'set_actuator'
+    # 'set_desired_activation'
+    # 'set_weight'
+
+    cost_fun_param.setName('gasmed_r')
+    cost_fun_param.set_actuator('/forceset/gasmed_r')
+    cost_fun_param.set_weight(osim.Constant(4))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('gaslat_r')
+    cost_fun_param.set_actuator('/forceset/gaslat_r')
+    cost_fun_param.set_weight(osim.Constant(7))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('soleus_r')
+    cost_fun_param.set_actuator('/forceset/soleus_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('recfem_r')
+    cost_fun_param.set_actuator('/forceset/recfem_r')
+    cost_fun_param.set_weight(osim.Constant(3))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('glmed1_r')
+    cost_fun_param.set_actuator('/forceset/glmed1_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('glmed2_r')
+    cost_fun_param.set_actuator('/forceset/glmed1_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('glmed3_r')
+    cost_fun_param.set_actuator('/forceset/glmed3_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('glmin1_r')
+    cost_fun_param.set_actuator('/forceset/glmin1_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('glmin2_r')
+    cost_fun_param.set_actuator('/forceset/glmin2_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('glmin3_r')
+    cost_fun_param.set_actuator('/forceset/glmin3_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('bflh_r')
+    cost_fun_param.set_actuator('/forceset/bflh_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('bfsh_r')
+    cost_fun_param.set_actuator('/forceset/bfsh_r')
+    cost_fun_param.set_weight(osim.Constant(0))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('semiten_r')
+    cost_fun_param.set_actuator('/forceset/semiten_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    cost_fun_param.setName('semimem_r')
+    cost_fun_param.set_actuator('/forceset/semimem_r')
+    cost_fun_param.set_weight(osim.Constant(0.9))
+    cost_fun_param_set.cloneAndAppend(cost_fun_param)
+
+    comak.set_COMAKCostFunctionParameterSet(cost_fun_param_set)
+
+
+
+
+
     comak.set_settle_secondary_coordinates_at_start(True)
     comak.set_settle_threshold(1e-5) # def 1e-5
     comak.set_settle_accuracy(1e-5) # def 1e-6
-    comak.set_settle_internal_step_limit(1000)
+    comak.set_settle_internal_step_limit(10000)
     comak.set_print_settle_sim_results(False)
     comak.set_settle_sim_results_directory(comak_result_dir)
     comak.set_settle_sim_results_prefix('walking_settle_sim')
