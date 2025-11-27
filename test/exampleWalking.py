@@ -31,12 +31,16 @@ end_time = 2.32
 
 model_file = os.path.join(cwd, 'smith2019_noMeniscus.osim')
 results_basename = 'walking'
-ik_result_dir = os.path.join(cwd, 'results/comak-inverse-kinematics')
-comak_result_dir = os.path.join(cwd, 'results/comak')
-jnt_mech_result_dir = os.path.join(cwd, 'results/joint-mechanics')
+ik_result_dir = os.path.join(cwd, './results/comak-inverse-kinematics')
+comak_result_dir = os.path.join(cwd, './results/comak')
+jnt_mech_result_dir = os.path.join(cwd, './results/joint-mechanics')
 geometries = os.path.join(cwd, './Geometry')
 
 
+os.makedirs('./results', exist_ok=True)
+os.makedirs(ik_result_dir, exist_ok=True)
+os.makedirs(comak_result_dir, exist_ok=True)
+os.makedirs(jnt_mech_result_dir, exist_ok=True)
 
 # model = osim.Model( model_file )
 # for muscle in model.getMuscles():
