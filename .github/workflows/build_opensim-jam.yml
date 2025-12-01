@@ -9,27 +9,25 @@ jobs:
 
     ubuntu:
 
-
         strategy:
             matrix:
                 include:
 
                   - label: 'opensim_jam_api_u24_py311'
                     python_version: '3.11.*'
-                    numpy_version: ['2.*']
+                    numpy_version: '2.*'
 
                   - label: 'opensim_jam_api_u24_py312'
                     python_version: '3.12.*'
-                    numpy_version: ['2.*']
+                    numpy_version: '2.*'
 
                   - label: 'opensim_jam_api_u24_py313'
                     python_version: '3.13.*'
-                    numpy_version: ['2.*']
+                    numpy_version: '2.*'
 
                   - label: 'opensim_jam_api_u24_py314'
                     python_version: '3.14.*'
-                    numpy_version: ['2.*']
-
+                    numpy_version: '2.*'
 
         name: ${{ matrix.label }}
         runs-on: ubuntu-24.04
@@ -172,12 +170,12 @@ jobs:
 
                   - label: 'opensim_gui_win64_py314'
                     python_version: '3.14.*'
-                    numpy_version: ['2.*']
+                    numpy_version: '2.*'
                     url: https://github.com/opensim-org/opensim-core.git
 
                   - label: 'opensim_jam_gui_win64_py314'
                     python_version: '3.14.*'
-                    numpy_version: ['2.*']
+                    numpy_version: '2.*'
                     url: https://github.com/mrrezaie/opensim-jam-core.git
 
 
