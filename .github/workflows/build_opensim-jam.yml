@@ -13,19 +13,19 @@ jobs:
             matrix:
                 include:
 
-                  - label: 'osim_jam_api_u24_py311'
+                  - label: 'osim_jam_api_ubu24_py311'
                     python_version: '3.11.*'
                     numpy_version: '2.*'
 
-                  - label: 'osim_jam_api_u24_py312'
+                  - label: 'osim_jam_api_ubu24_py312'
                     python_version: '3.12.*'
                     numpy_version: '2.*'
 
-                  - label: 'osim_jam_api_u24_py313'
+                  - label: 'osim_jam_api_ubu24_py313'
                     python_version: '3.13.*'
                     numpy_version: '2.*'
 
-                  - label: 'osim_jam_api_u24_py314'
+                  - label: 'osim_jam_api_ubu24_py314'
                     python_version: '3.14.*'
                     numpy_version: '2.*'
 
