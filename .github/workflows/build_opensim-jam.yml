@@ -151,11 +151,6 @@ jobs:
 
 
     windows:
-        name: Windows
-        runs-on: windows-latest # 2025
-        defaults:
-            run:
-                shell: powershell
 
         strategy:
 
@@ -172,13 +167,24 @@ jobs:
                 # os: [windows-2022]
                 include:
 
-                  # - label: 'py313'
-                  #   python_version: '3.13.*'
-                  #   numpy_version: '2.*'
-
-                  - label: 'py314'
+                  - label: 'opensim_gui_win64_py314'
                     python_version: '3.14.*'
                     # numpy_version: '2.*'
+                    url: https://github.com/opensim-org/opensim-core.git
+
+                  - label: 'opensim_jam_gui_win64_py314'
+                    python_version: '3.14.*'
+                    # numpy_version: '2.*'
+                    url: https://github.com/mrrezaie/opensim-jam-core.git
+
+
+        name: ${{ matrix.label }} (Windows)
+        runs-on: windows-latest # 2025
+        defaults:
+            run:
+                shell: powershell
+
+
 
         steps:
 
@@ -244,7 +250,8 @@ jobs:
           - name: Clone opensim-core repository
             run: |
                 cd ~
-                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                git clone ${{ matrix.url }} opensim-core
+                # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
                 # git clone https://github.com/opensim-org/opensim-core.git opensim-core
                 # git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
                 # git clone --single-branch --branch opensim-jam https://github.com/mrrezaie/opensim-core.git opensim-core
@@ -460,7 +467,7 @@ jobs:
           - name: Upload GUI installer
             uses: actions/upload-artifact@v4
             with:
-                name: opensim-gui-win64-${{ matrix.label }}-${{ env.date }}
+                name: ${{ matrix.label }}-${{ env.date }}
                 path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
                 # path: ~/opensim-gui/Gui/opensim/dist/installer
                 # path: ~/install_core/sdk/Python/dist/*.whl
