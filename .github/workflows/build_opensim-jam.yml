@@ -174,7 +174,7 @@ jobs:
                     url: https://github.com/mrrezaie/opensim-jam-core.git
 
 
-                  - label: 'osim_gui_win64_py314'
+                  - label: 'osim_org_gui_win64_py314'
                     python_version: '3.14.*'
                     numpy_version: '2.*'
                     url: https://github.com/opensim-org/opensim-core.git
