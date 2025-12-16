@@ -35,7 +35,7 @@ jobs:
 
                   - label: 'osim_jam_api_ubu22_py310'
                     python_version: '3.10.*'
-                    numpy_version: '1.26.4'
+                    numpy_version: '2.*'
                     os_version: ubuntu-22.04
 
                   - label: 'osim_jam_api_ubu22_py311'
