@@ -97,7 +97,8 @@ jobs:
           - name: Clone opensim-core repository
             run: |
                 cd ~
-                git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                git clone --branch opensim_jam https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+                # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
             
           - name: Cache dependencies
             id: cache-dependencies
