@@ -198,15 +198,26 @@ jobs:
                 # os: [windows-2022]
                 include:
 
+                  - label: 'osim_jam_api_win64_py314'
+                    python_version: '3.14.*'
+                    numpy_version: '2.*'
+                    url: --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git
+                    c3d_parser: 'None'
+                    ezc3d_bool: 'OFF'
+
                   - label: 'osim_jam_gui_win64_py314'
                     python_version: '3.14.*'
                     numpy_version: '2.*'
                     url: --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git
+                    c3d_parser: 'ezc3d'
+                    ezc3d_bool: 'ON'
 
                   - label: 'osim_org_gui_win64_py314'
                     python_version: '3.14.*'
                     numpy_version: '2.*'
                     url: https://github.com/opensim-org/opensim-core.git
+                    c3d_parser: 'ezc3d'
+                    ezc3d_bool: 'ON'
 
         name: ${{ matrix.label }}
         runs-on: windows-latest # 2025
@@ -308,7 +319,7 @@ jobs:
                 mkdir ~/build_deps
                 chdir ~/build_deps
                 
-                cmake -E env CXXFLAGS="/W3 /MD" cmake ~/opensim-core/dependencies -G "Visual Studio 17 2022" -A x64 -DSUPERBUILD_ezc3d=OFF -DOPENSIM_WITH_CASADI=ON -DCMAKE_INSTALL_PREFIX=~/install_deps
+                cmake -E env CXXFLAGS="/W3 /MD" cmake ~/opensim-core/dependencies -G "Visual Studio 17 2022" -A x64 -DSUPERBUILD_ezc3d=${{ matrix.ezc3d_bool }} -DOPENSIM_WITH_CASADI=ON -DCMAKE_INSTALL_PREFIX=~/install_deps
                 cmake --build . --config Release --parallel 4
 
 
@@ -347,7 +358,7 @@ jobs:
                 mkdir ~/build_core
                 chdir ~/build_core
                 
-                cmake -E env CXXFLAGS="/W3 /MD -DSKIP_TIMING" cmake ~/opensim-core -G "Visual Studio 17 2022" -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps -DOPENSIM_C3D_PARSER=None -DBUILD_PYTHON_WRAPPING=ON -DOPENSIM_WITH_CASADI=ON -DBUILD_JAVA_WRAPPING=ON -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=~/install_core
+                cmake -E env CXXFLAGS="/W3 /MD -DSKIP_TIMING" cmake ~/opensim-core -G "Visual Studio 17 2022" -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps -DOPENSIM_C3D_PARSER=${{ matrix.c3d_parser }} -DBUILD_PYTHON_WRAPPING=ON -DOPENSIM_WITH_CASADI=ON -DBUILD_JAVA_WRAPPING=ON -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=~/install_core
                 cmake --build . --config Release --parallel 4
                 cmake --install .
 
@@ -382,14 +393,26 @@ jobs:
 
 
 
-
-          # - name: Build wheel file
-          #   run: |
-          #       chdir ~/install_core/sdk/Python
-          #       python setup.py bdist_wheel
-          #       # pip install ~/install_core/sdk/Python/dist/*.whl
+          - name: Set current date
+            id: date
+            run: echo "date=$(date +'%Y%m%d')" >> $env:GITHUB_ENV
 
 
+
+          - name: Build wheel file
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            run: |
+                chdir ~/install_core/sdk/Python
+                python setup.py bdist_wheel
+                # pip install ~/install_core/sdk/Python/dist/*.whl
+
+
+          - name: Upload GUI installer
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            uses: actions/upload-artifact@v4
+            with:
+                name: ${{ matrix.label }}-${{ env.date }}
+                path: ~/install_core/sdk/Python/dist/*.whl
 
 
 
@@ -398,6 +421,7 @@ jobs:
 
 
           - name: Set up JDK 1.8
+            if: ${{ matrix.ezc3d_bool == 'ON' }}
             uses: actions/setup-java@v4
             with:
                 distribution: 'temurin'
@@ -409,6 +433,7 @@ jobs:
 
 
           - name: Install Netbeans 12.3
+            if: ${{ matrix.ezc3d_bool == 'ON' }}
             run: |
                 (New-Object System.Net.WebClient).DownloadFile("https://archive.apache.org/dist/netbeans/netbeans/12.3/Apache-NetBeans-12.3-bin-windows-x64.exe", "Apache-NetBeans-12.3-bin-windows-x64.exe")
                 $expectedHash = "0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c"
@@ -434,12 +459,14 @@ jobs:
 
 
           - name: Clone opensim-gui repository
+            if: ${{ matrix.ezc3d_bool == 'ON' }}
             run: |
                 cd ~
                 git clone https://github.com/opensim-org/opensim-gui.git opensim-gui
 
 
           - name: Update submodules
+            if: ${{ matrix.ezc3d_bool == 'ON' }}
             run: |
                 cd ~/opensim-gui
                 git submodule update --init --recursive -- opensim-visualizer Gui/opensim/threejs
@@ -455,6 +482,7 @@ jobs:
 
 
           - name: Build GUI
+            if: ${{ matrix.ezc3d_bool == 'ON' }}
             id: build-gui
             run: |
                 mkdir ~/build_gui
@@ -485,17 +513,14 @@ jobs:
           #       dir ~/opensim-gui/Gui/opensim/dist/installer
 
 
-          - name: Set current date
-            id: date
-            run: echo "date=$(date +'%Y%m%d')" >> $env:GITHUB_ENV
 
 
 
           - name: Upload GUI installer
+            if: ${{ matrix.ezc3d_bool == 'ON' }}
             uses: actions/upload-artifact@v4
             with:
                 name: ${{ matrix.label }}-${{ env.date }}
-                # path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
-                path: ~/opensim-gui
+                path: ~/opensim-gui/Gui/opensim/dist/installer/opensim
                 # path: ~/opensim-gui/Gui/opensim/dist/installer
                 # path: ~/install_core/sdk/Python/dist/*.whl
