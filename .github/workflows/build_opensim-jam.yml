@@ -221,6 +221,7 @@ jobs:
                     branch: opensim_jam
                     c3d_parser: 'None'
                     ezc3d_bool: 'OFF'
+                    ezc3d_version: 1.6.3
 
                   - label: 'osim_jam_gui_win64_py314'
                     python_version: '3.14.*'
@@ -229,6 +230,7 @@ jobs:
                     branch: opensim_jam
                     c3d_parser: 'ezc3d'
                     ezc3d_bool: 'ON'
+                    ezc3d_version: 1.6.3
 
                   - label: 'osim_org_gui_win64_py314'
                     python_version: '3.14.*'
@@ -237,6 +239,7 @@ jobs:
                     branch: main
                     c3d_parser: 'ezc3d'
                     ezc3d_bool: 'ON'
+                    ezc3d_version: 1.6.3
 
         name: ${{ matrix.label }}
         runs-on: windows-latest # 2025
