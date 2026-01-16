@@ -100,12 +100,14 @@ jobs:
                 git clone --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git opensim-core
                 # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
             
+            
           - name: Cache dependencies
             id: cache-dependencies
             uses: actions/cache@v3
             with:
                 path: ~/opensim_dependencies_install
                 key: ${{ runner.os }}-dependencies-${{ hashFiles('dependencies/*') }}
+
 
           - name: Build dependencies
             # if: steps.cache-dependencies.outputs.cache-hit != 'true'
