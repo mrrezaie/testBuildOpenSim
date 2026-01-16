@@ -111,7 +111,7 @@ jobs:
 
           - name: Copy to home
             run: |
-                cp -r $env:GITHUB_WORKSPACE/opensim-core ~
+                cp -r $GITHUB_WORKSPACE/opensim-core ~
                 ls ~/opensim-core
 
 
