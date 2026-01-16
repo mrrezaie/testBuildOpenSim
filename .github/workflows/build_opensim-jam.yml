@@ -94,13 +94,27 @@ jobs:
                 sh autogen.sh && ./configure --prefix=$HOME/swig --disable-ccache
                 make && make -j4 install
 
-          - name: Clone opensim-core repository
+          # - name: Clone opensim-core repository
+          #   run: |
+          #       cd ~
+          #       git clone --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git opensim-core
+          #       # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+
+
+          - name: Checkout opensim-core repository
+            uses: actions/checkout@v4
+            with:
+                repository: mrrezaie/opensim-core
+                path: opensim-core
+                ref: opensim_jam
+
+
+          - name: Copy to home
             run: |
-                cd ~
-                git clone --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git opensim-core
-                # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
-            
-            
+                cp -r $env:GITHUB_WORKSPACE/opensim-core ~
+                ls ~/opensim-core
+
+
           - name: Cache dependencies
             id: cache-dependencies
             uses: actions/cache@v3
@@ -203,21 +217,24 @@ jobs:
                   - label: 'osim_jam_api_win64_py314'
                     python_version: '3.14.*'
                     numpy_version: '2.*'
-                    url: --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git
+                    user: mrrezaie
+                    branch: opensim_jam
                     c3d_parser: 'None'
                     ezc3d_bool: 'OFF'
 
                   - label: 'osim_jam_gui_win64_py314'
                     python_version: '3.14.*'
                     numpy_version: '2.*'
-                    url: --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git
+                    user: mrrezaie
+                    branch: opensim_jam
                     c3d_parser: 'ezc3d'
                     ezc3d_bool: 'ON'
 
                   - label: 'osim_org_gui_win64_py314'
                     python_version: '3.14.*'
                     numpy_version: '2.*'
-                    url: https://github.com/opensim-org/opensim-core.git
+                    user: opensim-org
+                    branch: main
                     c3d_parser: 'ezc3d'
                     ezc3d_bool: 'ON'
 
@@ -287,15 +304,30 @@ jobs:
 
 
 
-          - name: Clone opensim-core repository
-            run: |
-                cd ~
-                git clone ${{ matrix.url }} opensim-core
-                # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
-                # git clone https://github.com/opensim-org/opensim-core.git opensim-core
-                # git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
-                # git clone --single-branch --branch opensim-jam https://github.com/mrrezaie/opensim-core.git opensim-core
+          # - name: Clone opensim-core repository
+          #   run: |
+          #       cd ~
+          #       git clone ${{ matrix.url }} opensim-core
+          #       # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+          #       # git clone https://github.com/opensim-org/opensim-core.git opensim-core
+          #       # git clone https://github.com/opensim-jam-org/opensim-core.git opensim-core
+          #       # git clone --single-branch --branch opensim-jam https://github.com/mrrezaie/opensim-core.git opensim-core
 
+
+
+
+          - name: Checkout opensim-core repository
+            uses: actions/checkout@v4
+            with:
+                repository: ${{ matrix.user }}/opensim-core
+                path: opensim-core
+                ref: ${{ matrix.branch }}
+
+
+          - name: Copy to home
+            run: |
+                cp -r $env:GITHUB_WORKSPACE/opensim-core ~
+                ls ~/opensim-core
 
 
           # - name: Paths
