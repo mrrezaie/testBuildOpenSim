@@ -216,6 +216,7 @@ jobs:
 
                   - label: 'osim_jam_api_win64_py314'
                     python_version: '3.14.*'
+                    suffix: '314'
                     numpy_version: '2.*'
                     user: mrrezaie
                     branch: opensim_jam
@@ -225,6 +226,7 @@ jobs:
 
                   - label: 'osim_jam_gui_win64_py314'
                     python_version: '3.14.*'
+                    suffix: '314'
                     numpy_version: '2.*'
                     user: mrrezaie
                     branch: opensim_jam
@@ -234,6 +236,7 @@ jobs:
 
                   - label: 'osim_org_gui_win64_py314'
                     python_version: '3.14.*'
+                    suffix: '314'
                     numpy_version: '2.*'
                     user: opensim-org
                     branch: main
