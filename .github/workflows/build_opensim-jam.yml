@@ -410,27 +410,33 @@ jobs:
 
 
 
-
-          # - name: Clone opensim-models Geometry
-          #   uses: actions/checkout@v4
-          #   with:
-          #       repository: opensim-org/opensim-models
-          #       path: 'opensim-models'
-          #       sparse-checkout: 'Geometry'
-          #       # sparse-checkout-cone-mode: false
-
-
-          # - name: Include Geometry folder
-          #   run: |
-          #       dir .
-          #       move $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/install_core
-
-
-
-
           - name: Set current date
             id: date
             run: echo "date=$(date +'%Y%m%d')" >> $env:GITHUB_ENV
+
+
+
+
+
+
+          - name: Clone opensim-models Geometry
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            uses: actions/checkout@v4
+            with:
+                repository: opensim-org/opensim-models
+                path: 'opensim-models'
+                sparse-checkout: 'Geometry'
+                # sparse-checkout-cone-mode: false
+
+
+
+
+          - name: Include Geometry folder
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            run: |
+                cp -r $env:GITHUB_WORKSPACE/opensim-models/Geometry ~/install_core
+                ls ~/install_core
+
 
 
 
@@ -442,12 +448,63 @@ jobs:
                 # pip install ~/install_core/sdk/Python/dist/*.whl
 
 
-          - name: Upload GUI installer
+
+
+          - name: Checkout ezc3d main
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            uses: actions/checkout@v4
+            with:
+                repository: pyomeca/ezc3d
+                path: ezc3d
+                ref: Release_${{ matrix.ezc3d_version }}
+
+          - name: Path
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            run: |
+                cp -r $env:GITHUB_WORKSPACE/ezc3d ~
+                ls ~
+                ls ~/ezc3d
+
+
+          - name: Install scikit-build and wheel
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            run: |
+                python -m pip install --upgrade pip
+                python -m pip install scikit-build wheel
+
+
+          - name: Build ezc3d on WINDOWS
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            run: |
+                chdir ~/ezc3d
+                python setup.py bdist_wheel -- -G"Visual Studio 17 2022" -A x64
+
+
+          - name: Clean the wheel file
+            if: ${{ matrix.ezc3d_bool == 'OFF' }}
+            run: |
+                chdir ~/ezc3d/dist/
+                ls .
+                python -m wheel unpack ezc3d-${{ matrix.ezc3d_version }}-cp${{ matrix.suffix }}-cp${{ matrix.suffix }}-win_amd64.whl
+                rm -r ezc3d-${{ matrix.ezc3d_version }}/ezc3d-${{ matrix.ezc3d_version }}.data
+                python -m wheel pack ezc3d-${{ matrix.ezc3d_version }}
+
+
+          - name: Upload opensim API and ezc3d wheel files
             if: ${{ matrix.ezc3d_bool == 'OFF' }}
             uses: actions/upload-artifact@v4
             with:
                 name: ${{ matrix.label }}-${{ env.date }}
-                path: ~/install_core/sdk/Python/dist/*.whl
+                path: |
+                    ~/install_core/sdk/Python/dist/*.whl
+                    ~/ezc3d/dist/*.whl
+
+
+
+
+
+
+
 
 
 
