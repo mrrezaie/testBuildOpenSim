@@ -81,16 +81,6 @@ jobs:
 
 
 
-          - name: Test
-            shell: bash
-            run: |
-                LABEL="${{ matrix.label }}"
-                SUFFIX="${LABEL: -3}"
-                python -m wheel unpack ezc3d-${{ matrix.ezc3d_version }}-cp$SUFFIX-cp$SUFFIX-win_amd64.whl
-
-
-
-
           # - name: Clone opensim-core repository
           #   run: |
           #       cd ~
@@ -272,23 +262,6 @@ jobs:
             run: |
                 chdir ~/ezc3d
                 python setup.py bdist_wheel -- -G"Visual Studio 17 2022" -A x64
-
-
-          # - name: Find wheel file
-          #   shell: pwsh
-          #   run: |
-          #       chdir ~/install_core/sdk/Python/dist
-          #       $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
-          #       echo "OSIM_WHEEL=$($wheel.Name)" >> $env:GITHUB_ENV
-
-          #       chdir ~/ezc3d/dist/
-          #       $wheel = Get-ChildItem -Path dist -Filter *.whl | Select-Object -First 1
-          #       echo "EZC3D_WHEEL=$($wheel.Name)" >> $env:GITHUB_ENV
-
-          # - name: Use the wheel name
-          #   run: |
-          #       echo "OpenSim wheel is $env:OSIM_WHEEL"
-          #       echo "Ezc3d wheel is $env:EZC3D_WHEEL"
 
 
           - name: Clean and copy the wheel files
