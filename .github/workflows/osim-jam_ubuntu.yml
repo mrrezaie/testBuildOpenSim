@@ -1,0 +1,199 @@
+name: osim-core-ubuntu
+
+on: 
+    push:
+    schedule:
+      - cron: '0 0 1 * *' # monthly
+
+jobs:
+
+    ubuntu:
+
+        env:
+            c3d_parser: 'None'
+
+
+        strategy:
+            matrix:
+                include:
+
+                  - label: 'osim_jam_api_ubu24_py311'
+                    python_version: '3.11.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-24.04
+
+                  - label: 'osim_jam_api_ubu24_py312'
+                    python_version: '3.12.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-24.04
+
+                  - label: 'osim_jam_api_ubu24_py313'
+                    python_version: '3.13.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-24.04
+
+                  - label: 'osim_jam_api_ubu24_py314'
+                    python_version: '3.14.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-24.04
+
+                  - label: 'osim_jam_api_ubu22_py310'
+                    python_version: '3.10.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-22.04
+
+                  - label: 'osim_jam_api_ubu22_py311'
+                    python_version: '3.11.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-22.04
+
+                  - label: 'osim_jam_api_ubu22_py312'
+                    python_version: '3.12.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-22.04
+
+                  - label: 'osim_jam_api_ubu22_py313'
+                    python_version: '3.13.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-22.04
+
+                  - label: 'osim_jam_api_ubu22_py314'
+                    python_version: '3.14.*'
+                    numpy_version: '2.*'
+                    os_version: ubuntu-22.04
+
+        name: ${{ matrix.label }}
+        runs-on: ${{ matrix.os_version }}
+
+        steps:
+          - uses: actions/checkout@v4
+
+          - name: Install Python
+            uses: actions/setup-python@v4
+            with:
+                python-version: ${{ matrix.python_version }}
+
+          - name: Install Numpy
+            run: |
+                pip install pip --upgrade
+                # pip install numpy==${{ matrix.numpy_version }}
+                pip install numpy==${{ matrix.numpy_version }}
+
+          - name: Install packages
+            run: sudo apt-get update && sudo apt-get install --yes build-essential libtool autoconf pkg-config gfortran libopenblas-dev liblapack-dev freeglut3-dev libxi-dev libxmu-dev doxygen patchelf
+
+          # - name: Cache SWIG
+          #   id: cache-swig
+          #   uses: actions/cache@v3
+          #   with:
+          #       path: ~/swig
+          #       key: ${{ runner.os }}-swig
+
+          - name: Install SWIG
+            # if: steps.cache-swig.outputs.cache-hit != 'true'
+            run: |
+                mkdir ~/swig-source && cd ~/swig-source
+                wget https://github.com/swig/swig/archive/refs/tags/v4.1.1.tar.gz
+                tar xzf v4.1.1.tar.gz && cd swig-4.1.1
+                sh autogen.sh && ./configure --prefix=$HOME/swig --disable-ccache
+                make && make -j4 install
+
+          # - name: Clone opensim-core repository
+          #   run: |
+          #       cd ~
+          #       git clone --single-branch --branch opensim_jam https://github.com/mrrezaie/opensim-core.git opensim-core
+          #       # git clone https://github.com/mrrezaie/opensim-jam-core.git opensim-core
+
+
+          - name: Checkout opensim-core repository
+            uses: actions/checkout@v4
+            with:
+                repository: mrrezaie/opensim-core
+                path: opensim-core
+                ref: opensim_jam
+
+
+          - name: Copy to home
+            run: |
+                cp -r $GITHUB_WORKSPACE/opensim-core ~
+                ls ~/opensim-core
+
+
+          - name: Cache dependencies
+            id: cache-dependencies
+            uses: actions/cache@v3
+            with:
+                path: ~/opensim_dependencies_install
+                key: ${{ runner.os }}-dependencies-${{ hashFiles('dependencies/*') }}
+
+
+          - name: Build dependencies
+            # if: steps.cache-dependencies.outputs.cache-hit != 'true'
+            run: |
+                mkdir ~/build_deps
+                cd ~/build_deps
+                DEP_CMAKE_ARGS=(~/opensim-core/dependencies -LAH)
+                DEP_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim_dependencies_install)
+                DEP_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
+                DEP_CMAKE_ARGS+=(-DSUPERBUILD_ezc3d=ON)
+                DEP_CMAKE_ARGS+=(-DOPENSIM_WITH_CASADI=ON)
+                # DEP_CMAKE_ARGS+=(-DOPENSIM_DISABLE_LOG_FILE=ON)
+                printf '%s\n' "${DEP_CMAKE_ARGS[@]}"
+                cmake "${DEP_CMAKE_ARGS[@]}"
+                # make --jobs 4
+                cmake --build . --config Release -j4
+
+          - name: Configure opensim-core
+            id: configure
+            run: |
+                mkdir ~/build
+                cd ~/build
+                OSIM_CMAKE_ARGS=(~/opensim-core -LAH)
+                OSIM_CMAKE_ARGS+=(-G"Unix Makefiles")
+                OSIM_CMAKE_ARGS+=(-DCMAKE_INSTALL_PREFIX=~/opensim_core_install)
+                OSIM_CMAKE_ARGS+=(-DCMAKE_BUILD_TYPE=Release)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_DEPENDENCIES_DIR=~/opensim_dependencies_install)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_C3D_PARSER=${{ env.c3d_parser}})
+                OSIM_CMAKE_ARGS+=(-DBUILD_PYTHON_WRAPPING=on)
+                OSIM_CMAKE_ARGS+=(-DBUILD_JAVA_WRAPPING=off)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_PYTHON_STANDALONE=on)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_COPY_DEPENDENCIES=on)
+                OSIM_CMAKE_ARGS+=(-DSWIG_DIR=~/swig/share/swig)
+                OSIM_CMAKE_ARGS+=(-DSWIG_EXECUTABLE=~/swig/bin/swig)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_INSTALL_UNIX_FHS=OFF)
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_DOXYGEN_USE_MATHJAX=off)
+                # TODO: Update to simbody.github.io/latest
+                OSIM_CMAKE_ARGS+=(-DOPENSIM_SIMBODY_DOXYGEN_LOCATION="https://simbody.github.io/simtk.org/api_docs/simbody/latest/")
+                OSIM_CMAKE_ARGS+=(-DCMAKE_CXX_FLAGS="")
+                printf '%s\n' "${OSIM_CMAKE_ARGS[@]}"
+                cmake "${OSIM_CMAKE_ARGS[@]}"
+                VERSION=`cmake -L . | grep OPENSIM_QUALIFIED_VERSION | cut -d "=" -f2`
+                echo $VERSION
+                echo "VERSION=$VERSION" >> $GITHUB_ENV
+                echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          - name: Build opensim-core
+            run: |
+              cd ~/build
+              # make --jobs 4
+              # make --jobs 4 install
+              cmake --build . --config Release -j4
+              cmake --install .
+
+
+          - name: Paths
+            run: |
+                dir ~/
+                dir ~/opensim_core_install
+                dir ~/opensim_core_install/sdk/Python
+
+          - name: Set current date
+            id: date
+            run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
+          - name: Upload opensim-core
+            uses: actions/upload-artifact@v4
+            with:
+              name: ${{ matrix.label }}-${{ env.date }}
+              path: ~/opensim_core_install
+
