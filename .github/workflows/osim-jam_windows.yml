@@ -58,12 +58,6 @@ jobs:
 
         steps:
 
-          - name: Test
-            shell: bash
-            run: |
-                LABEL="${{ matrix.label[-3:] }}"
-                echo "Last 3 characters of label: $LABEL"
-
 
           - name: Install SWIG
             run: |
@@ -79,10 +73,20 @@ jobs:
                 python-version: ${{ matrix.python_version }}
 
 
+
           - name: Install NumPy 
             run: |
                 python -m pip install --upgrade pip
                 python -m pip install numpy==${{ env.numpy_version }} setuptools wheel
+
+
+
+          - name: Test
+            shell: bash
+            run: |
+                LABEL="${{ matrix.label }}"
+                SUFFIX="${LABEL: -3}"
+                python -m wheel unpack ezc3d-${{ matrix.ezc3d_version }}-cp$SUFFIX-cp$SUFFIX-win_amd64.whl
 
 
 
@@ -289,9 +293,15 @@ jobs:
 
           - name: Clean and copy the wheel files
             if: ${{ matrix.gui == 'OFF' }}
+            shell: bash
             run: |
-                chdir ~/ezc3d/dist/
+                cd ~/ezc3d/dist/
                 ls .
+
+                LABEL="${{ matrix.label }}"
+                SUFFIX="${LABEL: -3}"
+
+                python -m wheel unpack ezc3d-${{ matrix.ezc3d_version }}-cp$SUFFIX-cp$SUFFIX-win_amd64.whl
                 rm -r ezc3d-${{ env.ezc3d_version }}/ezc3d-${{ env.ezc3d_version }}.data
                 python -m wheel pack ezc3d-${{ env.ezc3d_version }}
 
