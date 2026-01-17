@@ -60,7 +60,7 @@ jobs:
 
           - name: Test
             run: |
-                echo "${{ substr(matrix.label, length(matrix.label) - 3, 3) }}"
+                echo "${{ matrix.label.substring(matrix.label.length - 3) }}"
 
 
           - name: Install SWIG
