@@ -269,7 +269,7 @@ jobs:
             run: |
                 chdir ~/ezc3d/dist/
                 ls .
-                python -m wheel unpack ${{ env:EZC3D_WHEEL }}
+                python -m wheel unpack "$env:EZC3D_WHEEL"
                 rm -r ezc3d-${{ matrix.ezc3d_version }}/ezc3d-${{ matrix.ezc3d_version }}.data
                 python -m wheel pack ezc3d-${{ matrix.ezc3d_version }}
 
