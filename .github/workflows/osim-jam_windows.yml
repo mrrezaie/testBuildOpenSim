@@ -60,7 +60,9 @@ jobs:
 
           - name: Test
             run: |
-                echo "${{ matrix.label.substring(matrix.label.length - 3) }}"
+                LABEL="${{ matrix.label }}"
+                LAST_3_CHARACTERS="${LABEL: -3}"
+                echo "Last 3 characters of label: $LAST_3_CHARACTERS"
 
 
           - name: Install SWIG
