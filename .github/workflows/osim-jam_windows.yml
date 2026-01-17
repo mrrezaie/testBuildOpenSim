@@ -59,6 +59,7 @@ jobs:
         steps:
 
           - name: Test
+            shell: bash
             run: |
                 LABEL="${{ matrix.label }}"
                 LAST_3_CHARACTERS="${LABEL: -3}"
