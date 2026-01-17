@@ -61,9 +61,8 @@ jobs:
           - name: Test
             shell: bash
             run: |
-                LABEL="${{ matrix.label }}"
-                LAST_3_CHARACTERS="${LABEL: -3}"
-                echo "Last 3 characters of label: $LAST_3_CHARACTERS"
+                LABEL="${{ matrix.label[-3:] }}"
+                echo "Last 3 characters of label: $LABEL"
 
 
           - name: Install SWIG
