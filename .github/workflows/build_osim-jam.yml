@@ -55,7 +55,7 @@ jobs:
 
         name: ${{ matrix.label }}
         runs-on: windows-latest # 2025
-        if: github.event.schedule.cron == '0 0 * * *'
+        if: github.event.schedule == '0 0 * * *'
         # defaults:
         #     run:
         #         shell: powershell
@@ -475,7 +475,7 @@ jobs:
 
         name: ${{ matrix.label }}
         runs-on: ${{ matrix.os_version }}
-        if: github.event.schedule.cron == '0 0 1 * *'
+        if: github.event.schedule == '0 0 1 * *'
 
         steps:
           - uses: actions/checkout@v4
