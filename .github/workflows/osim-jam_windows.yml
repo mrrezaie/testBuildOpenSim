@@ -58,6 +58,10 @@ jobs:
 
         steps:
 
+          - name: Test
+            run: |
+                echo "${{ substr(matrix.label, length(matrix.label) - 3, 3) }}"
+
 
           - name: Install SWIG
             run: |
@@ -286,7 +290,7 @@ jobs:
             run: |
                 chdir ~/ezc3d/dist/
                 ls .
-                python -m wheel unpack ezc3d-${{ matrix.ezc3d_version }}-cp${{ matrix.label[-3:] }}-cp${{ matrix.label[-3:] }}-win_amd64.whl
+                # python -m wheel unpack ezc3d-${{ matrix.ezc3d_version }}-cp${{ matrix.label[-3:] }}-cp${{ matrix.label[-3:] }}-win_amd64.whl
                 rm -r ezc3d-${{ env.ezc3d_version }}/ezc3d-${{ env.ezc3d_version }}.data
                 python -m wheel pack ezc3d-${{ env.ezc3d_version }}
 
