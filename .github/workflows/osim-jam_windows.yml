@@ -121,12 +121,12 @@ jobs:
                 mkdir ~/build_deps
                 chdir ~/build_deps
                 
-                cmake -E env CXXFLAGS="/W3 /MD" \
-                    cmake ~/opensim-core/dependencies \
-                    -G "Visual Studio 17 2022" \
-                    -A x64 \
-                    -DSUPERBUILD_ezc3d=ON \
-                    -DOPENSIM_WITH_CASADI=ON \
+                cmake -E env CXXFLAGS="/W3 /MD" `
+                    cmake ~/opensim-core/dependencies `
+                    -G "Visual Studio 17 2022" `
+                    -A x64 `
+                    -DSUPERBUILD_ezc3d=ON `
+                    -DOPENSIM_WITH_CASADI=ON `
                     -DCMAKE_INSTALL_PREFIX=~/install_deps
 
                 cmake --build . --config Release --parallel 4
@@ -167,15 +167,15 @@ jobs:
                 mkdir ~/build_core
                 chdir ~/build_core
                 
-                cmake -E env CXXFLAGS="/W3 /MD -DSKIP_TIMING" \
-                    cmake ~/opensim-core \
-                    -G "Visual Studio 17 2022" \
-                    -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps \
-                    -DOPENSIM_C3D_PARSER=${{ matrix.c3d_parser }} \
-                    -DBUILD_PYTHON_WRAPPING=ON \
-                    -DOPENSIM_WITH_CASADI=ON \
-                    -DBUILD_JAVA_WRAPPING=ON \
-                    -DBUILD_TESTING=OFF \
+                cmake -E env CXXFLAGS="/W3 /MD -DSKIP_TIMING" `
+                    cmake ~/opensim-core `
+                    -G "Visual Studio 17 2022" `
+                    -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps `
+                    -DOPENSIM_C3D_PARSER=${{ matrix.c3d_parser }} `
+                    -DBUILD_PYTHON_WRAPPING=ON `
+                    -DOPENSIM_WITH_CASADI=ON `
+                    -DBUILD_JAVA_WRAPPING=ON `
+                    -DBUILD_TESTING=OFF `
                     -DCMAKE_INSTALL_PREFIX=~/install_core
                 
                 cmake --build . --config Release --parallel 4
