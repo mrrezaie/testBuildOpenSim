@@ -495,15 +495,20 @@ jobs:
                 rm -r ezc3d-${{ matrix.ezc3d_version }}/ezc3d-${{ matrix.ezc3d_version }}.data
                 python -m wheel pack ezc3d-${{ matrix.ezc3d_version }}
 
+                mkdir ~/wheel_files
+                cp ~/install_core/sdk/Python/dist/*.whl ~/wheel_files
+                cp ~/ezc3d/dist/*.whl ~/wheel_files
+
 
           - name: Upload opensim API and ezc3d wheel files
             if: ${{ matrix.ezc3d_bool == 'OFF' }}
             uses: actions/upload-artifact@v4
             with:
                 name: ${{ matrix.label }}-${{ env.date }}
-                path: |
-                    ~/install_core/sdk/Python/dist/*.whl
-                    ~/ezc3d/dist/*.whl
+                path: ~/wheel_files
+                # path: |
+                #     ~/install_core/sdk/Python/dist/*.whl
+                #     ~/ezc3d/dist/*.whl
 
 
 
