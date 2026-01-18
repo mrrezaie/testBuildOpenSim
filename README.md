@@ -1,7 +1,7 @@
 ### A custom-built OpeSim (JAM) API
 
 Modifications:
-1. COMAK without muscle volume weight
+1. COMAK with optional use_muscle_volume property
 2. OpenSim API without ezc3d
 
 Notes:
