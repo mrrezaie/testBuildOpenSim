@@ -274,7 +274,7 @@ jobs:
                 LABEL="${{ matrix.label }}"
                 SUFFIX="${LABEL: -3}"
 
-                python -m wheel unpack ezc3d-${{ matrix.ezc3d_version }}-cp$SUFFIX-cp$SUFFIX-win_amd64.whl
+                python -m wheel unpack ezc3d-${{ env.ezc3d_version }}-cp$SUFFIX-cp$SUFFIX-win_amd64.whl
                 rm -r ezc3d-${{ env.ezc3d_version }}/ezc3d-${{ env.ezc3d_version }}.data
                 python -m wheel pack ezc3d-${{ env.ezc3d_version }}
 
