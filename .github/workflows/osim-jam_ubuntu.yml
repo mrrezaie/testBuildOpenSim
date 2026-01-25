@@ -187,6 +187,14 @@ jobs:
                 dir ~/opensim_core_install
                 dir ~/opensim_core_install/sdk/Python
 
+
+          - name: Build opensim wheel file
+            if: ${{ matrix.gui == 'OFF' }}
+            run: |
+                cd ~/opensim_core_install/sdk/Python
+                python setup.py bdist_wheel
+
+
           - name: Set current date
             id: date
             run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_ENV
@@ -195,5 +203,5 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: ${{ matrix.label }}-${{ env.date }}
-              path: ~/opensim_core_install
+              path: ~/opensim_core_install/sdk/Python/dist/*.whl
 
