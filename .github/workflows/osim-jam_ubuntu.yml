@@ -203,5 +203,5 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: ${{ matrix.label }}-${{ env.date }}
-              path: ~/opensim_core_install/sdk/Python/dist/*.whl
+              path: ~/opensim_core_install # /sdk/Python/dist/*.whl
 
