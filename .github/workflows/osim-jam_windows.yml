@@ -44,7 +44,7 @@ jobs:
 
                   - label: 'osim_org_api_win64_py314'
                     python_version: '3.14.*'
-                    user: opensim-org
+                    user: mrrezaie
                     branch: main
                     c3d_parser: 'ezc3d'
                     gui: 'OFF'
