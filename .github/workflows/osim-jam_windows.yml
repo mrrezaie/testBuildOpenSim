@@ -1,7 +1,7 @@
 name: osim-core-windows
 
 on: 
-    workflow_dispatch:
+    workflow_dispatch: # trigger the workflow manually
     push:
     schedule:
       - cron: '0 0 * * *' # daily

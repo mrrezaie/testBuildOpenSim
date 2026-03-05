@@ -1,6 +1,7 @@
 name: osim-core-ubuntu
 
 on: 
+    workflow_dispatch: # trigger the workflow manually
     push:
     schedule:
       - cron: '0 0 1 * *' # monthly
