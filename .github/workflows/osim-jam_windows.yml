@@ -35,19 +35,19 @@ jobs:
                     c3d_parser: 'None'
                     gui: 'OFF'
 
-                  - label: 'osim_jam_gui_win64_py314'
-                    python_version: '3.14.*'
-                    user: mrrezaie
-                    branch: opensim_jam
-                    c3d_parser: 'ezc3d'
-                    gui: 'ON'
+                  # - label: 'osim_jam_gui_win64_py314'
+                  #   python_version: '3.14.*'
+                  #   user: mrrezaie
+                  #   branch: opensim_jam
+                  #   c3d_parser: 'ezc3d'
+                  #   gui: 'ON'
 
-                  - label: 'osim_org_gui_win64_py314'
-                    python_version: '3.14.*'
-                    user: opensim-org
-                    branch: main
-                    c3d_parser: 'ezc3d'
-                    gui: 'ON'
+                  # - label: 'osim_org_gui_win64_py314'
+                  #   python_version: '3.14.*'
+                  #   user: opensim-org
+                  #   branch: main
+                  #   c3d_parser: 'ezc3d'
+                  #   gui: 'ON'
 
         name: ${{ matrix.label }}
         runs-on: windows-latest # 2025
