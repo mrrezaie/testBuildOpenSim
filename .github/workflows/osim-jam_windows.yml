@@ -28,12 +28,12 @@ jobs:
                 # os: [windows-2022]
                 include:
 
-                  - label: 'osim_jam_api_win64_py314'
-                    python_version: '3.14.*'
-                    user: mrrezaie
-                    branch: opensim_jam
-                    c3d_parser: 'None'
-                    gui: 'OFF'
+                  # - label: 'osim_jam_api_win64_py314'
+                  #   python_version: '3.14.*'
+                  #   user: mrrezaie
+                  #   branch: opensim_jam
+                  #   c3d_parser: 'None'
+                  #   gui: 'OFF'
 
                   # - label: 'osim_jam_gui_win64_py314'
                   #   python_version: '3.14.*'
