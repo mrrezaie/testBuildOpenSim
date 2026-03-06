@@ -315,28 +315,27 @@ jobs:
 
 
 
-          - name: Set up JDK 1.8
+          - name: Set up JDK 11
             if: ${{ matrix.gui == 'ON' }}
             uses: actions/setup-java@v4
             with:
                 distribution: 'temurin'
-                java-version: 8
+                java-version: 11
 
 
 
 
 
 
-          - name: Install Netbeans 12.3
+          - name: Install Netbeans 17
             if: ${{ matrix.gui == 'ON' }}
             run: |
-                (New-Object System.Net.WebClient).DownloadFile("https://archive.apache.org/dist/netbeans/netbeans/12.3/Apache-NetBeans-12.3-bin-windows-x64.exe", "Apache-NetBeans-12.3-bin-windows-x64.exe")
-                $expectedHash = "0695d87d9c72dcf3738672ba83eb273dda02066fa5eee80896cb6ccf79175840367a13d22ab3cb9838dffaa9a219dd1f73aee0e27c085e5310da2e3bbbc92b2c"
-                $hashFromFile = Get-FileHash -Algorithm SHA512 -Path .\Apache-NetBeans-12.3-bin-windows-x64.exe
-                if (($hashFromFile.Hash) -ne ($expectedHash)) { Write-Error "Hash doesn't match." }
-                .\Apache-NetBeans-12.3-bin-windows-x64.exe --silent | Out-Null # This installer is gregarious.
-                echo "ANT_HOME=C:\\Program Files\\NetBeans-12.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
-
+              (New-Object System.Net.WebClient).DownloadFile("https://archive.apache.org/dist/netbeans/netbeans-installers/17/Apache-NetBeans-17-bin-windows-x64.exe", "Apache-NetBeans-17-bin-windows-x64.exe")
+              $expectedHash = "c3d7a34184c4021486751fbc3878eb2376677674ff8d6d4bf87017fd2434122c8438072aa891e535fa0fa9aeafcb49ad833a61903180772369d99571b073baac"
+              $hashFromFile = Get-FileHash -Algorithm SHA512 -Path .\Apache-NetBeans-17-bin-windows-x64.exe
+              if (($hashFromFile.Hash) -ne ($expectedHash)) { Write-Error "Hash doesn't match." }
+              .\Apache-NetBeans-17-bin-windows-x64.exe --silent | Out-Null # This installer is gregarious.
+              echo "ANT_HOME=C:\\Program Files\\NetBeans-17.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
 
           # - name: Setup NetBeans distribution
           #   uses: cjmach/setup-netbeans-action@v2.1
@@ -373,7 +372,13 @@ jobs:
                 dir ~/opensim-gui/opensim-models
 
 
-
+          - name: Download VC++ Redistributable
+            shell: pwsh
+            run: |
+              $url = "https://aka.ms/vs/17/vc_redist.x64.exe"
+              $dest = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.44.35112\vcredist_x64.exe"
+              Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
+              echo "msvc.redist.exe=$dest" >> $env:GITHUB_ENV
 
 
           - name: Build GUI
@@ -386,7 +391,7 @@ jobs:
                 cmake ~/opensim-gui/ `
                 -G"Visual Studio 17 2022" -A x64 `
                 -DCMAKE_PREFIX_PATH=~/install_core `
-                -DANT_ARGS="-Dnbplatform.default.netbeans.dest.dir=C:/Program Files/NetBeans-12.3/netbeans;-Dnbplatform.default.harness.dir=C:/Program Files/NetBeans-12.3/netbeans/harness"
+                -DANT_ARGS="-Dnbplatform.default.netbeans.dest.dir=C:/Program Files/NetBeans-17/netbeans;-Dnbplatform.default.harness.dir=C:/Program Files/NetBeans-17/netbeans/harness";-Dmsvc.redist.exe=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.44.35112\vcredist_x64.exe"
                 cmake --build . --target CopyOpenSimCore --config Release
                 cmake --build . --target CopyModels --config Release
                 cmake --build . --target PrepareInstaller --config Release
@@ -394,6 +399,46 @@ jobs:
                 cmake --build . --target CopyVisualizer --config Release
 
 
+
+
+          - name: Add jxbrowser files to installer content
+            run: |
+              # Set root and directories
+              # $env:GITHUB_WORKSPACE
+              $root = ~ 
+              $nbmDir = "$root\prebuilt_jxb"
+              $extractDir = "$nbmDir\extracted"
+              $installerContentPath = "$root\Gui\opensim\dist\installer\opensim\opensim"
+          
+              # Create prebuilt directory
+              New-Item -ItemType Directory -Force -Path $nbmDir
+          
+              # Download the NBM file
+              Invoke-WebRequest -Uri "https://github.com/opensim-org/opensim-visualizer/releases/download/v4.6.0/org-opensim-javabrowser.nbm" `
+                                -OutFile "$nbmDir\org-opensim-javabrowser.nbm"
+          
+              # Extract the NBM
+              Expand-Archive -Path "$nbmDir\org-opensim-javabrowser.nbm" -DestinationPath $extractDir -Force
+          
+              # Create installer modules directory
+              New-Item -ItemType Directory -Force -Path "$installerContentPath/modules/"
+          
+              # Copy the main JAR
+              Write-Host "Copying org-opensim-javabrowser.jar to installer content..."
+              Copy-Item -Path "$extractDir\netbeans\modules\org-opensim-javabrowser.jar" `
+                        -Destination "$installerContentPath/modules/" -Force
+          
+              # Copy any ext JARs if they exist
+              if (Test-Path "$extractDir\netbeans\modules\ext\") {
+                  New-Item -ItemType Directory -Force -Path "$installerContentPath/modules/ext/"
+                  Copy-Item -Path "$extractDir\netbeans\modules\ext\*.jar" `
+                            -Destination "$installerContentPath/modules/ext/" -Force
+              }
+          
+              # Verify files copied
+              Write-Host "JAR files now in installer content:"
+              Get-ChildItem -Path "$installerContentPath" -Recurse -Filter "*.jar" | Select-Object FullName
+        
 
           # - name: Build GUI installer
           #   run: |
