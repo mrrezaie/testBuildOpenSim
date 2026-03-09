@@ -373,6 +373,7 @@ jobs:
 
 
           - name: Download VC++ Redistributable
+            if: ${{ matrix.gui == 'ON' }}
             shell: pwsh
             run: |
               $url = "https://aka.ms/vs/17/vc_redist.x64.exe"
@@ -402,6 +403,7 @@ jobs:
 
 
           - name: Add jxbrowser files to installer content
+            if: ${{ matrix.gui == 'ON' }}
             run: |
               # Set root and directories
               # $env:GITHUB_WORKSPACE
