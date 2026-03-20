@@ -51,12 +51,12 @@ jobs:
                   #   gui: 'OFF'
 
 
-                  # - label: 'osim_org_gui_win64_py314'
-                  #   python_version: '3.14.*'
-                  #   user: opensim-org
-                  #   branch: main
-                  #   c3d_parser: 'ezc3d'
-                  #   gui: 'ON'
+                  - label: 'osim_org_gui_win64_py314'
+                    python_version: '3.14.*'
+                    user: opensim-org
+                    branch: main
+                    c3d_parser: 'ezc3d'
+                    gui: 'ON'
 
         name: ${{ matrix.label }}
         runs-on: windows-latest # 2025
