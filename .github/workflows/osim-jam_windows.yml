@@ -363,7 +363,7 @@ jobs:
             if: ${{ matrix.gui == 'ON' }}
             run: |
                 cd ~/opensim-gui
-                git submodule update --init --recursive -- opensim-visualizer Gui/opensim/threejs
+                git submodule update --init --recursive -- opensim-visualizer Gui/opensim/opensim-viewer
 
                 git clone https://github.com/opensim-org/opensim-models.git opensim-models
                 # git clone https://github.com/opensim-org/opensim-visualizer.git opensim-visualizer
