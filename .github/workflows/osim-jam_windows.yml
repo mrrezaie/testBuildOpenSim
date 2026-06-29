@@ -59,22 +59,13 @@ jobs:
                     gui: 'ON'
 
         name: ${{ matrix.label }}
-        runs-on: windows-latest # 2025
+        runs-on: windows-2022 # latest # 2025
         # defaults:
         #     run:
         #         shell: powershell
 
 
         steps:
-
-          - name: Configure and build Visual Studio 17 2022
-            run: >
-              cmake -S . -B build `
-              -G "Visual Studio 17 2022" `
-              -A x64
-              
-              cmake --build build --config Release
-
 
           - name: Install SWIG
             run: |
