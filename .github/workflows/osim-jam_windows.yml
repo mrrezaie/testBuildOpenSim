@@ -69,9 +69,10 @@ jobs:
 
           - name: Configure and build Visual Studio 17 2022
             run: >
-              cmake -S . -B build
-              -G "Visual Studio 17 2022"
+              cmake -S . -B build `
+              -G "Visual Studio 17 2022" `
               -A x64
+              
               cmake --build build --config Release
 
 
@@ -139,7 +140,8 @@ jobs:
                 
                 cmake -E env CXXFLAGS="/W3 /MD" `
                     cmake ~/opensim-core/dependencies `
-                    -G "Visual Studio 17 2022" `
+                    `
+                     "Visual Studio 17 2022" `
                     -A x64 `
                     -DSUPERBUILD_ezc3d=ON `
                     -DOPENSIM_WITH_CASADI=ON `
