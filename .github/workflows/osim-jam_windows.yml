@@ -327,15 +327,49 @@ jobs:
 
 
 
+
+
+
+
+
+          - name: Cache NetBeans install
+            if: ${{ matrix.gui == 'ON' }}
+            id: cache-netbeans
+            uses: actions/cache@v4
+            with:
+              path: C:\Program Files\NetBeans-17.0
+              key: ${{ runner.os }}-netbeans-17
+
+
           - name: Install Netbeans 17
             if: ${{ matrix.gui == 'ON' }}
             run: |
-              (New-Object System.Net.WebClient).DownloadFile("https://archive.apache.org/dist/netbeans/netbeans-installers/17/Apache-NetBeans-17-bin-windows-x64.exe", "Apache-NetBeans-17-bin-windows-x64.exe")
-              $expectedHash = "c3d7a34184c4021486751fbc3878eb2376677674ff8d6d4bf87017fd2434122c8438072aa891e535fa0fa9aeafcb49ad833a61903180772369d99571b073baac"
-              $hashFromFile = Get-FileHash -Algorithm SHA512 -Path .\Apache-NetBeans-17-bin-windows-x64.exe
-              if (($hashFromFile.Hash) -ne ($expectedHash)) { Write-Error "Hash doesn't match." }
-              .\Apache-NetBeans-17-bin-windows-x64.exe --silent | Out-Null # This installer is gregarious.
+              if (-Not (Test-Path "C:\Program Files\NetBeans-17.0")) {
+                (New-Object System.Net.WebClient).DownloadFile(
+                  "https://archive.apache.org/dist/netbeans/netbeans-installers/17/Apache-NetBeans-17-bin-windows-x64.exe",
+                  "Apache-NetBeans-17-bin-windows-x64.exe"
+                )
+
+                $expectedHash = "c3d7a34184c4021486751fbc3878eb2376677674ff8d6d4bf87017fd2434122c8438072aa891e535fa0fa9aeafcb49ad833a61903180772369d99571b073baac"
+                $hashFromFile = Get-FileHash -Algorithm SHA512 -Path .\Apache-NetBeans-17-bin-windows-x64.exe
+
+                if (($hashFromFile.Hash) -ne ($expectedHash)) {
+                  Write-Error "Hash doesn't match."
+                }
+
+                .\Apache-NetBeans-17-bin-windows-x64.exe --silent | Out-Null
+              }
+
               echo "ANT_HOME=C:\\Program Files\\NetBeans-17.0\\netbeans\\extide\\ant" >> $GITHUB_ENV
+
+
+
+
+
+
+
+
+
 
           # - name: Setup NetBeans distribution
           #   uses: cjmach/setup-netbeans-action@v2.1
