@@ -342,7 +342,7 @@ jobs:
 
 
           - name: Install Netbeans 17
-            if: ${{ matrix.gui == 'ON' }}
+            if: ${{ steps.cache-netbeans.outputs.cache-hit != 'true' }} && ${{ matrix.gui == 'ON' }}
             run: |
               if (-Not (Test-Path "C:\Program Files\NetBeans-17.0")) {
                 (New-Object System.Net.WebClient).DownloadFile(
