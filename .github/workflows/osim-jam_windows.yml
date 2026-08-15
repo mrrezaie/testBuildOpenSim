@@ -43,7 +43,7 @@ jobs:
                     c3d_parser: 'ezc3d'
                     gui: 'ON'
 
-                  - label: 'osim_jam_gui_win64_py314'
+                  - label: 'osim_jam_MusPhyio_gui_win64_py314'
                     python_version: '3.14.*'
                     user: mrrezaie
                     branch: opensim_jam_physiological_muscles
