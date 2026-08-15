@@ -143,8 +143,8 @@ jobs:
                     -DOPENSIM_WITH_CASADI=ON `
                     -DCMAKE_INSTALL_PREFIX=~/install_deps `
                     -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL `
-                    -DCMAKE_CXX_FLAGS="/W0 /MP" `
-                    -DCMAKE_C_FLAGS="/W0 /MP"                    
+                    -DCMAKE_CXX_FLAGS="/EHsc /W0 /MP" `
+                    -DCMAKE_C_FLAGS="/EHsc /W0 /MP"                    
 
                 cmake --build . --config Release --parallel 4
 
@@ -194,8 +194,8 @@ jobs:
                   -DBUILD_TESTING=OFF `
                   -DCMAKE_INSTALL_PREFIX=~/install_core `
                   -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL `
-                  -DCMAKE_CXX_FLAGS="/W0 /MP" `
-                  -DCMAKE_C_FLAGS="/W0 /MP"
+                  -DCMAKE_CXX_FLAGS="/EHsc /W0 /MP" `
+                  -DCMAKE_C_FLAGS="/EHsc /W0 /MP"
                 
                 cmake --build . --config Release --parallel 4
                 cmake --install .
