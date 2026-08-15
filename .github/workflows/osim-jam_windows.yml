@@ -43,6 +43,13 @@ jobs:
                     c3d_parser: 'ezc3d'
                     gui: 'ON'
 
+                  - label: 'osim_jam_gui_win64_py314'
+                    python_version: '3.14.*'
+                    user: mrrezaie
+                    branch: opensim_jam_physiological_muscles
+                    c3d_parser: 'ezc3d'
+                    gui: 'ON'
+
                   # - label: 'osim_org_api_win64_py314'
                   #   python_version: '3.14.*'
                   #   user: mrrezaie
@@ -53,8 +60,8 @@ jobs:
 
                   - label: 'osim_org_gui_win64_py314'
                     python_version: '3.14.*'
-                    user: mrrezaie
-                    branch: remove_millard_deprecations
+                    user: opensim-org
+                    branch: main
                     c3d_parser: 'ezc3d'
                     gui: 'ON'
 
