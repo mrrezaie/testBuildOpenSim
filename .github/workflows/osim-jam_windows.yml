@@ -320,10 +320,11 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: ${{ matrix.label }}-${{ env.date }}
-                path: ~/wheel_files
-                # path: |
-                #     ~/install_core/sdk/Python/dist/*.whl
-                #     ~/ezc3d/dist/*.whl
+                path: |
+                    ~/wheel_files
+                    ~/install_core
+                    # ~/install_core/sdk/Python/dist/*.whl
+                    # ~/ezc3d/dist/*.whl
 
 
 
