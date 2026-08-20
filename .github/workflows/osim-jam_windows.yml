@@ -55,14 +55,14 @@ jobs:
                     user: mrrezaie
                     branch: SO_compliant_tendons
                     c3d_parser: 'ezc3d'
-                    gui: 'ON'
+                    gui: 'OFF'
 
-                  - label: 'osim_bugCalc_gui_win64_py314'
-                    python_version: '3.14.*'
-                    user: mrrezaie
-                    branch: calcActiveFiberForceAlongTendon_bug
-                    c3d_parser: 'ezc3d'
-                    gui: 'ON'
+                  # - label: 'osim_bugCalc_gui_win64_py314'
+                  #   python_version: '3.14.*'
+                  #   user: mrrezaie
+                  #   branch: calcActiveFiberForceAlongTendon_bug
+                  #   c3d_parser: 'ezc3d'
+                  #   gui: 'ON'
 
                   # - label: 'osim_org_api_win64_py314'
                   #   python_version: '3.14.*'
@@ -71,12 +71,12 @@ jobs:
                   #   c3d_parser: 'ezc3d'
                   #   gui: 'OFF'
 
-                  - label: 'osim_org_gui_win64_py314'
-                    python_version: '3.14.*'
-                    user: opensim-org
-                    branch: main
-                    c3d_parser: 'ezc3d'
-                    gui: 'ON'
+                  # - label: 'osim_org_gui_win64_py314'
+                  #   python_version: '3.14.*'
+                  #   user: opensim-org
+                  #   branch: main
+                  #   c3d_parser: 'ezc3d'
+                  #   gui: 'ON'
 
         name: ${{ matrix.label }}
         runs-on: windows-2022 # latest # 2025
