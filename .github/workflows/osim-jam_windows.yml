@@ -222,7 +222,9 @@ jobs:
                 
 
           - name: Test opensim-core
-            run: ctest --parallel 4 --output-on-failure --build-config Release -E Java_*
+            run: |
+                chdir ~/build_core
+                ctest --parallel 4 --output-on-failure --build-config Release -E Java_*
           
           
           
