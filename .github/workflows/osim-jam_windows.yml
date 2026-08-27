@@ -89,7 +89,7 @@ jobs:
 
           - name: Install SWIG
             run: |
-                choco install swig --version 4.1.1 --yes --limit-output --allow-downgrade
+                choco install swig --version 4.4.1 --yes --limit-output --allow-downgrade
                 swig -swiglib
                 choco list
 
