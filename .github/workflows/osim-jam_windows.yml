@@ -43,19 +43,19 @@ jobs:
                   #   c3d_parser: 'ezc3d'
                   #   gui: 'ON'
 
-                  # - label: 'osim_jam_MusPhyio_gui_win64_py314'
-                  #   python_version: '3.14.*'
-                  #   user: mrrezaie
-                  #   branch: opensim_jam_physiological_muscles
-                  #   c3d_parser: 'ezc3d'
-                  #   gui: 'ON'
-
-                  - label: 'osim_SO_gui_win64_py314'
+                  - label: 'osim_jam_MusPhyio_gui_win64_py314'
                     python_version: '3.14.*'
                     user: mrrezaie
-                    branch: SO_compliant_tendons
+                    branch: opensim_jam_physiological_muscles
                     c3d_parser: 'ezc3d'
-                    gui: 'OFF'
+                    gui: 'ON'
+
+                  # - label: 'osim_SO_gui_win64_py314'
+                  #   python_version: '3.14.*'
+                  #   user: mrrezaie
+                  #   branch: SO_compliant_tendons
+                  #   c3d_parser: 'ezc3d'
+                  #   gui: 'OFF'
 
                   # - label: 'osim_bugCalc_gui_win64_py314'
                   #   python_version: '3.14.*'
@@ -71,12 +71,12 @@ jobs:
                   #   c3d_parser: 'ezc3d'
                   #   gui: 'OFF'
 
-                  # - label: 'osim_org_gui_win64_py314'
-                  #   python_version: '3.14.*'
-                  #   user: opensim-org
-                  #   branch: main
-                  #   c3d_parser: 'ezc3d'
-                  #   gui: 'ON'
+                  - label: 'osim_org_gui_win64_py314'
+                    python_version: '3.14.*'
+                    user: opensim-org
+                    branch: main
+                    c3d_parser: 'ezc3d'
+                    gui: 'ON'
 
         name: ${{ matrix.label }}
         runs-on: windows-2022 # latest # 2025
