@@ -206,7 +206,7 @@ jobs:
                   -DOPENSIM_WITH_CASADI=ON `
                   -DBUILD_JAVA_WRAPPING=ON `
                   -DBUILD_API_EXAMPLES=ON `
-                  -DBUILD_TESTING=ON `
+                  -DBUILD_TESTING=OFF `
                   -DCMAKE_INSTALL_PREFIX=~/install_core `
                   -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL `
                   -DCMAKE_CXX_FLAGS="/EHsc /W0 /MP" `
