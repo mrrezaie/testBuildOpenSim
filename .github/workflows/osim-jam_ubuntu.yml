@@ -38,30 +38,30 @@ jobs:
                     numpy_version: '2.*'
                     os_version: ubuntu-24.04
 
-                  - label: 'osim_jam_api_ubu22_py310'
-                    python_version: '3.10.*'
-                    numpy_version: '2.*'
-                    os_version: ubuntu-22.04
+                  # - label: 'osim_jam_api_ubu22_py310'
+                  #   python_version: '3.10.*'
+                  #   numpy_version: '2.*'
+                  #   os_version: ubuntu-22.04
 
-                  - label: 'osim_jam_api_ubu22_py311'
-                    python_version: '3.11.*'
-                    numpy_version: '2.*'
-                    os_version: ubuntu-22.04
+                  # - label: 'osim_jam_api_ubu22_py311'
+                  #   python_version: '3.11.*'
+                  #   numpy_version: '2.*'
+                  #   os_version: ubuntu-22.04
 
-                  - label: 'osim_jam_api_ubu22_py312'
-                    python_version: '3.12.*'
-                    numpy_version: '2.*'
-                    os_version: ubuntu-22.04
+                  # - label: 'osim_jam_api_ubu22_py312'
+                  #   python_version: '3.12.*'
+                  #   numpy_version: '2.*'
+                  #   os_version: ubuntu-22.04
 
-                  - label: 'osim_jam_api_ubu22_py313'
-                    python_version: '3.13.*'
-                    numpy_version: '2.*'
-                    os_version: ubuntu-22.04
+                  # - label: 'osim_jam_api_ubu22_py313'
+                  #   python_version: '3.13.*'
+                  #   numpy_version: '2.*'
+                  #   os_version: ubuntu-22.04
 
-                  - label: 'osim_jam_api_ubu22_py314'
-                    python_version: '3.14.*'
-                    numpy_version: '2.*'
-                    os_version: ubuntu-22.04
+                  # - label: 'osim_jam_api_ubu22_py314'
+                  #   python_version: '3.14.*'
+                  #   numpy_version: '2.*'
+                  #   os_version: ubuntu-22.04
 
         name: ${{ matrix.label }}
         runs-on: ${{ matrix.os_version }}
@@ -109,10 +109,12 @@ jobs:
           - name: Checkout opensim-core repository
             uses: actions/checkout@v4
             with:
-                repository: mrrezaie/opensim-core
+                # repository: mrrezaie/opensim-core
+                # path: opensim-core
+                # ref: opensim_jam
+                repository: opensim-jam-org/opensim-core
                 path: opensim-core
-                ref: opensim_jam
-
+                ref: main
 
           - name: Copy to home
             run: |
