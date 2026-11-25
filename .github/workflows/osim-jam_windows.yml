@@ -150,6 +150,7 @@ jobs:
                 chdir ~/build_deps
                 
                 cmake ~/opensim-core/dependencies `
+                    -LAH
                     -G "Visual Studio 17 2022" `
                     -A x64 `
                     -DSUPERBUILD_ezc3d=ON `
@@ -157,7 +158,7 @@ jobs:
                     -DCMAKE_INSTALL_PREFIX=~/install_deps `
                     -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL `
                     -DCMAKE_CXX_FLAGS="/EHsc /W0 /MP" `
-                    -DCMAKE_C_FLAGS="/EHsc /W0 /MP"                    
+                    -DCMAKE_C_FLAGS="/W0 /MP"                    
 
                 cmake --build . --config Release --parallel 4
 
@@ -198,19 +199,20 @@ jobs:
                 chdir ~/build_core
                 
                 cmake ~/opensim-core `
-                  -G "Visual Studio 17 2022" `
-                  -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps `
-                  -DOPENSIM_C3D_PARSER=${{ matrix.c3d_parser }} `
-                  -DBUILD_PYTHON_WRAPPING=ON `
-                  -DBUILD_PYTHON_WHEELS=ON `
-                  -DOPENSIM_WITH_CASADI=ON `
-                  -DBUILD_JAVA_WRAPPING=ON `
-                  -DBUILD_API_EXAMPLES=ON `
-                  -DBUILD_TESTING=OFF `
-                  -DCMAKE_INSTALL_PREFIX=~/install_core `
-                  -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL `
-                  -DCMAKE_CXX_FLAGS="/EHsc /W0 /MP" `
-                  -DCMAKE_C_FLAGS="/EHsc /W0 /MP"
+                    -LAH
+                    -G "Visual Studio 17 2022" `
+                    -A x64 -DOPENSIM_DEPENDENCIES_DIR=~/install_deps `
+                    -DOPENSIM_C3D_PARSER=${{ matrix.c3d_parser }} `
+                    -DBUILD_PYTHON_WRAPPING=ON `
+                    -DBUILD_PYTHON_WHEELS=ON `
+                    -DOPENSIM_WITH_CASADI=ON `
+                    -DBUILD_JAVA_WRAPPING=ON `
+                    -DBUILD_API_EXAMPLES=ON `
+                    -DBUILD_TESTING=OFF `
+                    -DCMAKE_INSTALL_PREFIX=~/install_core `
+                    -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL `
+                    -DCMAKE_CXX_FLAGS="/EHsc /W0 /MP" `
+                    -DCMAKE_C_FLAGS="/W0 /MP"
                 
                 cmake --build . --config Release --parallel 4
                 cmake --install .
